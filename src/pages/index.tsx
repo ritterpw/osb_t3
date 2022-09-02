@@ -39,7 +39,9 @@ function Header() {
       <div className=" text-xl mx-4 flex items-center cursor-pointer ">
         <h1 className="header__link mx-7 ">Home</h1>
         <div
-          onClick={() => {}}
+          onClick={() => {
+            console.log("stuff");
+          }}
           className="  cursor-pointer items-center inline-flex "
         >
           <p className="header__link hidden lg:inline-flex">Sign In</p>
