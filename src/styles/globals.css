@@ -8,10 +8,22 @@
   src: local("GlassTTY VT220"),
     url(/Users/paulritter/Library/Fonts/Glass_TTY_VT220.ttf) format("ttf");
 }
+@layer components {
+  .header {
+    @apply sticky top-0 z-50 w-full h-16 flex text-emerald-500 justify-between items-center bg-gray-900 drop-shadow-md;
+  }
 
+  .header__link {
+    @apply hover:text-emerald-200   lg:inline;
+  }
+
+  .icon {
+    @apply h-9 w-6 lg:w-9 cursor-pointer rounded-sm lg:p-1;
+  }
+}
 body {
   --tw-bg-opacity: 1;
-  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+  background-color: rgb(47 49 54 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(16 185 129 / var(--tw-text-opacity));
 }
