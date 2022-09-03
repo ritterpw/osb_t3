@@ -8,7 +8,7 @@ export default function MostPopular() {
   return (
     <div>
       <div className="  bg-gradient-to-b  from-gray-800 to-gray-900 rounded-b-xl  shadow-gray-800  drop-shadow-sm  h-96   ">
-        <div className="grid lg:grid-cols-[1.6fr_1fr] ">
+        <div className="grid lg:grid-cols-[1.6fr_1fr]  ">
           <div className=" items-center  text-center justify-center place-items-center flex">
             <div className=" text-center lg:text-left">
               <p className="  text-7xl  ">Open Source</p>
@@ -34,7 +34,7 @@ export default function MostPopular() {
       </div>
       <div className="lg:py-20  bg-gradient-to-b  from-gray-900 to-gray-700 ">
         <h1 className=" text-center my-5 text-4xl"> Ideas Of The Week</h1>
-        <div className=" mx-8 py-10 grid lg:grid-cols-3   gap-10 ">
+        <div className=" mx-8 py-10 grid lg:grid-cols-3  gap-10 ">
           <Card
             name={"some beat "}
             description={"this is some beat "}
@@ -57,7 +57,6 @@ export default function MostPopular() {
           />
         </div>
       </div>
-      <div className=" bg-gradient-to-b from-gray-700 h-40 container to-gray-900  w-screen"></div>
     </div>
   );
 }
