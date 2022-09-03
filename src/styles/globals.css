@@ -2,23 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
+/* @font-face {
   font-family: "Glass TTY VT220";
 
   src: local("GlassTTY VT220"),
     url(/Users/paulritter/Library/Fonts/Glass_TTY_VT220.ttf) format("ttf");
-}
+} */
 @layer components {
   .header {
-    @apply sticky top-0 z-50 w-full h-16 flex text-emerald-500 justify-between items-center bg-gray-900 drop-shadow-md;
+    @apply sticky top-0 z-50 w-full h-16 flex text-emerald-500 justify-between items-center bg-gray-800;
   }
 
   .header__link {
-    @apply hover:text-emerald-200   lg:inline;
+    @apply lg:inline;
   }
 
   .icon {
-    @apply h-9 w-6 lg:w-9 cursor-pointer rounded-sm lg:p-1;
+    @apply w-6 lg:w-6 cursor-pointer rounded-sm sm:ml-2;
   }
 }
 body {
@@ -29,5 +29,10 @@ body {
 }
 
 * {
-  font-family: "Glass_TTY_VT220";
+  /* font-family: "Glass_TTY_VT220"; */
+  font-family: "Roboto";
+}
+
+img {
+  max-height: 100%;
 }
