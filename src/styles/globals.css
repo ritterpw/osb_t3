@@ -23,14 +23,19 @@
 }
 body {
   --tw-bg-opacity: 1;
-  background-color: rgb(47 49 54 / var(--tw-bg-opacity));
+  background-color: rgb(32 34 37 / var(--tw-bg-opacity));
   --tw-text-opacity: 1;
   color: rgb(16 185 129 / var(--tw-text-opacity));
 }
 
+.greenbg {
+  border-top-right-radius: 150px;
+  border-bottom-right-radius: 150px;
+}
+
 * {
-  /* font-family: "Glass_TTY_VT220"; */
-  font-family: "Roboto";
+  font-family: "Glass_TTY_VT220";
+  /* font-family: "Roboto"; */
 }
 
 img {
