@@ -19,6 +19,10 @@ module.exports = {
         88: "22rem",
       },
     },
+    backgroundImage: {
+      piccy: "url('/bg-2.jpg')",
+      piccytwo: "url('/bg.jpg')",
+    },
   },
   plugins: [],
 };

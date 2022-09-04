@@ -1,3 +1,4 @@
+import { trpc } from "../utils/trpc";
 import {
   BeakerIcon,
   HomeIcon,
@@ -7,14 +8,25 @@ import {
 import MostPopular from "./most_popular";
 
 export default function Home() {
-  return (
-    <div>
-      <div className=" h-screen w-screen flex flex-col ">
-        <Header />
-        <MostPopular />
+  const { data, isLoading, isSuccess } = trpc.useQuery([
+    "example.hello",
+    { text: "Paul" },
+  ]);
+
+  if (isLoading) {
+    return <div>is loading...</div>;
+  }
+  if (isSuccess) {
+    return (
+      <div>
+        <div className=" h-screen w-screen flex flex-col ">
+          <Header />
+          <MostPopular />
+          {/* <div>{data?.greeting}</div> */}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 function Header() {
