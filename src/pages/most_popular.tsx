@@ -32,7 +32,7 @@ export default function MostPopular() {
           </div>
         </div>
       </div>
-      <div className="lg:py-20  bg-gradient-to-b  from-gray-900 to-gray-700 ">
+      <div className="lg:pb-10  pt-40  bg-gradient-to-b  from-gray-900 to-gray-700 ">
         <h1 className=" text-center my-5 text-4xl"> Ideas Of The Week</h1>
         <div className=" mx-8 py-10 grid lg:grid-cols-3  gap-10 ">
           <Card
