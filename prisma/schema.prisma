@@ -2,14 +2,38 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
-model Example {
+model User {
     id String @id @default(cuid())
+    first_name String 
+    last_name String 
+    producer_name String 
+    ideas Idea[]
+    role Role @default(USER)
+}
+
+model Idea {
+    id String @id @default(cuid()) 
+    user User @relation(fields: [userId], references: [id])
+    userId String
+    title String
+    description String
+    tag_one String?
+    tag_two String?
+    tag_three String?
+    createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
 }

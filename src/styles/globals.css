@@ -35,9 +35,18 @@ body {
 
 * {
   font-family: "Glass_TTY_VT220";
+
   /* font-family: "Roboto"; */
 }
 
 img {
   max-height: 100%;
+}
+
+#no-scroll1::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+#no-scroll1 {
+  border: 1px solid;
 }

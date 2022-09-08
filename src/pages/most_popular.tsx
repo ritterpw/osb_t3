@@ -10,10 +10,10 @@ export default function MostPopular() {
       {/* <div className=" h bg-gradient-to-b  from-gray-800 to-gray-900 rounded-b-xl  shadow-gray-800  drop-shadow-sm  h-96   "> */}
       <div className="  h-screen y-screen   ">
         <div className=" snap-start bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
-          <div className=" h-screen w-screen justify-center items-center  grid lg:grid-cols-[1.5fr_1fr]  ">
+          <div className=" h-screen w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
             <div className=" items-center  text-center justify-center place-items-center flex"></div>
-            <div className=" hidden lg:inline-flex  rounded-l-3xl my-10  ">
-              <div className=" text-center lg:text-left">
+            <div className="  rounded-l-3xl my-10  ">
+              <div className=" flex flex-col text-center lg:text-left">
                 <p className="  text-7xl  ">Open Source</p>
                 <p className="  text-7xl  ">Productions</p>
                 <p className=" mt-6  text-xl  text-emerald-300">

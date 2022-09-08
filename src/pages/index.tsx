@@ -6,23 +6,21 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import MostPopular from "./most_popular";
+import path from "path";
 
 export default function Home() {
-  const { data, isLoading, isSuccess } = trpc.useQuery([
-    "example.hello",
-    { text: "Paul" },
-  ]);
+  const { data, isLoading, isSuccess } = trpc.useQuery(["idea.getAll"]);
 
   if (isLoading) {
     return <div>is loading...</div>;
   }
   if (isSuccess) {
+    console.log(data);
     return (
-      <div>
-        <div className=" h-screen w-screen flex flex-col ">
+      <div id="no-scroll1 ">
+        <div className=" h-screen w-screen flex flex-col">
           <Header />
           <MostPopular />
-          {/* <div>{data?.greeting}</div> */}
         </div>
       </div>
     );
