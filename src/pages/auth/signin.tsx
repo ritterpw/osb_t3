@@ -47,18 +47,16 @@ const SignIn = ({
 
               {providers
                 ? Object.values(providers).map((provider, i) => {
-                    if (provider.id !== "email") {
-                      return (
-                        <div
-                          key={provider.name}
-                          onClick={() => signIn(provider.id)}
-                        >
-                          <h1 className=" px-12 pt-4 text-2xl   ">
-                            Click This Text To Sign In With {provider.name}
-                          </h1>
-                        </div>
-                      );
-                    }
+                    return (
+                      <div
+                        key={provider.name}
+                        onClick={() => signIn(provider.id)}
+                      >
+                        <h1 className=" px-12 pt-4 text-2xl   ">
+                          Click This Text To Sign In With {provider.name}
+                        </h1>
+                      </div>
+                    );
                   })
                 : ""}
             </div>
