@@ -54,7 +54,7 @@ const SignIn = ({
                           onClick={() => signIn(provider.id)}
                         >
                           <h1 className=" px-12 pt-4 text-2xl   ">
-                            Click This Text To Sign In With Google
+                            Click This Text To Sign In With {provider.name}
                           </h1>
                         </div>
                       );
