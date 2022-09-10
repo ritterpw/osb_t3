@@ -31,27 +31,30 @@ export default function MostPopular() {
 
       <div className="snap-start h-screen pb-10  pt-10 lg:pt-20 xl:pt-40  bg-gradient-to-b  from-black to-gray-900 ">
         <h1 className=" text-center my-5 text-4xl"> Ideas Of The Week</h1>
-        <div className=" mx-8 py-10 grid lg:grid-cols-3  gap-10 ">
-          <Card
-            name={"some beat "}
-            description={"this is some beat "}
-            tags={["dark", "wow"]}
-          />
-          <Card
-            name={"Other beat "}
-            description={"this is some beat "}
-            tags={["hey", "hi", "wow"]}
-          />
-          <Card
-            name={"some beat "}
-            description={"this is some beat "}
-            tags={["hey", "hi", "wow"]}
-          />
-          <Card
-            name={"some beat "}
-            description={"this is some beat "}
-            tags={["hey", "hi", "wow"]}
-          />
+
+        <div className=" mx-8  items-center justify-center  ">
+          <div className="gap-10 grid lg:grid-cols-[1fr_1fr_1fr]  m-auto items-center justify-center">
+            <Card
+              name={"some beat "}
+              description={"this is some beat "}
+              tags={["dark", "wow"]}
+            />
+            <Card
+              name={"Other beat "}
+              description={"this is some beat "}
+              tags={["hey", "hi", "wow"]}
+            />
+            <Card
+              name={"some beat "}
+              description={"this is some beat "}
+              tags={["hey", "hi", "wow"]}
+            />
+            <Card
+              name={"some beat "}
+              description={"this is some beat "}
+              tags={["hey", "hi", "wow"]}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -68,7 +71,7 @@ function Card({
   tags: string[];
 }) {
   return (
-    <div className=" max-w-sm container  rounded-lg overflow-hidden shadow-lg bg-gray-800  ">
+    <div className="w-full  justify-center items-center m-auto  rounded-lg overflow-hidden shadow-lg bg-gray-800  ">
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{name}</div>
         <p className="text-gray-200 text-base">{description}</p>

@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import MostPopular from "./most_popular";
 import path from "path";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
   const { data, isLoading, isSuccess } = trpc.useQuery(["idea.getAll"]);
@@ -51,16 +52,39 @@ function Header() {
 
       <div className=" text-xl mx-4 flex items-center cursor-pointer  ">
         <h1 className="header__link mx-4 hover:text-emerald-200">Home</h1>
-        <div
-          onClick={() => {
-            console.log("stuff");
-          }}
-          className="  cursor-pointer items-center inline-flex hover:text-emerald-200"
-        >
-          <p className="header__link hidden lg:inline-flex">Sign In</p>
-          <UserIcon className="icon " />
-        </div>
+        <Login />
       </div>
     </div>
+  );
+}
+
+function Login() {
+  const { data: session } = useSession();
+
+  if (session) {
+    console.log(session);
+    return (
+      <>
+        <div
+          onClick={() => signOut()}
+          className="  cursor-pointer items-center inline-flex hover:text-emerald-200"
+        >
+          <p className="header__link hidden lg:inline-flex">Sign Out</p>
+          <UserIcon className="icon " />
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div
+        onClick={() => signIn()}
+        className="  cursor-pointer items-center inline-flex hover:text-emerald-200"
+      >
+        <p className="header__link hidden lg:inline-flex">Sign In</p>
+        <UserIcon className="icon " />
+      </div>
+    </>
   );
 }

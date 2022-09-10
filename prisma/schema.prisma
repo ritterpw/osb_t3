@@ -31,6 +31,7 @@ model Idea {
     tag_two String?
     tag_three String?
     createdAt DateTime @default(now())
+    likes Int @default(0)
 }
 
 enum Role {
