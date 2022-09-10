@@ -42,8 +42,8 @@ const SignIn = ({
       <section className=" w-screen h-screen bg-gray-700 items-center justify-center flex px-10">
         <div className="  w-8/12  bg-gray-500 rounded-xl shadow-2xl  ">
           <div className="  h-full justify-center items-center overflow-ag-overlay">
-            <div className=" py-10  h-full justify-center items-center overflow-ag-overlay text-center">
-              <h1 className="  text-3xl">Log In</h1>
+            <div className=" py-10  h-96 justify-center items-center overflow-ag-overlay text-center">
+              <h1 className=" text-3xl">Log In</h1>
 
               {providers
                 ? Object.values(providers).map((provider, i) => {
