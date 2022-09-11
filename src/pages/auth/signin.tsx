@@ -37,6 +37,7 @@ const SignIn = ({
       router.push("/");
     }
   }, [session]);
+  console.log(providers);
   return (
     <>
       <section className=" w-screen h-screen bg-gray-700 items-center justify-center flex px-10">
