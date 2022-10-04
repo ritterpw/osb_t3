@@ -16,7 +16,7 @@ export default function Login() {
           </div>
           {session.user.image && (
             <img
-              className=" w-8 rounded-full cursor-pointer hover:opacity-80 sm:ml-3 "
+              className=" w-6 rounded-full cursor-pointer hover:opacity-80 sm:ml-3 "
               src={session.user.image}
             />
           )}

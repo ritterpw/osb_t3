@@ -2,12 +2,11 @@ import {
   ArrowDownCircleIcon,
   HandThumbUpIcon,
   InformationCircleIcon,
-  MusicalNoteIcon,
   PauseIcon,
   PlayIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import ReactAudioPlayer from "react-audio-player";
+import JsFileDownloader from "js-file-downloader";
 
 export default function Card({
   name,
@@ -26,6 +25,27 @@ export default function Card({
 }) {
   const this_idea = new Audio(idea);
 
+  function handleDownload(): void {
+    {
+      let fileEnding = "";
+      if (idea.endsWith(".wav")) {
+        fileEnding = ".wav";
+      } else if (idea.endsWith(".mp3")) {
+        fileEnding = ".mp3";
+      }
+      new JsFileDownloader({
+        url: idea,
+        filename: name + fileEnding,
+      })
+        .then(function () {
+          console.log("downlaoded");
+        })
+        .catch(function (error) {
+          console.log("error: " + error);
+        });
+    }
+  }
+
   return (
     <div className="w-full justify-center items-center m-auto  rounded-lg overflow-hidden shadow-lg bg-gray-800  ">
       <div className="flex justify-between">
@@ -34,7 +54,7 @@ export default function Card({
             <div className="font-bold text-xl mb-2">{name}</div>
             <p className="text-gray-200 text-base">{description}</p>
           </div>
-          <div className=" px-5  ">
+          <div className="px-5">
             <span className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md">
               {tag_one}
             </span>
@@ -56,25 +76,28 @@ export default function Card({
             onClick={() => {
               this_idea.play();
             }}
-            className="h-11 w-11 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
+            className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
           >
-            <PlayIcon className=" ml-2 h-8 w-8  m-auto " />
+            <PlayIcon className=" ml-2 h-6 w-6  m-auto " />
           </button>
           {/* This is definitely not centered correctly */}
           <button
             onClick={() => {
               this_idea.pause();
             }}
-            className="h-11 w-11 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
+            className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
           >
-            <PauseIcon className=" ml-2 h-8 w-8  m-auto " />
+            <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
           </button>
         </div>
         <div className="flex ml-10 place-self-center place-items-center ">
           <h1 className="text-xl mt-1">{likes}</h1>
           <HandThumbUpIcon className="mx-1 h-6 w-6" />
-          <InformationCircleIcon className="mx-1 h-8 w-8 cursor-pointerhover:text-emerald-600" />
-          <ArrowDownCircleIcon className="mx-1 h-8 w-8 cursor-pointerhover:text-emerald-600" />
+          <InformationCircleIcon className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600" />
+          <ArrowDownCircleIcon
+            onClick={() => handleDownload()}
+            className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600"
+          />
         </div>
       </div>
     </div>
