@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { CtxOrReq } from "next-auth/client/_utils";
 import { CubeIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { AiFillGoogleCircle } from "react-icons/ai";
 
 const customStyles = {
   content: {
@@ -41,30 +42,28 @@ const SignIn = ({
   return (
     <>
       <section className=" w-screen h-screen bg-gray-700 items-center justify-center flex px-10">
-        <div className="  w-8/12  bg-gray-800 rounded-xl ">
-          <div className="  h-full justify-center items-center overflow-ag-overlay">
-            <div className=" py-10  h-full justify-center items-center overflow-ag-overlay text-center">
-              <h1 className="  text-3xl">Log In</h1>
-
-              {providers
-                ? Object.values(providers).map((provider, i) => {
-                    if (provider.id !== "email") {
-                      return (
-                        <div
-                          key={provider.id}
-                          onClick={() => signIn(provider.id)}
-                        >
-                          <CubeIcon />
-                          <h1 className=" pt-4 text-2xl   ">
-                            Sign In With Google
-                          </h1>
+        <div className="  p-20 bg-gray-800 rounded-xl hover:opacity-90 hover:cursor-pointer  transition-all duration-500 ease-in-out  hover:text-emerald-400">
+          {providers
+            ? Object.values(providers).map((provider, i) => {
+                if (provider.id !== "email") {
+                  return (
+                    <div
+                      className=" justify-center items-center overflow-ag-overlay "
+                      key={provider.id}
+                      onClick={() => signIn(provider.id)}
+                    >
+                      <div className="  text-center ">
+                        <h1 className="  text-3xl">Log In</h1>
+                        <div>
+                          <AiFillGoogleCircle className=" my-10 h-20 w-20 m-auto" />
+                          <h1 className=" text-2xl   ">Sign In With Google</h1>
                         </div>
-                      );
-                    }
-                  })
-                : ""}
-            </div>
-          </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })
+            : ""}
         </div>
       </section>
     </>

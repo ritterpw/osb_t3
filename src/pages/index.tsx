@@ -1,90 +1,112 @@
 import { trpc } from "../utils/trpc";
-import {
-  BeakerIcon,
-  HomeIcon,
-  MagnifyingGlassIcon,
-  UserIcon,
-} from "@heroicons/react/24/outline";
-import MostPopular from "./most_popular";
-import path from "path";
+import { MagnifyingGlassIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useSession, signIn, signOut } from "next-auth/react";
+import {
+  ArrowDownCircleIcon,
+  HandThumbUpIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline";
+import { Idea } from "@prisma/client";
+import { Session } from "next-auth";
+import { NextRouter, useRouter } from "next/router";
+import Header from "@/components/header";
+import Card from "@/components/card";
 
-export default function Home() {
-  const { data, isLoading, isSuccess } = trpc.useQuery(["idea.getAll"]);
+export default function Home(): JSX.Element {
+  const { data, isLoading, isSuccess } = trpc.useQuery(
+    ["idea.getMostPopular"],
+    {
+      refetchInterval: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
-  if (isLoading) {
-    return <div>is loading...</div>;
-  }
-  if (isSuccess) {
-    console.log(data);
-    return (
+  return (
+    <>
       <div id="no-scroll1 ">
         <div className=" h-screen w-screen flex flex-col">
           <Header />
-          <MostPopular />
+          {data && <MostPopular data={data} />}
         </div>
       </div>
-    );
-  }
+    </>
+  );
 }
 
-function Header() {
+function MostPopular({ data }: { data: Idea[] }) {
+  const router = useRouter();
+
+  const { data: session } = useSession();
+
   return (
-    <div className="header">
-      <div className="  inline-flex  justify-center gap-1">
-        <div className="flex-shrink-0 text-3xl font-bold text-center uppercase ml-4 relative mr-4 ">
-          <h1>OSP</h1>
+    <div className="snap-y snap-mandatory overflow-x-clip overflow-y-scroll ">
+      {/* <div className=" h bg-gradient-to-b  from-gray-800 to-gray-900 rounded-b-xl  shadow-gray-800  drop-shadow-sm  h-96   "> */}
+      <div className="  h-screen y-screen   ">
+        <div className=" snap-start bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
+          <div className=" h-screen w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
+            <div className=" items-center  text-center justify-center place-items-center flex"></div>
+            <div className="  rounded-l-3xl my-10  ">
+              <div className=" flex flex-col text-center lg:text-left animate-fade-in">
+                <p className="  text-7xl  ">Open Source</p>
+                <p className="  text-7xl  ">Productions</p>
+                <p className=" mt-6  text-xl  text-emerald-300">
+                  Collaborate with producers around the world
+                </p>
+                <p className=" text-gray-300">
+                  Start by downloading your favorite idea
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <form
-          className="flex  self-center items-center h-6   w-96 space-x-2 space rounded-md border
-         border-gray-700 bg-gray-600   py-2"
-        >
-          <MagnifyingGlassIcon className=" ml-2 h-4 w-4 text-gray-400 " />
-          <input
-            className="flex-1 bg-transparent outline-none text-gray-400 placeholder:text-sm"
-            type="text"
-            placeholder="Search"
-          />
-          <button type="submit" hidden />
-        </form>
       </div>
-
-      <div className=" text-xl mx-4 flex items-center cursor-pointer  ">
-        <h1 className="header__link mx-4 hover:text-emerald-200">Home</h1>
-        <Login />
+      <div className="snap-start h-full pb-10  pt-10 ">
+        <h1 className=" text-center my-5 mb-20 text-4xl animate-fade-in ">
+          {" "}
+          Ideas Of The Week
+        </h1>
+        <div className=" mx-8 h-4/6 items-center justify-center overflow-y-auto ">
+          <div className="gap-10 grid md:grid-cols-[1fr_1fr]  lg:grid-cols-[1fr_1fr_1fr]  m-auto items-center justify-center ">
+            {data.map((idea) => (
+              <div key={idea.id}>
+                <Card
+                  name={idea.title}
+                  description={idea.description}
+                  tag_one={idea.tag_one}
+                  tag_two={idea.tag_two}
+                  likes={idea.likes}
+                  idea={idea.file}
+                ></Card>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className=" py-10 mx-auto text-center ">
+          <button
+            onClick={() => ClickNewIdea(session, router)}
+            className="py-3  px-20 text-2xl bg-emerald-500 text-gray-900 rounded-3xl shadow-2xl"
+          >
+            Add New Idea
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
-function Login() {
-  const { data: session } = useSession();
-
+function DetailsButton() {
+  return (
+    <div>
+      <InformationCircleIcon className="h-7 w-7 " />
+    </div>
+  );
+}
+function ClickNewIdea(session: Session | null, router: NextRouter): void {
   if (session) {
     console.log(session);
-    return (
-      <>
-        <div
-          onClick={() => signOut()}
-          className="  cursor-pointer items-center inline-flex hover:text-emerald-200"
-        >
-          <p className="header__link hidden lg:inline-flex">Sign Out</p>
-          <UserIcon className="icon " />
-        </div>
-      </>
-    );
+    router.push("/addidea");
+  } else {
+    signIn();
   }
-
-  return (
-    <>
-      <div
-        onClick={() => signIn()}
-        className="  cursor-pointer items-center inline-flex hover:text-emerald-200"
-      >
-        <p className="header__link hidden lg:inline-flex">Sign In</p>
-        <UserIcon className="icon " />
-      </div>
-    </>
-  );
 }

@@ -18,6 +18,19 @@ module.exports = {
       spacing: {
         88: "22rem",
       },
+      keyframes: {
+        "fade-in": {
+          "0%": {
+            opacity: "0",
+          },
+          "100%": {
+            opacity: "1",
+          },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 0.5s ease-out",
+      },
     },
     backgroundImage: {
       piccy: "url('/bg-2.jpg')",
