@@ -14,7 +14,7 @@ export default function Header() {
         </div>
 
         <form
-          className="flex  self-center items-center h-6   w-96 space-x-2 space rounded-md border
+          className="md:flex hidden  self-center items-center h-6   w-96 space-x-2 space rounded-md border
            border-gray-700 bg-gray-600   py-2"
         >
           <MagnifyingGlassIcon className=" ml-2 h-4 w-4 text-gray-400 " />
