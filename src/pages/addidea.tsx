@@ -34,7 +34,7 @@ function AddIdeaForm(): JSX.Element {
   }
 
   async function uploadFile(id: string): Promise<string> {
-    let { data } = await axios.post("/api/s3/uploadFile", {
+    const { data } = await axios.post("/api/s3/uploadFile", {
       name: id + "-" + file.name,
       type: file.type,
     });

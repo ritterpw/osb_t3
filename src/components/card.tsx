@@ -80,4 +80,3 @@ export default function Card({
     </div>
   );
 }
-function handleIdeaClick() {}
