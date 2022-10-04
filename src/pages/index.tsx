@@ -1,11 +1,6 @@
 import { trpc } from "../utils/trpc";
-import { MagnifyingGlassIcon, UserIcon } from "@heroicons/react/24/outline";
 import { useSession, signIn, signOut } from "next-auth/react";
-import {
-  ArrowDownCircleIcon,
-  HandThumbUpIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/outline";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { Idea } from "@prisma/client";
 import { Session } from "next-auth";
 import { NextRouter, useRouter } from "next/router";
@@ -13,8 +8,8 @@ import Header from "@/components/header";
 import Card from "@/components/card";
 
 export default function Home(): JSX.Element {
-  const { data, isLoading, isSuccess } = trpc.useQuery(
-    ["idea.getMostPopular"],
+  let { data, isLoading, isSuccess } = trpc.useQuery(
+    ["idea.getMostPopularThisWeek"],
     {
       refetchInterval: false,
       refetchOnReconnect: false,
@@ -61,13 +56,25 @@ function MostPopular({ data }: { data: Idea[] }) {
           </div>
         </div>
       </div>
-      <div className="snap-start h-full pb-10  pt-10 ">
-        <h1 className=" text-center my-5 mb-20 text-4xl animate-fade-in ">
+      <div className="snap-start h-full pb-3  pt-3 ">
+        <h1 className=" text-center mt-5 mb-10 text-4xl animate-fade-in ">
           {" "}
           Ideas Of The Week
         </h1>
-        <div className=" mx-8 h-4/6 items-center justify-center overflow-y-auto ">
-          <div className="gap-10 grid md:grid-cols-[1fr_1fr]  lg:grid-cols-[1fr_1fr_1fr]  m-auto items-center justify-center ">
+        <div className=" mx-8 h-[75%] items-center justify-center overflow-y-auto ">
+          <div className="gap-8 grid md:grid-cols-[1fr_1fr]  lg:grid-cols-[1fr_1fr_1fr] md: grid-rows-3  m-auto items-center justify-center ">
+            {data.map((idea) => (
+              <div key={idea.id}>
+                <Card
+                  name={idea.title}
+                  description={idea.description}
+                  tag_one={idea.tag_one}
+                  tag_two={idea.tag_two}
+                  likes={idea.likes}
+                  idea={idea.file}
+                ></Card>
+              </div>
+            ))}
             {data.map((idea) => (
               <div key={idea.id}>
                 <Card

@@ -9,7 +9,30 @@ export const ideaRouter = createRouter()
   })
   .query("getMostPopular", {
     async resolve({ ctx, input }) {
-      return await ctx.prisma.idea.findMany({ take: 9 });
+      return await ctx.prisma.idea.findMany({
+        orderBy: [{ likes: "desc" }],
+        take: 9,
+      });
+    },
+  })
+  .query("getMostPopularThisWeek", {
+    async resolve({ ctx, input }) {
+      const now = new Date();
+      const data = await ctx.prisma.idea.findMany({
+        orderBy: [{ likes: "desc" }],
+        where: {
+          createdAt: {
+            gte: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7),
+          },
+        },
+        take: 9,
+      });
+      if (data.length < 9) {
+        return await ctx.prisma.idea.findMany({
+          orderBy: [{ likes: "desc" }],
+          take: 9,
+        });
+      }
     },
   })
   .mutation("addIdea", {
@@ -23,7 +46,6 @@ export const ideaRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       console.log(input);
-
       return await ctx.prisma.idea.create({
         data: {
           userId: "cl8sesmmi0024rxx756lhf4zy",
