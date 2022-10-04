@@ -70,7 +70,7 @@ export default function Card({
             <PauseIcon className=" ml-2 h-8 w-8  m-auto " />
           </button>
         </div>
-        <div className="flex  ml-10   place-self-center place-items-center ">
+        <div className="flex ml-10 place-self-center place-items-center ">
           <h1 className="text-xl mt-1">{likes}</h1>
           <HandThumbUpIcon className="mx-1 h-6 w-6" />
           <InformationCircleIcon className="mx-1 h-8 w-8 cursor-pointerhover:text-emerald-600" />
