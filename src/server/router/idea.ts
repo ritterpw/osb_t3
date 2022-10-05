@@ -1,5 +1,5 @@
 import { createRouter } from "./context";
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const ideaRouter = createRouter()
   .query("getAll", {
@@ -33,6 +33,40 @@ export const ideaRouter = createRouter()
           take: 9,
         });
       }
+    },
+  })
+  .query("search", {
+    input: z.object({
+      this_query: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.idea.findMany({
+        where: {
+          OR: [
+            {
+              tag_one: {
+                search: input.this_query,
+              },
+            },
+            {
+              tag_two: {
+                search: input.this_query,
+              },
+            },
+            {
+              title: {
+                search: input.this_query,
+              },
+            },
+            {
+              description: {
+                search: input.this_query,
+              },
+            },
+          ],
+        },
+        take: 10,
+      });
     },
   })
   .mutation("addIdea", {

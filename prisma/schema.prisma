@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity","fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -33,6 +33,8 @@ model Idea {
     file String 
     createdAt DateTime @default(now())
     likes Int @default(0)
+
+    @@fulltext([title,description,tag_one,tag_two])
 }
 
 enum Role {

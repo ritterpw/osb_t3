@@ -34,6 +34,8 @@ function MostPopular({ data }: { data: Idea[] }) {
 
   const { data: session } = useSession();
 
+  console.log(session);
+
   return (
     <div className="snap-y snap-mandatory overflow-x-clip overflow-y-scroll ">
       {/* <div className=" h bg-gradient-to-b  from-gray-800 to-gray-900 rounded-b-xl  shadow-gray-800  drop-shadow-sm  h-96   "> */}
@@ -56,25 +58,13 @@ function MostPopular({ data }: { data: Idea[] }) {
           </div>
         </div>
       </div>
-      <div className="snap-start h-full pb-3  pt-3 ">
+      <div className="snap-start min-h-full pb-3  pt-3 ">
         <h1 className=" text-center mt-5 mb-10 text-4xl animate-fade-in ">
           {" "}
           Ideas Of The Week
         </h1>
-        <div className=" mx-8 h-[75%] items-center justify-center overflow-y-auto ">
-          <div className="gap-8 grid md:grid-cols-[1fr_1fr]  lg:grid-cols-[1fr_1fr_1fr] md: grid-rows-3  m-auto items-center justify-center ">
-            {data.map((idea) => (
-              <div key={idea.id}>
-                <Card
-                  name={idea.title}
-                  description={idea.description}
-                  tag_one={idea.tag_one}
-                  tag_two={idea.tag_two}
-                  likes={idea.likes}
-                  idea={idea.file}
-                ></Card>
-              </div>
-            ))}
+        <div className=" mx-8  max-h-[80%] items-center justify-center overflow-y-auto ">
+          <div className="gap-8 grid md:grid-cols-[1fr_1fr]  lg:grid-cols-[1fr_1fr_1fr]   m-auto items-center justify-center ">
             {data.map((idea) => (
               <div key={idea.id}>
                 <Card
@@ -89,6 +79,7 @@ function MostPopular({ data }: { data: Idea[] }) {
             ))}
           </div>
         </div>
+
         <div className=" py-10 mx-auto text-center ">
           <button
             onClick={() => ClickNewIdea(session, router)}

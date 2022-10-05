@@ -1,10 +1,20 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import router from "next/router";
+import { FormEvent, useState } from "react";
 import Login from "./login";
 
 export default function Header() {
   const { data: session } = useSession();
+
+  const [searchString, setSearchString] = useState("");
+
+  function onSubmitSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (searchString) {
+      router.push(`/search/${searchString}`);
+    }
+  }
 
   return (
     <div className="header">
@@ -14,6 +24,7 @@ export default function Header() {
         </div>
 
         <form
+          onSubmit={(e) => onSubmitSearch(e)}
           className="md:flex hidden  self-center items-center h-6   w-96 space-x-2 space rounded-md border
            border-gray-700 bg-gray-600   py-2"
         >
@@ -22,8 +33,10 @@ export default function Header() {
             className="flex-1 bg-transparent outline-none text-gray-400 placeholder:text-sm"
             type="text"
             placeholder="Search"
+            onChange={(e) => {
+              setSearchString(e.target.value);
+            }}
           />
-          <button type="submit" hidden />
         </form>
       </div>
 
