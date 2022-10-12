@@ -20,6 +20,7 @@ export default function DisplaySearchs({ data }: { data: Idea[] }) {
                 tag_two={idea.tag_two}
                 likes={idea.likes}
                 idea={idea.file}
+                userId={idea.userId}
               ></Card>
             </div>
           ))}

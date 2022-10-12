@@ -1,10 +1,18 @@
 import { UserIcon } from "@heroicons/react/24/outline";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Router, { useRouter } from "next/router";
 
 export default function Login() {
   const { data: session } = useSession();
+  const router = useRouter();
+
+  function getUserProfile() {
+    router.push("/me");
+  }
 
   if (session) {
+    console.log(session);
+
     return (
       <>
         <div className="items-center inline-flex">
@@ -16,6 +24,9 @@ export default function Login() {
           </div>
           {session.user.image && (
             <img
+              onClick={() => {
+                getUserProfile();
+              }}
               className=" w-6 rounded-full cursor-pointer hover:opacity-80 sm:ml-3 "
               src={session.user.image}
             />

@@ -6,6 +6,8 @@ import { Session } from "next-auth";
 import { NextRouter, useRouter } from "next/router";
 import Header from "@/components/header";
 import Card from "@/components/card";
+import { isReadable } from "stream";
+import { ideaRouter } from "@/server/router/idea";
 
 export default function Home(): JSX.Element {
   let { data, isLoading, isSuccess } = trpc.useQuery(
@@ -37,23 +39,20 @@ function MostPopular({ data }: { data: Idea[] }) {
   console.log(session);
 
   return (
-    <div className="snap-y snap-mandatory overflow-x-clip overflow-y-scroll ">
-      {/* <div className=" h bg-gradient-to-b  from-gray-800 to-gray-900 rounded-b-xl  shadow-gray-800  drop-shadow-sm  h-96   "> */}
-      <div className="  h-screen y-screen   ">
-        <div className=" snap-start bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
-          <div className=" h-screen w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
-            <div className=" items-center  text-center justify-center place-items-center flex"></div>
-            <div className="  rounded-l-3xl my-10  ">
-              <div className=" flex flex-col text-center lg:text-left animate-fade-in">
-                <p className="  text-7xl  ">Open Source</p>
-                <p className="  text-7xl  ">Productions</p>
-                <p className=" mt-6  text-xl  text-emerald-300">
-                  Collaborate with producers around the world
-                </p>
-                <p className=" text-gray-300">
-                  Start by downloading your favorite idea
-                </p>
-              </div>
+    <div className="snap-y snap-mandatory overflow-x-clip overflow-y-scroll  h-screen w-screen flex flex-col ">
+      <div className=" snap-start bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
+        <div className=" h-screen w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
+          <div className=" items-center  text-center justify-center place-items-center flex"></div>
+          <div className="  rounded-l-3xl my-10  ">
+            <div className=" flex flex-col text-center lg:text-left animate-fade-in">
+              <p className="  text-7xl  ">Open Source</p>
+              <p className="  text-7xl  ">Productions</p>
+              <p className=" mt-6  text-xl  text-emerald-300">
+                Collaborate with producers around the world
+              </p>
+              <p className=" text-gray-300">
+                Start by downloading your favorite idea
+              </p>
             </div>
           </div>
         </div>
@@ -63,8 +62,8 @@ function MostPopular({ data }: { data: Idea[] }) {
           {" "}
           Ideas Of The Week
         </h1>
-        <div className=" mx-8  max-h-[80%] items-center justify-center overflow-y-auto ">
-          <div className="gap-8 grid md:grid-cols-[1fr_1fr]  lg:grid-cols-[1fr_1fr_1fr]   m-auto items-center justify-center ">
+        <div className=" mx-8 max-h-[80%] items-center justify-center overflow-y-auto ">
+          <div className="gap-8 grid md:grid-cols-[1fr_1fr]  xl:grid-cols-[1fr_1fr_1fr] m-auto items-center justify-center">
             {data.map((idea) => (
               <div key={idea.id}>
                 <Card
@@ -74,6 +73,7 @@ function MostPopular({ data }: { data: Idea[] }) {
                   tag_two={idea.tag_two}
                   likes={idea.likes}
                   idea={idea.file}
+                  userId={idea.userId}
                 ></Card>
               </div>
             ))}

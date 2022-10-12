@@ -2,15 +2,17 @@ import { createRouter } from "./context";
 import { z } from "zod";
 
 export const userRouter = createRouter()
-  .query("getUser", {
+  .query("getUserByEmail", {
     input: z
       .object({
-        text: z.string().nullish(),
+        email: z.string(),
       })
       .nullish(),
-    resolve({ input }) {
+    async resolve({ ctx, input }) {
       return {
-        greeting: `getUser ${input?.text ?? "world"}`,
+        user: await ctx.prisma.user.findFirst({
+          where: { email: input?.email },
+        }),
       };
     },
   })

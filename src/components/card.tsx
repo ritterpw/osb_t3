@@ -1,12 +1,13 @@
+import { trpc } from "@/utils/trpc";
 import {
   ArrowDownCircleIcon,
   HandThumbUpIcon,
   InformationCircleIcon,
   PauseIcon,
   PlayIcon,
-  UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import JsFileDownloader from "js-file-downloader";
+import CardUserDisplay from "./CardUserDisplay";
 
 export default function Card({
   name,
@@ -15,6 +16,7 @@ export default function Card({
   tag_two,
   likes,
   idea,
+  userId,
 }: {
   name: string;
   description: string;
@@ -22,7 +24,11 @@ export default function Card({
   tag_two: string;
   likes: number;
   idea: string;
+  userId: string;
 }) {
+  //use the userId to get the image for this card
+  //image will be stored as an s3 url
+
   const this_idea = new Audio(idea);
 
   function handleDownload(): void {
@@ -65,7 +71,7 @@ export default function Card({
         </div>
         <div className="  w-20 flex  justify-end   ">
           <button className="h-10 w-10 m-4  bg-emerald-600 rounded-full shadow-md  text-gray-900 items-center justify-center text-center">
-            <UserCircleIcon className=" h-10 w-10 m-auto" />
+            <CardUserDisplay userId={userId} />
           </button>
         </div>
       </div>

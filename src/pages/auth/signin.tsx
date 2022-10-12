@@ -56,7 +56,7 @@ const SignIn = ({
                         <h1 className="  text-3xl">Log In</h1>
                         <div>
                           <AiFillGoogleCircle className=" my-10 h-20 w-20 m-auto" />
-                          <h1 className=" text-2xl   ">Sign In With Google</h1>
+                          <h1 className=" text-2xl ">Sign In With Google</h1>
                         </div>
                       </div>
                     </div>
