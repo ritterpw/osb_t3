@@ -36,8 +36,6 @@ function MostPopular({ data }: { data: Idea[] }) {
 
   const { data: session } = useSession();
 
-  console.log(session);
-
   return (
     <div className="snap-y snap-mandatory overflow-x-clip overflow-y-scroll  h-screen w-screen flex flex-col ">
       <div className=" snap-start bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
@@ -74,6 +72,7 @@ function MostPopular({ data }: { data: Idea[] }) {
                   likes={idea.likes}
                   idea={idea.file}
                   userId={idea.userId}
+                  // likers={idea.likers}
                 ></Card>
               </div>
             ))}

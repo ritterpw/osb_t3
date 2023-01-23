@@ -8,7 +8,6 @@ import { InferGetServerSidePropsType } from "next";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { CtxOrReq } from "next-auth/client/_utils";
-import { CubeIcon, KeyIcon } from "@heroicons/react/24/outline";
 import { AiFillGoogleCircle } from "react-icons/ai";
 
 const customStyles = {
@@ -31,14 +30,12 @@ const SignIn = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(providers);
 
   useEffect(() => {
     if (session) {
       router.push("/");
     }
   }, [session]);
-  console.log(providers);
   return (
     <>
       <section className=" w-screen h-screen bg-gray-700 items-center justify-center flex px-10">

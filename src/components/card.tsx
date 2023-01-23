@@ -26,9 +26,6 @@ export default function Card({
   idea: string;
   userId: string;
 }) {
-  //use the userId to get the image for this card
-  //image will be stored as an s3 url
-
   const this_idea = new Audio(idea);
 
   function handleDownload(): void {
@@ -39,17 +36,24 @@ export default function Card({
       } else if (idea.endsWith(".mp3")) {
         fileEnding = ".mp3";
       }
+
       new JsFileDownloader({
         url: idea,
         filename: name + fileEnding,
       })
-        .then(function () {
-          console.log("downlaoded");
+        .then(function (data) {
+          console.log("downloaded");
         })
         .catch(function (error) {
           console.log("error: " + error);
         });
     }
+  }
+
+  async function handleLike(): Promise<void> {
+    // check if the user has already liked this idea
+    // if the user has not liked this idea, add one to the like count
+    // if the user has not liked this idea, add the idea to the list of liked ideas
   }
 
   return (
@@ -98,7 +102,12 @@ export default function Card({
         </div>
         <div className="flex ml-10 place-self-center place-items-center ">
           <h1 className="text-xl mt-1">{likes}</h1>
-          <HandThumbUpIcon className="mx-1 h-6 w-6" />
+          <HandThumbUpIcon
+            onClick={() => {
+              handleLike();
+            }}
+            className="mx-1 h-6 w-6 cursor-pointer"
+          />
           <InformationCircleIcon className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600" />
           <ArrowDownCircleIcon
             onClick={() => handleDownload()}

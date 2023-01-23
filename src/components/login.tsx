@@ -10,9 +10,7 @@ export default function Login() {
     router.push("/me");
   }
 
-  if (session) {
-    console.log(session);
-
+  if (session?.user.image) {
     return (
       <>
         <div className="items-center inline-flex">
@@ -27,7 +25,7 @@ export default function Login() {
               onClick={() => {
                 getUserProfile();
               }}
-              className=" w-6 rounded-full cursor-pointer hover:opacity-80 sm:ml-3 "
+              className=" w-6 h-6 rounded-full cursor-pointer hover:opacity-80 sm:ml-3 "
               src={session.user.image}
             />
           )}

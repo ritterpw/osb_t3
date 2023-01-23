@@ -2,6 +2,8 @@ import Header from "@/components/header";
 import React, { useState } from "react";
 import axios from "axios";
 import { trpc } from "@/utils/trpc";
+import { Session } from "next-auth";
+import { signIn, useSession } from "next-auth/react";
 
 const BUCKET_URL = "https://s3.us-east-1.amazonaws.com/newideas/";
 
@@ -29,11 +31,25 @@ function AddIdeaForm(): JSX.Element {
   const [file, setFile] = useState<any>();
   const postIdea = trpc.useMutation(["idea.addIdea"]);
 
+  const { data: session } = useSession();
+
+  function IsSessionEmail(): boolean | undefined {
+    if (session?.user.email != undefined && session?.user.email != null) {
+      return true;
+    }
+    return false;
+  }
+
+  const { data } = trpc.useQuery(
+    ["user.getUserByEmail", { email: session?.user.email! }],
+    { enabled: IsSessionEmail() }
+  );
+
   function handleFilePick(file: any | null): void {
     setFile(file);
   }
 
-  async function uploadFile(id: string): Promise<string> {
+  async function getFileNameToUpload(id: string): Promise<string> {
     const { data } = await axios.post("/api/s3/uploadFile", {
       name: id + "-" + file.name,
       type: file.type,
@@ -52,17 +68,23 @@ function AddIdeaForm(): JSX.Element {
 
   async function handleSubmitIdea(): Promise<void> {
     //get userID
+
     //need to check if this user already has an idea with this title
-    const url = await uploadFile("cl7sirxdp00079ux7n7gnlbir");
-    const posted = postIdea.mutate({
-      user: "cl7sirxdp00079ux7n7gnlbir",
-      title: title,
-      description: description,
-      tag_one: tag_one,
-      tag_two: tag_two,
-      file: url,
-    });
-    console.log(posted);
+
+    if (!session?.user.email) return signIn();
+
+    const url = await getFileNameToUpload(session.user.email);
+
+    if (data?.user?.id) {
+      const posted = postIdea.mutate({
+        user: data?.user?.id,
+        title: title,
+        description: description,
+        tag_one: tag_one,
+        tag_two: tag_two,
+        file: url,
+      });
+    }
   }
 
   return (

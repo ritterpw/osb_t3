@@ -8,7 +8,6 @@ export default function search() {
   const router = useRouter();
   const { search } = router.query;
   let searchString: string;
-  console.log(search);
 
   if (typeof search === "string") {
     searchString = search;

@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { trpc } from "@/utils/trpc";
 import users from "../examples";
 
 // For more information on each option (and a full list of options) go to
@@ -79,6 +80,7 @@ export default NextAuth({
     // },
     // async session({ session, token, user }) {
     //   session.token = token;
+    //   session.user = user;
     //   return session;
     // },
     // async jwt({ token, user, account, profile, isNewUser }) {

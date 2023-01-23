@@ -1,5 +1,6 @@
 import { createRouter } from "./context";
 import { string, z } from "zod";
+import { trpc } from "@/utils/trpc";
 
 export const ideaRouter = createRouter()
   .query("getAll", {
@@ -69,6 +70,18 @@ export const ideaRouter = createRouter()
       });
     },
   })
+  .query("getIdeaById", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.idea.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+    },
+  })
   .mutation("addIdea", {
     input: z.object({
       user: z.string(),
@@ -79,10 +92,9 @@ export const ideaRouter = createRouter()
       file: z.string(),
     }),
     async resolve({ ctx, input }) {
-      console.log(input);
       return await ctx.prisma.idea.create({
         data: {
-          userId: "cl8sesmmi0024rxx756lhf4zy",
+          userId: input.user,
           title: input.title,
           description: input.description,
           tag_one: input.tag_one,

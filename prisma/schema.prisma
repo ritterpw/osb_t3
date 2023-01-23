@@ -1,41 +1,51 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity","fullTextSearch", "fullTextIndex"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  relationMode      = "prisma"
 }
 
 model User {
-    id String @id @default(cuid())
-    first_name String 
-    last_name String 
-    email String @unique
-    producer_name String @unique
-    ideas Idea[]
-    role Role @default(USER)
+  id            String @id @default(cuid())
+  first_name    String
+  last_name     String
+  email         String @unique
+  producer_name String @unique
+  role          Role   @default(USER)
+  ideas         Idea[] @relation("user")
+  liked_ideas   Idea[] @relation("likers")
 }
 
 model Idea {
-    id String @id @default(cuid()) 
-    user User @relation(fields: [userId], references: [id])
-    userId String
-    title String
-    description String
-    tag_one String
-    tag_two String
-    file String @unique
-    slug String? @unique
-    createdAt DateTime @default(now())
-    likes Int @default(0)
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  tag_one     String
+  tag_two     String
+  file        String   @unique
+  createdAt   DateTime @default(now())
+  likes       Int      @default(0)
+  slug        String?  @unique
+  user        User     @relation("user", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  likers      User[]   @relation("likers")
 
-    @@fulltext([title,description,tag_one,tag_two])
+  @@index([userId])
+  @@fulltext([title, description, tag_one, tag_two])
+}
+
+model likers {
+  A String
+  B String
+
+  @@unique([A, B], map: "_likers_AB_unique")
+  @@index([B], map: "_likers_B_index")
+  @@map("_likers")
 }
 
 enum Role {
