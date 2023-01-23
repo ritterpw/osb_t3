@@ -16,6 +16,20 @@ export const userRouter = createRouter()
       };
     },
   })
+  .query("doesUserExist", {
+    input: z
+      .object({
+        userId: z.string(),
+      })
+      .nullish(),
+    async resolve({ ctx, input }) {
+      return {
+        user: await ctx.prisma.user.findFirst({
+          where: { id: input?.userId },
+        }),
+      };
+    },
+  })
   .query("getAll", {
     async resolve({ ctx }) {
       return await ctx.prisma.user.findMany();
