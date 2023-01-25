@@ -41,14 +41,14 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  producer_name String    @unique
+  name          String?
+  producer_name String?   @unique
+  role          Role      @default(USER)
   accounts      Account[]
   sessions      Session[]
-  role          Role      @default(USER)
   ideas         Idea[]    @relation("userIdeas")
   liked_ideas   Idea[]    @relation("IdeaUserLikes")
 }
