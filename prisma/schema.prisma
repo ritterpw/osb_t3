@@ -10,15 +10,47 @@ datasource db {
   relationMode      = "prisma"
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
 model User {
-  id            String @id @default(cuid())
-  first_name    String
-  last_name     String
-  email         String @unique
-  producer_name String @unique
-  role          Role   @default(USER)
-  ideas         Idea[] @relation("user")
-  liked_ideas   Idea[] @relation("likers")
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  producer_name String    @unique
+  accounts      Account[]
+  sessions      Session[]
+  role          Role      @default(USER)
+  ideas         Idea[]    @relation("userIdeas")
+  liked_ideas   Idea[]    @relation("IdeaUserLikes")
 }
 
 model Idea {
@@ -32,20 +64,28 @@ model Idea {
   createdAt   DateTime @default(now())
   likes       Int      @default(0)
   slug        String?  @unique
-  user        User     @relation("user", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  likers      User[]   @relation("likers")
+  user        User     @relation("userIdeas", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  likers      User[]   @relation("IdeaUserLikes")
 
   @@index([userId])
   @@fulltext([title, description, tag_one, tag_two])
 }
 
-model likers {
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model IdeaUserLikes {
   A String
   B String
 
-  @@unique([A, B], map: "_likers_AB_unique")
-  @@index([B], map: "_likers_B_index")
-  @@map("_likers")
+  @@unique([A, B], map: "_IdeaUserLikes_AB_unique")
+  @@index([B], map: "_IdeaUserLikes_B_index")
+  @@map("_IdeaUserLikes")
 }
 
 enum Role {

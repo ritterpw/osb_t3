@@ -7,22 +7,29 @@ import React from "react";
 
 export default function me() {
   const { data: session } = useSession();
-  let thisEmail: string;
 
+  function IsSessionEmail(): boolean | undefined {
+    if (session?.user.email != undefined && session?.user.email != null) {
+      return true;
+    }
+    return false;
+  }
+
+  const { data, error, isLoading, isError } = trpc.useQuery(
+    ["user.getUserByEmail", { email: session?.user.email! }],
+    { enabled: IsSessionEmail() }
+  );
   if (!session?.user.email || typeof session?.user.email !== "string") {
     return <div> Must Login </div>;
   }
 
-  thisEmail = session.user.email;
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
 
-  const { data, refetch, isLoading } = trpc.useQuery(
-    ["user.getUserByEmail", { email: thisEmail }],
-    {
-      refetchInterval: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   // if the logged in user has the same email as the user they are trying to get, then thay have access to this page
   if (!data?.user) {
