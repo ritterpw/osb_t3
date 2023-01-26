@@ -18,9 +18,9 @@ export default function DisplaySearchs({ data }: { data: Idea[] }) {
                 description={idea.description}
                 tag_one={idea.tag_one}
                 tag_two={idea.tag_two}
-                likes={idea.likes}
                 idea={idea.file}
                 userId={idea.userId}
+                likes={idea.likes}
               ></Card>
             </div>
           ))}

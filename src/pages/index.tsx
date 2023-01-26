@@ -19,6 +19,8 @@ export default function Home(): JSX.Element {
     }
   );
 
+  console.log(data);
+
   return (
     <>
       <div id="no-scroll1 ">
@@ -69,10 +71,9 @@ function MostPopular({ data }: { data: Idea[] }) {
                   description={idea.description}
                   tag_one={idea.tag_one}
                   tag_two={idea.tag_two}
-                  likes={idea.likes}
                   idea={idea.file}
                   userId={idea.userId}
-                  // likers={idea.likers}
+                  likes={idea.likes}
                 ></Card>
               </div>
             ))}

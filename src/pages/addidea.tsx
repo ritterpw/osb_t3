@@ -4,6 +4,7 @@ import axios from "axios";
 import { trpc } from "@/utils/trpc";
 import { Session } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
+import { User } from "@prisma/client";
 
 const BUCKET_URL = "https://s3.us-east-1.amazonaws.com/newideas/";
 
@@ -21,6 +22,7 @@ type Idea = {
   tag_one: string;
   tag_two: string;
   file: string;
+  likes: User[];
 };
 
 function AddIdeaForm(): JSX.Element {
@@ -143,13 +145,6 @@ function AddIdeaForm(): JSX.Element {
             />
             <br />
           </div>
-          {/* {file && (
-            <ReactAudioPlayer
-              className=" w-full rounded-full shadow-md  text-emerald-900 "
-              src={file}
-              controls
-            />
-          )} */}
 
           <div className=" pb-6 mx-auto text-center ">
             <button

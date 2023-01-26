@@ -1,4 +1,5 @@
 import { trpc } from "@/utils/trpc";
+import { useSession } from "next-auth/react";
 import {
   ArrowDownCircleIcon,
   HandThumbUpIcon,
@@ -6,26 +7,31 @@ import {
   PauseIcon,
   PlayIcon,
 } from "@heroicons/react/24/outline";
+import { User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
+import { boolean } from "zod";
+import { useMutation } from "react-query";
 
 export default function Card({
   name,
   description,
   tag_one,
   tag_two,
-  likes,
   idea,
   userId,
+  likes,
 }: {
   name: string;
   description: string;
   tag_one: string;
   tag_two: string;
-  likes: number;
   idea: string;
   userId: string;
+  likes: User[];
 }) {
+  const { data: session } = useSession();
+
   const this_idea = new Audio(idea);
 
   function handleDownload(): void {
@@ -51,7 +57,15 @@ export default function Card({
   }
 
   async function handleLike(): Promise<void> {
+    var seen: boolean = false;
     // check if the user has already liked this idea
+    if (session?.user.id) {
+      for (var like of likes) {
+        if (like.id === session.user.id) {
+        }
+      }
+    }
+
     // if the user has not liked this idea, add one to the like count
     // if the user has not liked this idea, add the idea to the list of liked ideas
   }
@@ -100,14 +114,18 @@ export default function Card({
             <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
           </button>
         </div>
-        <div className="flex ml-10 place-self-center place-items-center ">
-          <h1 className="text-xl mt-1">{likes}</h1>
-          <HandThumbUpIcon
-            onClick={() => {
-              handleLike();
-            }}
-            className="mx-1 h-6 w-6 cursor-pointer"
-          />
+        <div className="flex ml-10 gap-[0.5] place-self-center place-items-center  justify-center">
+          <div className="flex place-self-center place-items-center justify-center">
+            <h1 className=" text-2xl -mr-1 mt-2 justify-center place-self-center place-items-center">
+              {likes.length}
+            </h1>
+            <HandThumbUpIcon
+              onClick={() => {
+                handleLike();
+              }}
+              className="mx-1 h-7 w-7 cursor-pointer"
+            />
+          </div>
           <InformationCircleIcon className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600" />
           <ArrowDownCircleIcon
             onClick={() => handleDownload()}

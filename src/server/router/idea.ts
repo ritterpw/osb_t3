@@ -1,6 +1,7 @@
 import { createRouter } from "./context";
 import { string, z } from "zod";
 import { trpc } from "@/utils/trpc";
+import { prisma } from "@prisma/client";
 
 export const ideaRouter = createRouter()
   .query("getAll", {
@@ -11,7 +12,7 @@ export const ideaRouter = createRouter()
   .query("getMostPopular", {
     async resolve({ ctx, input }) {
       return await ctx.prisma.idea.findMany({
-        orderBy: [{ likes: "desc" }],
+        orderBy: [{ likes: { _count: "desc" } }],
         take: 9,
       });
     },
@@ -19,21 +20,29 @@ export const ideaRouter = createRouter()
   .query("getMostPopularThisWeek", {
     async resolve({ ctx, input }) {
       const now = new Date();
-      const data = await ctx.prisma.idea.findMany({
-        orderBy: [{ likes: "desc" }],
+      let data = await ctx.prisma.idea.findMany({
+        orderBy: [{ likes: { _count: "desc" } }],
         where: {
           createdAt: {
             gte: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7),
           },
         },
+        include: {
+          likes: true,
+        },
         take: 9,
       });
-      if (data.length < 9) {
-        return await ctx.prisma.idea.findMany({
-          orderBy: [{ likes: "desc" }],
+
+      if (data.length <= 9) {
+        data = await ctx.prisma.idea.findMany({
+          orderBy: [{ likes: { _count: "desc" } }],
           take: 9,
+          include: {
+            likes: true,
+          },
         });
       }
+      return data;
     },
   })
   .query("search", {

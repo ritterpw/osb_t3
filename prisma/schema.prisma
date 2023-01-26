@@ -62,10 +62,9 @@ model Idea {
   tag_two     String
   file        String   @unique
   createdAt   DateTime @default(now())
-  likes       Int      @default(0)
+  likes       User[]   @relation("IdeaUserLikes") 
   slug        String?  @unique
   user        User     @relation("userIdeas", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  likers      User[]   @relation("IdeaUserLikes")
 
   @@index([userId])
   @@fulltext([title, description, tag_one, tag_two])

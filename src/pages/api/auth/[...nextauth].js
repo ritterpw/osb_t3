@@ -80,9 +80,15 @@ export default NextAuth({
       return baseUrl;
     },
     async session({ session, token, user }) {
+      if (session?.user) {
+        session.user.id = token.uid;
+      }
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
+      if (user) {
+        token.uid = user.id;
+      }
       return token;
     },
   },

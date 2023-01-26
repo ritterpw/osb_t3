@@ -40,7 +40,11 @@ export default function me() {
     <div id="no-scroll1 ">
       <div className=" h-screen w-screen flex flex-col">
         <Header />
-        {data.user.producer_name}
+        <div className="py-2 px-4">
+          {data.user.producer_name != null
+            ? data.user.producer_name
+            : data.user.name}
+        </div>
       </div>
     </div>
   );
