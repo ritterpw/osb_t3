@@ -10,8 +10,9 @@ import {
 import { User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
-import { boolean } from "zod";
-import { useMutation } from "react-query";
+import { useState } from "react";
+import BaseReactPlayer from "react-player/base";
+import { checkServerIdentity } from "tls";
 
 export default function Card({
   name,
@@ -21,6 +22,7 @@ export default function Card({
   idea,
   userId,
   likes,
+  id,
 }: {
   name: string;
   description: string;
@@ -29,8 +31,12 @@ export default function Card({
   idea: string;
   userId: string;
   likes: User[];
+  id: string;
 }) {
   const { data: session } = useSession();
+  const likeIdea = trpc.useMutation(["idea.likeIdea"]);
+  const unlikeIdea = trpc.useMutation(["idea.unlikeIdea"]);
+  const [idealikes, setIdeaLikes] = useState(likes);
 
   const this_idea = new Audio(idea);
 
@@ -56,18 +62,56 @@ export default function Card({
     }
   }
 
-  async function handleLike(): Promise<void> {
-    var seen: boolean = false;
-    // check if the user has already liked this idea
-    if (session?.user.id) {
-      for (var like of likes) {
-        if (like.id === session.user.id) {
-        }
+  function checkSeen(id: string): { seen: boolean; userIndex: number } {
+    let hasSeen: boolean = false;
+    let userIndex: number = -1;
+
+    likes.forEach((value, index) => {
+      if (value.id === id) {
+        hasSeen = true;
+        userIndex = index;
       }
+    });
+
+    return {
+      seen: hasSeen,
+      userIndex: userIndex,
+    };
+  }
+
+  async function handleLike(): Promise<void> {
+    const newLikes: User[] = idealikes;
+
+    if (!session) return;
+
+    const { userIndex, seen } = checkSeen(session.user.id);
+
+    console.log(seen);
+
+    if (!seen) {
+      const like = likeIdea.mutate({
+        idea: id,
+        user: session?.user.id!,
+      });
+      newLikes.push({
+        id: session?.user.id!,
+        email: null,
+        emailVerified: null,
+        image: null,
+        name: null,
+        producer_name: null,
+        role: "USER",
+      });
+      setIdeaLikes(newLikes);
+      return;
     }
 
-    // if the user has not liked this idea, add one to the like count
-    // if the user has not liked this idea, add the idea to the list of liked ideas
+    const unlike = unlikeIdea.mutate({
+      idea: id,
+      user: session?.user.id!,
+    });
+    if (userIndex >= 0) newLikes.splice(userIndex, 1);
+    setIdeaLikes(newLikes);
   }
 
   return (
@@ -117,7 +161,7 @@ export default function Card({
         <div className="flex ml-10 gap-[0.5] place-self-center place-items-center  justify-center">
           <div className="flex place-self-center place-items-center justify-center">
             <h1 className=" text-2xl -mr-1 mt-2 justify-center place-self-center place-items-center">
-              {likes.length}
+              {idealikes.length}
             </h1>
             <HandThumbUpIcon
               onClick={() => {

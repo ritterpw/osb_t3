@@ -74,6 +74,7 @@ function MostPopular({ data }: { data: Idea[] }) {
                   idea={idea.file}
                   userId={idea.userId}
                   likes={idea.likes}
+                  id={idea.id}
                 ></Card>
               </div>
             ))}

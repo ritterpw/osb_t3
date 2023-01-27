@@ -91,6 +91,46 @@ export const ideaRouter = createRouter()
       });
     },
   })
+  .mutation("likeIdea", {
+    input: z.object({
+      user: z.string(),
+      idea: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.idea.update({
+        where: {
+          id: input.idea,
+        },
+        data: {
+          likes: {
+            connect: {
+              id: input.user,
+            },
+          },
+        },
+      });
+    },
+  })
+  .mutation("unlikeIdea", {
+    input: z.object({
+      user: z.string(),
+      idea: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.idea.update({
+        where: {
+          id: input.idea,
+        },
+        data: {
+          likes: {
+            disconnect: {
+              id: input.user,
+            },
+          },
+        },
+      });
+    },
+  })
   .mutation("addIdea", {
     input: z.object({
       user: z.string(),
