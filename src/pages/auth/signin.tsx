@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { CtxOrReq } from "next-auth/client/_utils";
 import { AiFillGoogleCircle } from "react-icons/ai";
+import Header from "@/components/header";
 
 const customStyles = {
   content: {
@@ -37,15 +38,16 @@ const SignIn = ({
     }
   }, [session]);
   return (
-    <>
-      <section className=" w-screen h-screen bg-gray-700 items-center justify-center flex px-10">
-        <div className="  p-20 bg-gray-800 rounded-xl hover:opacity-90 hover:cursor-pointer  transition-all duration-500 ease-in-out  hover:text-emerald-400">
+    <div className="h-screen w-screen flex flex-col">
+      <Header />
+      <section className="h-screen items-center justify-center  flex px-10 pb-16">
+        <div className="  p-20 bg-gray-800 rounded-xl hover:opacity-90 hover:cursor-pointer items-center justify-center  transition-all duration-500 ease-in-out  hover:text-emerald-400">
           {providers
             ? Object.values(providers).map((provider, i) => {
                 if (provider.id !== "email") {
                   return (
                     <div
-                      className=" justify-center items-center overflow-ag-overlay "
+                      className=" justify-center items-center overflow-ag-overlay"
                       key={provider.id}
                       onClick={() => signIn(provider.id)}
                     >
@@ -63,7 +65,7 @@ const SignIn = ({
             : ""}
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import { trpc } from "@/utils/trpc";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import {
   ArrowDownCircleIcon,
   HandThumbUpIcon,
@@ -82,7 +82,9 @@ export default function Card({
   async function handleLike(): Promise<void> {
     const newLikes: User[] = idealikes;
 
-    if (!session) return;
+    if (!session) {
+      return signIn();
+    }
 
     const { userIndex, seen } = checkSeen(session.user.id);
 
