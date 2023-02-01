@@ -7,7 +7,7 @@ function CardUserDisplay({ userId }: { userId: string }) {
   const router = useRouter();
 
   function ClickHander() {
-    router.push(`users/${userId}`);
+    router.push(`/users/${userId}`);
   }
 
   return (
@@ -16,7 +16,7 @@ function CardUserDisplay({ userId }: { userId: string }) {
         ClickHander();
       }}
     >
-      <UserCircleIcon className=" h-10 w-10 m-auto" />
+      <UserCircleIcon className={`h-10 w-10 m-auto `} />
     </div>
   );
 }

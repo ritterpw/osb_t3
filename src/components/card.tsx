@@ -13,6 +13,7 @@ import CardUserDisplay from "./CardUserDisplay";
 import { useState } from "react";
 import BaseReactPlayer from "react-player/base";
 import { checkServerIdentity } from "tls";
+import { useRouter } from "next/router";
 
 export default function Card({
   name,
@@ -33,6 +34,7 @@ export default function Card({
   likes: User[];
   id: string;
 }) {
+  const router = useRouter();
   const { data: session } = useSession();
   const likeIdea = trpc.useMutation(["idea.likeIdea"]);
   const unlikeIdea = trpc.useMutation(["idea.unlikeIdea"]);
@@ -79,6 +81,10 @@ export default function Card({
     };
   }
 
+  function handleInfo(id: string): void {
+    router.push("/ideas/" + id);
+  }
+
   async function handleLike(): Promise<void> {
     const newLikes: User[] = idealikes;
 
@@ -87,8 +93,6 @@ export default function Card({
     }
 
     const { userIndex, seen } = checkSeen(session.user.id);
-
-    console.log(seen);
 
     if (!seen) {
       const like = likeIdea.mutate({
@@ -172,7 +176,13 @@ export default function Card({
               className="mx-1 h-7 w-7 cursor-pointer"
             />
           </div>
-          <InformationCircleIcon className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600" />
+          <InformationCircleIcon
+            onClick={(e) => {
+              e.preventDefault();
+              handleInfo(id);
+            }}
+            className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600"
+          />
           <ArrowDownCircleIcon
             onClick={() => handleDownload()}
             className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600"

@@ -16,7 +16,7 @@ export const userRouter = createRouter()
       };
     },
   })
-  .query("doesUserExist", {
+  .query("getUserById", {
     input: z
       .object({
         userId: z.string(),
@@ -30,6 +30,7 @@ export const userRouter = createRouter()
       };
     },
   })
+
   .query("getAll", {
     async resolve({ ctx }) {
       return await ctx.prisma.user.findMany();

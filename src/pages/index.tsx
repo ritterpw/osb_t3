@@ -19,8 +19,6 @@ export default function Home(): JSX.Element {
     }
   );
 
-  console.log(data);
-
   return (
     <>
       <div id="no-scroll1 ">

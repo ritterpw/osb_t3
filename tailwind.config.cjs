@@ -31,10 +31,10 @@ module.exports = {
       animation: {
         "fade-in": "fade-in 0.5s ease-out",
       },
-    },
-    backgroundImage: {
-      piccy: "url('/bg-2.jpg')",
-      piccytwo: "url('/bg.jpg')",
+      backgroundImage: {
+        piccy: "url('/bg-2.jpg')",
+        piccytwo: "url('/bg.jpg')",
+      },
     },
   },
   plugins: [],
