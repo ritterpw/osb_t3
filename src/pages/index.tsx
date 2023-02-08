@@ -55,12 +55,11 @@ function MostPopular({ data }: { data: Idea[] }) {
           </div>
         </div>
       </div>
-      <div className="snap-start min-h-full pb-3  pt-3 ">
-        <h1 className=" text-center mt-5 mb-10 text-4xl animate-fade-in ">
-          {" "}
+      <div className="snap-start overflow-scroll min-h-full ">
+        <h1 className="  text-center py-6 text-4xl animate-fade-in ">
           Ideas Of The Week
         </h1>
-        <div className=" mx-8 max-h-[80%] items-center justify-center overflow-y-auto ">
+        <div className=" mx-8  items-center justify-center ">
           <div className="gap-8 grid md:grid-cols-[1fr_1fr]  xl:grid-cols-[1fr_1fr_1fr] m-auto items-center justify-center">
             {data.map((idea) => (
               <div key={idea.id}>
@@ -79,7 +78,7 @@ function MostPopular({ data }: { data: Idea[] }) {
           </div>
         </div>
 
-        <div className=" py-10 mx-auto text-center ">
+        <div className="  py-6 mx-auto text-center ">
           <button
             onClick={() => ClickNewIdea(session, router)}
             className="py-3  px-20 text-2xl bg-emerald-500 text-gray-900 rounded-3xl shadow-2xl"

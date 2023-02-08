@@ -121,12 +121,12 @@ export default function Card({
   }
 
   return (
-    <div className="w-full justify-center items-center m-auto  rounded-lg overflow-hidden shadow-lg bg-gray-800  ">
+    <div className="w-full justify-center items-center m-auto   overflow-hidden shadow-lg bg-gray-800  ">
       <div className="flex justify-between">
-        <div className="h-40 w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
+        <div className="   h-[11rem] max-h-[11rem] w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
           <div className="px-6 py-4 ">
             <div className="font-bold text-xl mb-2">{name}</div>
-            <p className="text-gray-200 text-base">{description}</p>
+            <p className="text-gray-200 text-sm">{description}</p>
           </div>
           <div className="px-5">
             <span className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md">
