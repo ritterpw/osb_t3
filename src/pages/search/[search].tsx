@@ -3,9 +3,9 @@ import Header from "@/components/header";
 import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import React from "react";
+const router = useRouter();
 
 export default function Search() {
-  const router = useRouter();
   const { search } = router.query;
   let searchString: string;
 

@@ -11,7 +11,6 @@ import { User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
 import { useState } from "react";
-
 import { useRouter } from "next/router";
 
 export default function Card({
