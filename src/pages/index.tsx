@@ -1,13 +1,12 @@
 import { trpc } from "../utils/trpc";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { Idea, Prisma } from "@prisma/client";
 import { Session } from "next-auth";
 import { NextRouter, useRouter } from "next/router";
 import Header from "@/components/header";
 import Card from "@/components/card";
-import { isReadable } from "stream";
-import { ideaRouter } from "@/server/router/idea";
+
+import { ideasWithLikes } from "types/prisma_override";
 
 export default function Home(): JSX.Element {
   let { data, isLoading, isSuccess } = trpc.useQuery(
@@ -106,9 +105,3 @@ function ClickNewIdea(session: Session | null, router: NextRouter): void {
     signIn();
   }
 }
-
-const ideasWithLikes = Prisma.validator<Prisma.IdeaArgs>()({
-  include: { likes: true },
-});
-
-export type ideasWithLikes = Prisma.IdeaGetPayload<typeof ideasWithLikes>;

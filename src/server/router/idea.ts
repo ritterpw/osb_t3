@@ -1,7 +1,6 @@
 import { createRouter } from "./context";
 import { string, z } from "zod";
 import { trpc } from "@/utils/trpc";
-import { prisma } from "@prisma/client";
 
 export const ideaRouter = createRouter()
   .query("getAll", {
@@ -74,6 +73,9 @@ export const ideaRouter = createRouter()
               },
             },
           ],
+        },
+        include: {
+          likes: true,
         },
         take: 10,
       });
