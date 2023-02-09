@@ -1,11 +1,12 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import Login from "./login";
 
 export default function Header() {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const [searchString, setSearchString] = useState("");
 

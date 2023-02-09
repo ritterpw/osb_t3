@@ -1,6 +1,6 @@
 import { UserIcon } from "@heroicons/react/24/outline";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const { data: session } = useSession();
