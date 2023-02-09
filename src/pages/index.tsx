@@ -1,7 +1,7 @@
 import { trpc } from "../utils/trpc";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { Idea, ideasWithLikes } from "@prisma/client";
+import { Idea, Prisma } from "@prisma/client";
 import { Session } from "next-auth";
 import { NextRouter, useRouter } from "next/router";
 import Header from "@/components/header";
@@ -106,3 +106,9 @@ function ClickNewIdea(session: Session | null, router: NextRouter): void {
     signIn();
   }
 }
+
+const ideasWithLikes = Prisma.validator<Prisma.IdeaArgs>()({
+  include: { likes: true },
+});
+
+export type ideasWithLikes = Prisma.IdeaGetPayload<typeof ideasWithLikes>;
