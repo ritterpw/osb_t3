@@ -43,7 +43,7 @@ function AddIdeaForm(): JSX.Element {
   }
 
   const { data } = trpc.useQuery(
-    ["user.getUserByEmail", { email: session?.user.email! }],
+    ["user.getUserByEmail", { email: session?.user.email as string }],
     { enabled: IsSessionEmail() }
   );
 

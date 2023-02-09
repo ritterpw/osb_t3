@@ -19,7 +19,7 @@ export default function Me() {
     return <div>...login</div>;
   }
   const { data, error, isLoading, isError } = trpc.useQuery(
-    ["user.getUserByEmail", { email: session?.user.email! }],
+    ["user.getUserByEmail", { email: session?.user.email as string }],
     { enabled: IsSessionEmail() }
   );
 
