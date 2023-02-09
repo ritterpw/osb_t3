@@ -11,8 +11,7 @@ import { User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
 import { useState } from "react";
-import BaseReactPlayer from "react-player/base";
-import { checkServerIdentity } from "tls";
+
 import { useRouter } from "next/router";
 
 export default function Card({
@@ -65,8 +64,8 @@ export default function Card({
   }
 
   function checkSeen(id: string): { seen: boolean; userIndex: number } {
-    let hasSeen: boolean = false;
-    let userIndex: number = -1;
+    let hasSeen = false;
+    let userIndex = -1;
 
     likes.forEach((value, index) => {
       if (value.id === id) {
@@ -97,10 +96,10 @@ export default function Card({
     if (!seen) {
       const like = likeIdea.mutate({
         idea: id,
-        user: session?.user.id!,
+        user: session?.user.id,
       });
       newLikes.push({
-        id: session?.user.id!,
+        id: session?.user.id,
         email: null,
         emailVerified: null,
         image: null,
@@ -114,7 +113,7 @@ export default function Card({
 
     const unlike = unlikeIdea.mutate({
       idea: id,
-      user: session?.user.id!,
+      user: session?.user.id,
     });
     if (userIndex >= 0) newLikes.splice(userIndex, 1);
     setIdeaLikes(newLikes);

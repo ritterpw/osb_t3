@@ -1,12 +1,8 @@
-import { Idea } from "@prisma/client";
-import { useSession } from "next-auth/react";
 import React from "react";
 import { ideasWithLikes } from "types/prisma_override";
 import Card from "./card";
 
 export default function DisplaySearchs({ data }: { data: ideasWithLikes[] }) {
-  const { data: session } = useSession();
-
   return (
     <div className="min-h-[96%] max-h-screen w-screen pb-3  pt-3 m-auto ">
       <h1 className=" text-center my-5 text-4xl animate-fade-in  ">Search</h1>

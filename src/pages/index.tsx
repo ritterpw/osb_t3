@@ -9,7 +9,7 @@ import Card from "@/components/card";
 import { ideasWithLikes } from "types/prisma_override";
 
 export default function Home(): JSX.Element {
-  let { data, isLoading, isSuccess } = trpc.useQuery(
+  const { data, isLoading, isSuccess } = trpc.useQuery(
     ["idea.getMostPopularThisWeek"],
     {
       refetchInterval: false,

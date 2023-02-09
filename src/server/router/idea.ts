@@ -1,15 +1,14 @@
 import { createRouter } from "./context";
-import { string, z } from "zod";
-import { trpc } from "@/utils/trpc";
+import { z } from "zod";
 
 export const ideaRouter = createRouter()
   .query("getAll", {
-    async resolve({ ctx, input }) {
+    async resolve({ ctx }) {
       return await ctx.prisma.idea.findMany();
     },
   })
   .query("getMostPopular", {
-    async resolve({ ctx, input }) {
+    async resolve({ ctx }) {
       return await ctx.prisma.idea.findMany({
         orderBy: [{ likes: { _count: "desc" } }],
         take: 9,
@@ -17,7 +16,7 @@ export const ideaRouter = createRouter()
     },
   })
   .query("getMostPopularThisWeek", {
-    async resolve({ ctx, input }) {
+    async resolve({ ctx }) {
       const now = new Date();
       let data = await ctx.prisma.idea.findMany({
         orderBy: [{ likes: { _count: "desc" } }],

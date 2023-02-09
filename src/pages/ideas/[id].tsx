@@ -4,7 +4,7 @@ import { trpc } from "@/utils/trpc";
 import Header from "@/components/header";
 import IdeaScreen from "@/components/IdeaScreen";
 
-function id() {
+export default function Id(): JSX.Element {
   const router = useRouter();
   const { id } = router.query;
 
@@ -20,7 +20,7 @@ function id() {
     searchString = "";
   }
 
-  let { data, isLoading, isSuccess, isError } = trpc.useQuery(
+  const { data, isLoading, isError } = trpc.useQuery(
     ["idea.getIdeaById", { id: searchString }],
     {
       enabled: is_id(),
@@ -52,5 +52,3 @@ function id() {
     </div>
   );
 }
-
-export default id;

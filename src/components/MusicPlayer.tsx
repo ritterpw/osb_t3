@@ -1,10 +1,4 @@
-import { trpc } from "@/utils/trpc";
-import {
-  PauseIcon,
-  PlayIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
-import { Idea } from "@prisma/client";
+import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
 function MusicPlayer({ file }: { file: string }) {

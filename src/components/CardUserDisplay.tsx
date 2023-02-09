@@ -1,5 +1,4 @@
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 

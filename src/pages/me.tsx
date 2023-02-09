@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 
-export default function me() {
+export default function Me() {
   const { data: session } = useSession();
 
   function IsSessionEmail(): boolean | undefined {
@@ -15,10 +15,14 @@ export default function me() {
     return false;
   }
 
+  if (!IsSessionEmail) {
+    return <div>...login</div>;
+  }
   const { data, error, isLoading, isError } = trpc.useQuery(
     ["user.getUserByEmail", { email: session?.user.email! }],
     { enabled: IsSessionEmail() }
   );
+
   if (!session?.user.email || typeof session?.user.email !== "string") {
     return <div> Must Login </div>;
   }

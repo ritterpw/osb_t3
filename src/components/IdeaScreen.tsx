@@ -3,7 +3,6 @@ import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { Idea } from "@prisma/client";
 import React from "react";
 import MusicPlayer from "./MusicPlayer";
-import _ from "lodash";
 
 function IdeaScreen({ idea }: { idea: Idea }) {
   const { data, error, isLoading, isError } = trpc.useQuery([

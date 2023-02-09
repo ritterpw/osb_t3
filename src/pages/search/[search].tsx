@@ -4,7 +4,7 @@ import { trpc } from "@/utils/trpc";
 import { useRouter } from "next/router";
 import React from "react";
 
-export default function search() {
+export default function Search() {
   const router = useRouter();
   const { search } = router.query;
   let searchString: string;
@@ -16,7 +16,7 @@ export default function search() {
     router.push("");
   }
 
-  const { data, refetch, isLoading } = trpc.useQuery(
+  const { data } = trpc.useQuery(
     ["idea.search", { this_query: searchString }],
     {
       refetchInterval: false,
