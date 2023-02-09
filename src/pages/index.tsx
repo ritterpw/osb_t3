@@ -1,7 +1,7 @@
 import { trpc } from "../utils/trpc";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { Idea } from "@prisma/client";
+import { Idea, ideasWithLikes } from "@prisma/client";
 import { Session } from "next-auth";
 import { NextRouter, useRouter } from "next/router";
 import Header from "@/components/header";
@@ -31,7 +31,7 @@ export default function Home(): JSX.Element {
   );
 }
 
-function MostPopular({ data }: { data: Idea[] }) {
+function MostPopular({ data }: { data: ideasWithLikes[] }) {
   const router = useRouter();
 
   const { data: session } = useSession();
