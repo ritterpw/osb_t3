@@ -83,6 +83,10 @@ export default function Card({
     router.push("/ideas/" + id);
   }
 
+  /**
+   * Handles the like/unlike functionality
+   *
+   */
   async function handleLike(): Promise<void> {
     const newLikes: User[] = idealikes;
 
@@ -97,6 +101,7 @@ export default function Card({
         idea: id,
         user: session?.user.id,
       });
+
       newLikes.push({
         id: session?.user.id,
         email: null,
@@ -114,8 +119,16 @@ export default function Card({
       idea: id,
       user: session?.user.id,
     });
+
     if (userIndex >= 0) newLikes.splice(userIndex, 1);
+
     setIdeaLikes(newLikes);
+  }
+
+  function handleClickedTag(tag: string): void {
+    tag != null
+      ? router.push("/tags/" + tag)
+      : new Error("Error handling push to tag page - tag is null");
   }
 
   return (
@@ -127,10 +140,16 @@ export default function Card({
             <p className="text-gray-200 text-sm">{description}</p>
           </div>
           <div className="px-5">
-            <span className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md">
+            <span
+              onClick={() => handleClickedTag(tag_one)}
+              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md"
+            >
               {tag_one}
             </span>
-            <span className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md">
+            <span
+              onClick={() => handleClickedTag(tag_two)}
+              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md"
+            >
               {tag_two}
             </span>
           </div>

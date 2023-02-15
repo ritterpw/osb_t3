@@ -7,17 +7,9 @@ import React from "react";
 export default function Search() {
   const router = useRouter();
   const { search } = router.query;
-  let searchString: string;
-
-  if (typeof search === "string") {
-    searchString = search;
-  } else {
-    searchString = "";
-    // router.push("");
-  }
 
   const { data } = trpc.useQuery(
-    ["idea.search", { this_query: searchString }],
+    ["idea.search", { this_query: search as string }],
     {
       refetchInterval: false,
       refetchOnReconnect: false,

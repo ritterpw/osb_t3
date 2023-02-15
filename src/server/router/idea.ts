@@ -80,6 +80,33 @@ export const ideaRouter = createRouter()
       });
     },
   })
+  .query("searchTag", {
+    input: z.object({
+      this_tag: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.idea.findMany({
+        where: {
+          OR: [
+            {
+              tag_one: {
+                search: input.this_tag,
+              },
+            },
+            {
+              tag_two: {
+                search: input.this_tag,
+              },
+            },
+          ],
+        },
+        include: {
+          likes: true,
+        },
+        take: 10,
+      });
+    },
+  })
   .query("getIdeaById", {
     input: z.object({
       id: z.string(),
