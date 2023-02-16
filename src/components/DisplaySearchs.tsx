@@ -10,16 +10,7 @@ export default function DisplaySearchs({ data }: { data: ideasWithLikes[] }) {
         {data &&
           data.map((idea) => (
             <div key={idea.id} className=" p-6">
-              <Card
-                name={idea.title}
-                description={idea.description}
-                tag_one={idea.tag_one}
-                tag_two={idea.tag_two}
-                idea={idea.file}
-                userId={idea.userId}
-                likes={idea.likes}
-                id={idea.id}
-              ></Card>
+              <Card idea={idea}></Card>
             </div>
           ))}
         {data.length == 0 && (

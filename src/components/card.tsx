@@ -7,50 +7,33 @@ import {
   PauseIcon,
   PlayIcon,
 } from "@heroicons/react/24/outline";
-import { User } from "@prisma/client";
+import { Idea, User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { ideasWithLikes } from "types/prisma_override";
 
-export default function Card({
-  name,
-  description,
-  tag_one,
-  tag_two,
-  idea,
-  userId,
-  likes,
-  id,
-}: {
-  name: string;
-  description: string;
-  tag_one: string;
-  tag_two: string;
-  idea: string;
-  userId: string;
-  likes: User[];
-  id: string;
-}) {
+export default function Card({ idea }: { idea: ideasWithLikes }) {
   const router = useRouter();
   const { data: session } = useSession();
   const likeIdea = trpc.useMutation(["idea.likeIdea"]);
   const unlikeIdea = trpc.useMutation(["idea.unlikeIdea"]);
-  const [idealikes, setIdeaLikes] = useState(likes);
+  const [idealikes, setIdeaLikes] = useState(idea.likes);
 
-  const this_idea = new Audio(idea);
+  const this_idea = new Audio(idea.file);
 
   function handleDownload(): void {
     {
       let fileEnding = "";
-      if (idea.endsWith(".wav")) {
+      if (idea.file.endsWith(".wav")) {
         fileEnding = ".wav";
-      } else if (idea.endsWith(".mp3")) {
+      } else if (idea.file.endsWith(".mp3")) {
         fileEnding = ".mp3";
       }
 
       new JsFileDownloader({
-        url: idea,
+        url: idea.file,
         filename: name + fileEnding,
       })
         .then(function (data) {
@@ -66,7 +49,7 @@ export default function Card({
     let hasSeen = false;
     let userIndex = -1;
 
-    likes.forEach((value, index) => {
+    idea.likes.forEach((value, index) => {
       if (value.id === id) {
         hasSeen = true;
         userIndex = index;
@@ -98,7 +81,7 @@ export default function Card({
 
     if (!seen) {
       const like = likeIdea.mutate({
-        idea: id,
+        idea: idea.id,
         user: session?.user.id,
       });
 
@@ -116,7 +99,7 @@ export default function Card({
     }
 
     const unlike = unlikeIdea.mutate({
-      idea: id,
+      idea: idea.id,
       user: session?.user.id,
     });
 
@@ -133,36 +116,36 @@ export default function Card({
 
   return (
     <div className="w-full justify-center items-center m-auto   overflow-hidden shadow-lg bg-gray-800  ">
-      <div className="flex justify-between">
-        <div className="   h-[11rem] max-h-[11rem] w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
+      <div className="flex  justify-between">
+        <div className="    h-[12.5rem]  w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
           <div className="px-6 py-4 ">
-            <div className="font-bold text-xl mb-2">{name}</div>
-            <p className="text-gray-200 text-sm">{description}</p>
+            <div className="font-bold text-xl mb-2">{idea.title}</div>
+            <p className="text-gray-400 text-sm">{idea.description}</p>
           </div>
-          <div className="px-5">
+          <div className="  md:invisible  xl:visible px-5">
             <span
-              onClick={() => handleClickedTag(tag_one)}
+              onClick={() => handleClickedTag(idea.tag_one)}
               className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md"
             >
-              {tag_one}
+              {idea.tag_one}
             </span>
             <span
-              onClick={() => handleClickedTag(tag_two)}
+              onClick={() => handleClickedTag(idea.tag_two)}
               className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md"
             >
-              {tag_two}
+              {idea.tag_two}
             </span>
           </div>
         </div>
         <div className="  w-20 flex  justify-end   ">
           <button className="h-10 w-10 m-4  bg-emerald-600 rounded-full shadow-md  text-gray-900 items-center justify-center text-center">
-            <CardUserDisplay userId={userId} />
+            <CardUserDisplay userId={idea.userId} />
           </button>
         </div>
       </div>
-      <div className=" px-4 py-2 bg-gray-700 flex    justify-between">
+      <div className=" px-4 py-2 bg-gray-700   flex    justify-between">
         <div>
-          <audio id="player" src={idea}></audio>
+          <audio id="player" src={idea.file}></audio>
           <button
             onClick={() => {
               this_idea.play();
@@ -196,7 +179,7 @@ export default function Card({
           <InformationCircleIcon
             onClick={(e) => {
               e.preventDefault();
-              handleInfo(id);
+              handleInfo(idea.id);
             }}
             className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600"
           />

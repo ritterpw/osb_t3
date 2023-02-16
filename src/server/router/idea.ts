@@ -28,13 +28,13 @@ export const ideaRouter = createRouter()
         include: {
           likes: true,
         },
-        take: 9,
+        take: 6,
       });
 
-      if (data.length <= 9) {
+      if (data.length <= 6) {
         data = await ctx.prisma.idea.findMany({
           orderBy: [{ likes: { _count: "desc" } }],
-          take: 9,
+          take: 6,
           include: {
             likes: true,
           },
