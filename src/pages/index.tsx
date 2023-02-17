@@ -6,7 +6,9 @@ import {
   ArrowRightCircleIcon,
   ArrowRightIcon,
   GlobeAltIcon,
+  GlobeAmericasIcon,
   InformationCircleIcon,
+  MusicalNoteIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Session } from "next-auth";
@@ -50,27 +52,28 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
   const { data: session } = useSession();
 
   return (
-    <div className="snap-y snap-mandatory overflow-x-clip overflow-y-scroll  h-screen w-screen flex flex-col ">
-      <div className=" snap-start bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
+    <div className="snap-y snap-mandatory overflow-x-clip overflow-scroll min-h-full ">
+      <div className=" snap-start  bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
         <div className=" h-screen w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
           <div className=" items-center  text-center justify-center place-items-center flex"></div>
           <div className="  rounded-l-3xl my-10  ">
-            <div className=" flex flex-col text-center lg:text-left animate-fade-in">
+            <div className=" flex flex-col text-center lg:text-left animate-fade-in  ease">
               <p className="  text-7xl  ">Open Source</p>
               <p className="  text-7xl  ">Productions</p>
               <p className=" mt-6  text-xl  text-emerald-300">
                 Collaborate with producers around the world
               </p>
-              <p className=" text-gray-300">
+              <p className="  text-gray-300">
                 Start by downloading your favorite idea
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="snap-start overflow-scroll min-h-full ">
+
+      <div className="snap-start  ">
         <div className="min-h-screen">
-          <h1 className=" text-center pt-2 pb-6 text-4xl animate-fade-in ">
+          <h1 className=" text-center py-6 text-4xl animate-fade-in ">
             Ideas Of The Week
           </h1>
           <div className=" mx-12  items-center justify-center ">
@@ -82,7 +85,6 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
               ))}
             </div>
           </div>
-
           <div className="  pt-10 mx-auto text-center ">
             <button
               onClick={() => ClickNewIdea(session, router)}
@@ -91,12 +93,12 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
               Add New Idea
             </button>
           </div>
-          <div className="  pt-32  bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 pb-10">
-            <div className="  p-32 md:grid md:grid-cols-2   h-fit py-6 mx-auto text-center   gap-7 ">
+          <div className="   pt-32  bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 pb-10">
+            <div className="  p-32 md:grid md:grid-cols-2   h-fit py-6 mx-auto text-center      lg:gap-44 ">
               <div className=" flex flex-col   bg-gray-800 w-full h-[50vh] rounded-lg shadow-lg text-left">
                 <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full  ">
                   <div className="   ">
-                    <GlobeAltIcon className=" h-24 w-24 lg:h-40 lg:w-40 text-emerald-600" />
+                    <MusicalNoteIcon className=" h-24 w-24  text-emerald-600" />
                   </div>
                   <div className="    ">
                     <h1 className=" text-3xl lg:text-6xl pb-6 text-gray-400 ">
@@ -110,10 +112,19 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
               </div>
               <div className=" flex flex-col  justify-center  bg-gray-500 bg-opacity-5  w-full h-[50vh] rounded-lg shadow-lg text-left">
                 <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full">
-                  <div></div>
-                  <div className="">
-                    <h1 className=" text-4xl text-emerald-400  ">
+                  <div>
+                    <GlobeAmericasIcon className=" h-24 w-24  text-emerald-600" />
+                  </div>
+                  <div className="flex flex-col ">
+                    <h1 className=" text-4xl text-gray-400  ">
                       Create with producers worldwide
+                    </h1>
+                    <h1 className=" text-base text-gray-500  ">
+                      Looking for a way to collaborate with other musicians and
+                      create something truly unique? Look no further than Open
+                      Source Productions. Our platform connects you with other
+                      musicians, providing the tools and support you need to
+                      bring your ideas to life.
                     </h1>
                   </div>
                 </div>
@@ -153,6 +164,28 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
                 return <Testimonial quote={""} name={""} image={""} />;
               })}
             </div>
+            <div></div>
+          </div>
+          <div className=" pt-8 bg-gray-800    pb-10">
+            <div className=" ">
+              <h1 className=" text-center text-4xl animate-fade-in ">
+                Top Producers
+              </h1>
+              <div className="  p-32 md:grid md:grid-cols-3 sm:grid-cols-3 py-6 mx-auto text-center     lg:gap-44 ">
+                <div className=" flex flex-col    w-full h-[50vh] rounded-lg shadow-lg text-left bg-gray-700 ">
+                  <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full  ">
+                    <div className="   ">
+                      <MusicalNoteIcon className=" h-24 w-24  text-emerald-600" />
+                    </div>
+                    <div className="    ">
+                      <h1 className=" text-3xl lg:text-6xl pb-6 text-gray-400 ">
+                        Collaborate
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -160,7 +193,7 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
   );
 }
 
-function DetailsButton() {
+function _detailsButton() {
   return (
     <div>
       <InformationCircleIcon className="h-7 w-7 " />
