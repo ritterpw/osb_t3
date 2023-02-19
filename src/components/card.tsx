@@ -12,7 +12,7 @@ import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { ideasWithLikes } from "types/prisma_override";
+import { ideasWithLikes } from "types/ideasWithLikes";
 
 export default function Card({ idea }: { idea: ideasWithLikes }) {
   const router = useRouter();

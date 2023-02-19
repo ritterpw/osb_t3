@@ -30,7 +30,38 @@ export const userRouter = createRouter()
       };
     },
   })
+  .query("getMostPopularThisWeek", {
+    async resolve({ ctx }) {
+      const now = new Date();
+      let data = await ctx.prisma.user.findMany({
+        select: {
+          id: true,
+          name: true,
+          producer_name: true,
+          image: true,
+          ideas: {
+            select: {
+              id: true,
+              title: true,
+              likes: true,
+            },
+            where: {
+              createdAt: {
+                gte: now,
+              },
+            },
+            orderBy: {
+              likes: { _count: "desc" },
+            },
+            take: 6,
+          },
+        },
 
+        take: 6,
+      });
+      return data;
+    },
+  })
   .query("getAll", {
     async resolve({ ctx }) {
       return await ctx.prisma.user.findMany();

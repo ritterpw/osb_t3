@@ -1,5 +1,5 @@
 import React from "react";
-import { ideasWithLikes } from "types/prisma_override";
+import { ideasWithLikes } from "types/ideasWithLikes";
 import Card from "./card";
 
 export default function DisplaySearchs({ data }: { data: ideasWithLikes[] }) {

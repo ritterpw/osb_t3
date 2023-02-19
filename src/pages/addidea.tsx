@@ -77,22 +77,22 @@ function AddIdeaForm(): JSX.Element {
 
     const url = await getFileNameToUpload(session.user.email);
 
-    if (data?.user?.id) {
-      const posted = postIdea.mutate({
-        user: data?.user?.id,
-        title: title,
-        description: description,
-        tag_one: tag_one,
-        tag_two: tag_two,
-        file: url,
-      });
-    }
+    if (data?.user == null) return;
+
+    postIdea.mutate({
+      user: data?.user?.id,
+      title: title,
+      description: description,
+      tag_one: tag_one,
+      tag_two: tag_two,
+      file: url,
+    });
   }
 
   return (
-    <div className="p-5">
-      <div className="   bg-gray-800 rounded-3xl shadow-2xl bg-opacity-20 text-xl text-emerald-400">
-        <div className=" px-6">
+    <div className="p-5 ">
+      <div className="bg-gray-800 rounded-3xl shadow-2xl bg-opacity-20 text-xl text-emerald-400">
+        <div className=" px-6  ">
           <div className=" pt-5">
             <h1>Title</h1>
             <input

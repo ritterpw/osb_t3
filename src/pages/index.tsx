@@ -17,14 +17,27 @@ import Header from "@/components/header";
 import Card from "@/components/card";
 import { testimonials } from "@/utils/data/testimonioal-data";
 
-import { ideasWithLikes } from "types/prisma_override";
+import { ideasWithLikes } from "types/ideasWithLikes";
+import { topUser } from "types/users_override";
+
 import Testimonial from "@/components/testimonial";
 import Link from "next/link";
 import { useState } from "react";
+import { map } from "lodash";
+import { Idea, User } from "@prisma/client";
 
 export default function Home(): JSX.Element {
-  const { data, isLoading, isSuccess } = trpc.useQuery(
+  const { data: mostPopularIdeas } = trpc.useQuery(
     ["idea.getMostPopularThisWeek"],
+    {
+      refetchInterval: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  const { data: mostPopularUsers } = trpc.useQuery(
+    ["user.getMostPopularThisWeek"],
     {
       refetchInterval: false,
       refetchOnReconnect: false,
@@ -37,14 +50,35 @@ export default function Home(): JSX.Element {
       <div id="no-scroll1 ">
         <div className=" h-screen w-screen flex flex-col">
           <Header />
-          {data && <MostPopular data={data} />}
+          {mostPopularIdeas && mostPopularUsers && (
+            <MostPopular
+              popIdeas={mostPopularIdeas}
+              popUsers={mostPopularUsers}
+            />
+          )}
         </div>
       </div>
     </>
   );
 }
 
-function MostPopular({ data }: { data: ideasWithLikes[] }) {
+function MostPopular({
+  popIdeas,
+  popUsers,
+}: {
+  popIdeas: ideasWithLikes[];
+  popUsers: {
+    ideas: {
+      id: string;
+      likes: User[];
+      title: string;
+    }[];
+    id: string;
+    image: string | null;
+    name: string | null;
+    producer_name: string | null;
+  }[];
+}) {
   const router = useRouter();
   const [page, setPage] = useState(0);
   if (!testimonials.length) return null;
@@ -52,7 +86,7 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
   const { data: session } = useSession();
 
   return (
-    <div className="snap-y snap-mandatory overflow-x-clip overflow-scroll min-h-full ">
+    <div className="snap-y snap-mandatory overflow-x-clip overflow-scroll min-h-[96vh] ">
       <div className=" snap-start  bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
         <div className=" h-screen w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
           <div className=" items-center  text-center justify-center place-items-center flex"></div>
@@ -78,9 +112,9 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
           </h1>
           <div className=" mx-12  items-center justify-center ">
             <div className="gap-8 grid md:grid-cols-[1fr_1fr]  xl:grid-cols-[1fr_1fr_1fr] m-auto items-center justify-center">
-              {data.map((idea) => (
+              {popIdeas.map((idea) => (
                 <div key={idea.id}>
-                  <Card idea={idea}></Card>
+                  <Card idea={idea} />
                 </div>
               ))}
             </div>
@@ -94,7 +128,7 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
             </button>
           </div>
           <div className="   pt-32  bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 pb-10">
-            <div className="  p-32 md:grid md:grid-cols-2   h-fit py-6 mx-auto text-center      lg:gap-44 ">
+            <div className="  p-32 lg:grid lg:grid-cols-2   h-fit py-6 mx-auto text-center gap-10  lg:gap-44 ">
               <div className=" flex flex-col   bg-gray-800 w-full h-[50vh] rounded-lg shadow-lg text-left">
                 <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full  ">
                   <div className="   ">
@@ -131,60 +165,14 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
               </div>
             </div>
             {/* implement a carousel of testimonials here */}
-            <div className="  px-10 mb-20 grid grid-cols-3   h-fit py-6 mx-auto text-center  gap-7 ">
-              <div className="col-span-full mt-28 flex   space-y-4 flex-row items-end justify-between lg:space-y-0">
-                <div className="">
-                  <h2 className=" text-2xl  md:text-4xl">{`See what other producers have to say`}</h2>
-                </div>
-
-                {testimonials.length >= 3 ? (
-                  <div className="col-span-2  flex   col-start-11 mb-16 items-end justify-end space-x-3">
-                    <ArrowLeftCircleIcon
-                      className=" h-10 hover:opacity-50 hover:text-emerald-600 cursor-pointer"
-                      direction="left"
-                      onClick={() => setPage((p) => p - 1)}
-                    />
-                    <ArrowRightCircleIcon
-                      className=" h-10 hover:opacity-50 hover:text-emerald-600 cursor-pointer"
-                      direction="right"
-                      onClick={() => setPage((p) => p + 1)}
-                    />
-                  </div>
-                ) : null}
-              </div>
-
-              {Array.from({
-                length: testimonials.length > 3 ? 3 : testimonials.length,
-              }).map((_, index) => {
-                const testimonialIndex =
-                  (page * 3 + index) % testimonials.length;
-                const testimonial = testimonials[testimonialIndex];
-                if (!testimonial) return null;
-
-                return <Testimonial quote={""} name={""} image={""} />;
-              })}
-            </div>
-            <div></div>
+            <Testimonialsection />
           </div>
-          <div className=" pt-8 bg-gray-800    pb-10">
-            <div className=" ">
-              <h1 className=" text-center text-4xl animate-fade-in ">
-                Top Producers
-              </h1>
-              <div className="  p-32 md:grid md:grid-cols-3 sm:grid-cols-3 py-6 mx-auto text-center     lg:gap-44 ">
-                <div className=" flex flex-col    w-full h-[50vh] rounded-lg shadow-lg text-left bg-gray-700 ">
-                  <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full  ">
-                    <div className="   ">
-                      <MusicalNoteIcon className=" h-24 w-24  text-emerald-600" />
-                    </div>
-                    <div className="    ">
-                      <h1 className=" text-3xl lg:text-6xl pb-6 text-gray-400 ">
-                        Collaborate
-                      </h1>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className=" px-10 pb-20 bg-gray-800 ">
+            <h1 className="  text-4xl pb-10  ">Top Producers</h1>
+            <div className="  grid grid-cols-3 xl:grid-cols-6 gap-5">
+              {popUsers.map((user) => (
+                <UserCard h={20} w={20} user={user} />
+              ))}
             </div>
           </div>
         </div>
@@ -193,13 +181,79 @@ function MostPopular({ data }: { data: ideasWithLikes[] }) {
   );
 }
 
-function _detailsButton() {
+/**
+ * Testimonial Section
+ *
+ * shows 3 testimonials at a time
+ */
+function Testimonialsection() {
   return (
-    <div>
-      <InformationCircleIcon className="h-7 w-7 " />
+    <div className="  px-10 mb-20 grid grid-cols-3   h-fit py-6 mx-auto text-center  gap-7 ">
+      <div className="col-span-full mt-28 flex   space-y-4 flex-row items-end justify-between lg:space-y-0">
+        <div className="">
+          <h2 className=" text-2xl  md:text-4xl">{`See what other producers have to say`}</h2>
+        </div>
+
+        {testimonials.length >= 3 ? (
+          <div className="col-span-2  flex   col-start-11 mb-16 items-end justify-end space-x-3">
+            <ArrowLeftCircleIcon
+              className=" h-10 hover:opacity-50 hover:text-emerald-600 cursor-pointer"
+              direction="left"
+            />
+            <ArrowRightCircleIcon
+              className=" h-10 hover:opacity-50 hover:text-emerald-600 cursor-pointer"
+              direction="right"
+            />
+          </div>
+        ) : null}
+      </div>
+
+      {Array.from({
+        length: testimonials.length > 3 ? 3 : testimonials.length,
+      }).map((_, index) => {
+        const testimonialIndex = index % testimonials.length;
+        const testimonial = testimonials[testimonialIndex];
+        if (!testimonial) return null;
+
+        return <Testimonial key={index} quote={""} name={""} image={""} />;
+      })}
     </div>
   );
 }
+function UserCard({ h, w, user }: { h: Number; w: Number; user: topUser }) {
+  return (
+    <div className="rounded-lg bg-gray-900    shadow-md ">
+      <div className=" grid grid-rows-[2fr_5fr]  ">
+        <div className=" flex flex-row items-center justify-between drop-shadow-md">
+          <h1 className=" pl-2 text-2xl">
+            {user.name}
+            {user.producer_name}
+          </h1>
+          <div className="h-10 w-10 rounded-full ">
+            {user ? (
+              <img
+                src={user.image!}
+                width={50}
+                height={50}
+                className="rounded-full p-2"
+              />
+            ) : (
+              <UserCircleIcon className=" text-emerald-600" />
+            )}
+          </div>
+        </div>
+        <div className=" bg-gray-800 p-2">
+          {/* <h1 className=" text-lg text-gray-400">{user.bio}</h1> */}
+          <h1 className=" text-md text-gray-500">
+            some sort of bio where there is information and there are things
+            said{" "}
+          </h1>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ClickNewIdea(session: Session | null, router: NextRouter): void {
   if (session) {
     console.log(session);
