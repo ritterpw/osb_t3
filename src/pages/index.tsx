@@ -88,7 +88,7 @@ function MostPopular({
   return (
     <div className="snap-y snap-mandatory overflow-x-clip overflow-scroll min-h-[96vh] ">
       <div className=" snap-start  bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
-        <div className=" h-screen w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
+        <div className=" min-h-[96vh] w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
           <div className=" items-center  text-center justify-center place-items-center flex"></div>
           <div className="  rounded-l-3xl my-10  ">
             <div className=" flex flex-col text-center lg:text-left animate-fade-in  ease">
@@ -169,9 +169,9 @@ function MostPopular({
           </div>
           <div className=" px-10 pb-20 bg-gray-800 ">
             <h1 className="  text-4xl pb-10  ">Top Producers</h1>
-            <div className="  grid grid-cols-3 xl:grid-cols-6 gap-5">
+            <div className="  grid grid-cols-3 xl:grid-cols-6 gap-5 ">
               {popUsers.map((user) => (
-                <UserCard h={20} w={20} user={user} />
+                <UserCard key={user.id} h={20} w={20} user={user} />
               ))}
             </div>
           </div>
@@ -222,13 +222,10 @@ function Testimonialsection() {
 }
 function UserCard({ h, w, user }: { h: Number; w: Number; user: topUser }) {
   return (
-    <div className="rounded-lg bg-gray-900    shadow-md ">
-      <div className=" grid grid-rows-[2fr_5fr]  ">
+    <div className="rounded-lg shadow-md">
+      <div className=" bg-gray-900 grid grid-rows-[2fr_5fr]">
         <div className=" flex flex-row items-center justify-between drop-shadow-md">
-          <h1 className=" pl-2 text-2xl">
-            {user.name}
-            {user.producer_name}
-          </h1>
+          <h1 className=" pl-2 text-2xl">{user.producer_name ?? user.name}</h1>
           <div className="h-10 w-10 rounded-full ">
             {user ? (
               <img
@@ -242,9 +239,9 @@ function UserCard({ h, w, user }: { h: Number; w: Number; user: topUser }) {
             )}
           </div>
         </div>
-        <div className=" bg-gray-800 p-2">
+        <div className=" bg-gray-800 p-2 ">
           {/* <h1 className=" text-lg text-gray-400">{user.bio}</h1> */}
-          <h1 className=" text-md text-gray-500">
+          <h1 className=" text-md text-gray-400">
             some sort of bio where there is information and there are things
             said{" "}
           </h1>
