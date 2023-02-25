@@ -51,47 +51,20 @@ model User {
   sessions      Session[]
   ideas         Idea[]    @relation("userIdeas")
   liked_ideas   Idea[]    @relation("IdeaUserLikes")
-  pending_contributions PendingContributions[] @relation("userIdeaContribution")
-  accepted_contributions AcceptedContributions[] @relation("userAcceptedContributions")
-
-}
-
-model PendingContributions {
-  id            String    @id @default(cuid())
-  userId        String
-  ideaId        String
-  idea          Idea      @relation("ideaContributions", fields: [ideaId], references: [id])
-  user          User      @relation("userIdeaContribution",fields: [userId], references: [id])
-  description   String
-  @@unique([userId, ideaId])
-  @@index([ideaId])
-}
-
-model AcceptedContributions {
-    id            String    @id @default(cuid())
-  userId        String
-  ideaId        String
-  idea          Idea      @relation("ideaAcceptedContributions", fields: [ideaId], references: [id])
-  user          User      @relation("userAcceptedContributions",fields: [userId], references: [id])
-  description   String
-  @@unique([userId, ideaId])
-  @@index([ideaId])
 }
 
 model Idea {
-  id           String   @id @default(cuid())
-  userId       String
-  title        String
-  description  String
-  tag_one      String
-  tag_two      String
-  pending_contributions PendingContributions[] @relation("ideaContributions")
-  accepted_contributions AcceptedContributions[] @relation("ideaAcceptedContributions")
-  file         String   @unique
-  createdAt    DateTime @default(now())
-  slug         String?  @unique
-  likes        User[]   @relation("IdeaUserLikes")
-  user         User     @relation("userIdeas", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  tag_one     String
+  tag_two     String
+  file        String   @unique
+  createdAt   DateTime @default(now())
+  slug        String?  @unique
+  likes       User[]   @relation("IdeaUserLikes")
+  user        User     @relation("userIdeas", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId])
   @@fulltext([title, description, tag_one, tag_two])
@@ -114,9 +87,27 @@ model IdeaUserLikes {
   @@map("_IdeaUserLikes")
 }
 
+model AcceptedContributions {
+  id          String @id
+  userId      String
+  ideaId      String
+  description String
+
+  @@unique([userId, ideaId])
+  @@index([ideaId])
+}
+
+model PendingContributions {
+  id          String @id
+  userId      String
+  ideaId      String
+  description String
+
+  @@unique([userId, ideaId])
+  @@index([ideaId])
+}
+
 enum Role {
   USER
   ADMIN
 }
-
-
