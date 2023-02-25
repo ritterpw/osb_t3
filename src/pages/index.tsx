@@ -2,12 +2,8 @@ import { trpc } from "../utils/trpc";
 import { useSession, signIn } from "next-auth/react";
 import {
   ArrowLeftCircleIcon,
-  ArrowLeftIcon,
   ArrowRightCircleIcon,
-  ArrowRightIcon,
-  GlobeAltIcon,
   GlobeAmericasIcon,
-  InformationCircleIcon,
   MusicalNoteIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
@@ -16,12 +12,9 @@ import { NextRouter, useRouter } from "next/router";
 import Header from "@/components/header";
 import Card from "@/components/card";
 import { testimonials } from "@/utils/data/testimonioal-data";
-
 import { ideasWithLikes } from "types/ideasWithLikes";
 import { topUser } from "types/users_override";
-
 import Testimonial from "@/components/testimonial";
-import Link from "next/link";
 import { useState } from "react";
 import { map } from "lodash";
 import { Idea, User } from "@prisma/client";

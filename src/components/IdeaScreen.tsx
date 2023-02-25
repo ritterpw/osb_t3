@@ -19,10 +19,10 @@ function IdeaScreen({ idea }: { idea: Idea }) {
   }
 
   return (
-    <div className="h-full w-screen  bg-gray-900   bg-gradient-to-b  from-transparent via-gray-900 to-gray-700  p-10 items-center ">
-      <div className=" bg-gray-900   shadow-lg w-[85%] m-auto  grid  grid-rows-[1fr_2.5fr]">
+    <div className="h-full w-screen   bg-gradient-to-b  from-vercel-1000 via-vercel-1000 to-vercel-900  p-10 items-center ">
+      <div className="   bg-vercel-1000 rounded-sm border  border-vercel-700 shadow-xl shadow-vercel-900 w-[85%] p-2 m-auto  grid  grid-rows-[1fr_2.5fr]">
         <div className="">
-          <div className="  bg-gray-900 h-full   px-6 py-1">
+          <div className="  h-full   px-6 py-1">
             <div className="  grid grid-flow-rows">
               <div className=" mr-auto  my-auto grid grid-flow-col text-left space-x-2 ">
                 <div className="">
@@ -49,10 +49,28 @@ function IdeaScreen({ idea }: { idea: Idea }) {
             </div>
           </div>
         </div>
-        <div className=" bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800    px-6 ">
+        <div className="    px-6 ">
           <div>{idea.description}</div>
-          <div className="  my-10   ">
+          <div className="  my-6  bg-vercel-1000 border border-vercel-800 shadow-md  shadow-vercel-900  ">
             <MusicPlayer file={idea.file} />
+          </div>
+          <div className=" items-end content-end text-right justify-end pb-4 ">
+            <button
+              className="mr-4   px-4 py-2  bg-vercel-900 border border-vercel-800 shadow-sm rounded shadow-vercel-1000 hover:bg-emerald-600 hover:text-vercel-900"
+              onClick={() => {
+                console.log("button");
+              }}
+            >
+              Add Idea
+            </button>
+            <button
+              className=" border px-4 py-2 rounded  bg-vercel-900   border-vercel-800 shadow-sm shadow-vercel-1000 hover:bg-emerald-600 hover:text-vercel-900"
+              onClick={() => {
+                console.log("button");
+              }}
+            >
+              Something
+            </button>
           </div>
         </div>
       </div>

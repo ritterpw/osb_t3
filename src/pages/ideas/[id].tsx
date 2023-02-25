@@ -45,7 +45,7 @@ export default function Id(): JSX.Element {
 
   return (
     <div id="no-scroll1 ">
-      <div className=" h-screen w-screen flex flex-col">
+      <div className=" h-screen w-screen flex flex-col bg-vercel-1000">
         <Header />
         {data && <IdeaScreen idea={data} />}
       </div>
