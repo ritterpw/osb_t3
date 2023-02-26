@@ -10,8 +10,13 @@ const BUCKET_URL = "https://s3.us-east-1.amazonaws.com/newideas/";
 
 export default function addidea() {
   return (
-    <div className=" h-screen w-screen ">
-      <Header />
+    <div className=" h-screen w-screen bg-vercel-1000 ">
+      <div
+        className="border-b border-b-vercel-600 
+        "
+      >
+        <Header />
+      </div>{" "}
       <AddIdeaForm />
     </div>
   );
@@ -91,7 +96,7 @@ function AddIdeaForm(): JSX.Element {
 
   return (
     <div className="p-5 ">
-      <div className="bg-gray-800 rounded-3xl shadow-2xl bg-opacity-20 text-xl text-emerald-400">
+      <div className="bg-vercel-1000 border border-vercel-600 rounded-sm shadow-2xl bg-opacity-20 text-xl text-emerald-400">
         <div className=" px-6  ">
           <div className=" pt-5">
             <h1>Title</h1>
@@ -99,7 +104,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 settitle(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-xl  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
           <div className=" pt-5">
@@ -108,7 +113,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 setdescription(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-xl  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
           <div className=" pt-5">
@@ -117,7 +122,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 settag_one(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-xl  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
 
@@ -127,7 +132,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 settag_two(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-xl  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
 
@@ -149,7 +154,7 @@ function AddIdeaForm(): JSX.Element {
           <div className=" pb-6 mx-auto text-center ">
             <button
               onClick={() => handleSubmitIdea()}
-              className="py-2 px-12 text-3xl bg-emerald-500 text-gray-900 rounded-3xl shadow-2xl"
+              className="py-3 px-6 text-xl bg-vercel-1000 border border-vercel-600   hover:bg-emerald-500  hover:text-gray-900 rounded-sm shadow-md shadow-vercel-1000"
             >
               Add New Idea
             </button>

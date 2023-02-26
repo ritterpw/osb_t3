@@ -19,12 +19,12 @@ function IdeaScreen({ idea }: { idea: Idea }) {
   }
 
   return (
-    <div className="h-full w-screen  bg-gray-900   bg-gradient-to-b  from-transparent via-gray-900 to-gray-700  p-10 items-center ">
-      <div className=" bg-gray-900   shadow-lg w-[85%] m-auto  grid  grid-rows-[1fr_2.5fr]">
+    <div className="h-full w-screen    bg-gradient-to-b   from-vercel-1000 via-vercel-1000 to-vercel-900  p-10 items-center ">
+      <div className=" p-3 rounded  border border-vercel-600   shadow-lg w-[85%] m-auto  grid  grid-rows-[1fr_2.5fr]">
         <div className="">
-          <div className="  bg-gray-900 h-full   px-6 py-1">
+          <div className="   h-full   px-6 py-1">
             <div className="  grid grid-flow-rows">
-              <div className=" mr-auto  my-auto grid grid-flow-col text-left space-x-2 ">
+              <div className=" mr-auto   my-auto grid grid-flow-col text-left space-x-2 ">
                 <div className="">
                   <button className="  h-8 w-8  shadow-md  bg-emerald-600 rounded-full text-gray-900 items-center justify-center text-center">
                     {/* {data && data.user?.image != null && (
@@ -49,10 +49,18 @@ function IdeaScreen({ idea }: { idea: Idea }) {
             </div>
           </div>
         </div>
-        <div className=" bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800    px-6 ">
+        <div className="    px-6 ">
           <div>{idea.description}</div>
-          <div className="  my-10   ">
+          <div className=" rounded border border-vercel-600  my-4   ">
             <MusicPlayer file={idea.file} />
+          </div>
+          <div className="items-end text-right justify-end content-end  ">
+            <button className=" py-2 px-4 mr-4 rounded border border-vercel-800 shadow-md shadow-vercel-900 hover:bg-emerald-500 hover:text-vercel-800">
+              contribute to idea
+            </button>
+            <button className=" py-2 px-4 rounded border border-vercel-800 shadow-md shadow-vercel-900 hover:bg-emerald-500 hover:text-vercel-800 ">
+              add idea
+            </button>
           </div>
         </div>
       </div>

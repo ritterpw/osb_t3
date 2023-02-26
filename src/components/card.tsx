@@ -115,7 +115,14 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   }
 
   return (
-    <div className="w-full justify-center items-center m-auto   overflow-hidden shadow-lg bg-gray-800  ">
+    <div
+      onClick={(e) => {
+        e.preventDefault();
+
+        handleInfo(idea.id);
+      }}
+      className="w-full cursor-pointer  justify-center items-center m-auto   overflow-hidden shadow-lg bg-gray-800  "
+    >
       <div className="flex  justify-between">
         <div className="    h-[12.5rem]  w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
           <div className="px-6 py-4 ">

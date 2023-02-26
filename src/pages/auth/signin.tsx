@@ -39,7 +39,12 @@ const SignIn = ({
   }, [session]);
   return (
     <div className="h-screen w-screen flex flex-col">
-      <Header />
+      <div
+        className="border-b border-b-vercel-600 
+        "
+      >
+        <Header />
+      </div>{" "}
       <section className="h-screen items-center justify-center  flex px-10 pb-16">
         <div className="  p-20 bg-gray-800 rounded-xl hover:opacity-90 hover:cursor-pointer items-center justify-center  transition-all duration-500 ease-in-out  hover:text-emerald-400">
           {providers

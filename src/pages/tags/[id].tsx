@@ -16,7 +16,12 @@ export default function TagId() {
 
   return (
     <div className=" h-screen w-screen flex flex-col">
-      <Header />
+      <div
+        className="border-b border-b-vercel-600 
+        "
+      >
+        <Header />
+      </div>{" "}
       {data && <DisplaySearchs data={data} />}
     </div>
   );

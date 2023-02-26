@@ -26,7 +26,7 @@ function MusicPlayer({ file }: { file: string }) {
   return (
     <div className=" rounded-sm shadow-md items-center  m-auto   ">
       <div className=" p-10 ">
-        <div className=" w-full bg-gray-800 h-5 mb-3 rounded-full">
+        <div className=" w-full bg-gray-800 h-5 mb-6 rounded-full">
           <div
             className=" h-5 rounded-full"
             style={{
@@ -41,7 +41,7 @@ function MusicPlayer({ file }: { file: string }) {
               this_idea.play();
             }
           }}
-          className="h-9 w-9 mr-6  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
+          className="h-9 w-9 mr-6  bg-vercel-1000 text-emerald-500  shadow-md rounded items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
         >
           <PlayIcon className=" ml-2 h-6 w-6  m-auto " />
         </button>
@@ -51,7 +51,7 @@ function MusicPlayer({ file }: { file: string }) {
               this_idea.pause();
             }
           }}
-          className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
+          className="h-9 w-9 mr-2  bg-vercel-1000 text-emerald-500  shadow-md rounded items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
         >
           <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
         </button>

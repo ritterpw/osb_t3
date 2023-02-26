@@ -20,7 +20,10 @@ export default function Header() {
   return (
     <div className="header ">
       <div className="  inline-flex  justify-center gap-1">
-        <div className="flex-shrink-0 text-3xl font-bold text-center shadow-md uppercase ml-4 relative mr-4 ">
+        <div
+          onClick={() => router.push("/")}
+          className="flex-shrink-0 text-3xl font-bold text-center shadow-md uppercase ml-4 relative mr-4 "
+        >
           <h1>OSP</h1>
         </div>
 

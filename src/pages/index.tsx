@@ -129,31 +129,31 @@ function MostPopular({
           </div>
           <div className="   pt-32  bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 pb-10">
             <div className="  p-32 lg:grid lg:grid-cols-2   h-fit py-6 mx-auto text-center gap-10  lg:gap-44 ">
-              <div className=" flex flex-col   bg-gray-800 w-full h-[50vh] rounded-lg shadow-lg text-left">
+              <div className=" flex flex-col   bg-gray-800 w-full h-[30vh] rounded-lg shadow-lg text-left">
                 <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full  ">
                   <div className="   ">
                     <MusicalNoteIcon className=" h-24 w-24  text-emerald-600" />
                   </div>
                   <div className="    ">
-                    <h1 className=" text-3xl lg:text-6xl pb-6 text-gray-400 ">
+                    <h1 className=" text-4xl xl:text-6xl pb-6 text-gray-400 ">
                       Collaborate
                     </h1>
-                    <h1 className=" text-lg lg:text-2xl  text-gray-500">
+                    <h1 className="  text-lg xl:text-2xl  text-gray-500">
                       Experience music creation in a whole new way
                     </h1>
                   </div>
                 </div>
               </div>
-              <div className=" flex flex-col  justify-center  bg-gray-500 bg-opacity-5  w-full h-[50vh] rounded-lg shadow-lg text-left">
+              <div className=" flex flex-col  justify-center  bg-gray-500 bg-opacity-5  w-full h-[30vh] rounded-lg shadow-lg text-left">
                 <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full">
                   <div>
                     <GlobeAmericasIcon className=" h-24 w-24  text-emerald-600" />
                   </div>
                   <div className="flex flex-col ">
-                    <h1 className=" text-4xl text-gray-400  ">
+                    <h1 className=" pt-6 text-5xl xl:text-3xl text-gray-400  ">
                       Create with producers worldwide
                     </h1>
-                    <h1 className=" text-base text-gray-500  ">
+                    <h1 className=" invisible  xl:visible pt-4 text-base text-gray-500  ">
                       Looking for a way to collaborate with other musicians and
                       create something truly unique? Look no further than Open
                       Source Productions. Our platform connects you with other
