@@ -48,7 +48,7 @@ export default function Home(): JSX.Element {
   return (
     <>
       <div id="no-scroll1 ">
-        <div className=" h-screen w-screen flex flex-col">
+        <div className=" h-screen w-screen flex flex-col ">
           <Header />
           {mostPopularIdeas && mostPopularUsers && (
             <MostPopular
@@ -86,7 +86,7 @@ function MostPopular({
   const { data: session } = useSession();
 
   return (
-    <div className="snap-y snap-mandatory overflow-x-clip overflow-scroll min-h-[96vh] ">
+    <div className="snap-y snap-mandatory overflow-x-clip overflow-scroll min-h-[96vh]  ">
       <div className=" snap-start  bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
         <div className=" min-h-[96vh] w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
           <div className=" items-center  text-center justify-center place-items-center flex"></div>
@@ -104,13 +104,12 @@ function MostPopular({
           </div>
         </div>
       </div>
-
-      <div className="snap-start  ">
-        <div className="min-h-screen">
+      <div className="snap-start  bg-gray-900 ">
+        <div className="min-h-screen ">
           <h1 className=" text-center py-6 text-4xl animate-fade-in ">
             Ideas Of The Week
           </h1>
-          <div className=" mx-12  items-center justify-center ">
+          <div className=" mx-12  items-center justify-center">
             <div className="gap-8 grid md:grid-cols-[1fr_1fr]  xl:grid-cols-[1fr_1fr_1fr] m-auto items-center justify-center">
               {popIdeas.map((idea) => (
                 <div key={idea.id}>
@@ -122,14 +121,14 @@ function MostPopular({
           <div className="  pt-10 mx-auto text-center ">
             <button
               onClick={() => ClickNewIdea(session, router)}
-              className="py-3  px-20 text-2xl bg-emerald-500 text-gray-900 rounded-3xl shadow-2xl"
+              className="py-3  px-10 text-2xl  bg-gray-800 hover:bg-emerald-500 hover:text-gray-900 hover:rounded-3xl shadow-md  ease-in duration-200 "
             >
               Add New Idea
             </button>
           </div>
-          <div className="   pt-32  bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800 pb-10">
+          <div className="   pt-32  bg-gradient-to-b from-gray-900 via-gray-900 to-vercel-900 pb-10">
             <div className="  p-32 lg:grid lg:grid-cols-2   h-fit py-6 mx-auto text-center gap-10  lg:gap-44 ">
-              <div className=" flex flex-col   bg-gray-800 w-full h-[30vh] rounded-lg shadow-lg text-left">
+              <div className=" flex flex-col   bg-gray-800 w-full h-[40vh] rounded-lg shadow-lg text-left">
                 <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full  ">
                   <div className="   ">
                     <MusicalNoteIcon className=" h-24 w-24  text-emerald-600" />
@@ -144,7 +143,7 @@ function MostPopular({
                   </div>
                 </div>
               </div>
-              <div className=" flex flex-col  justify-center  bg-gray-500 bg-opacity-5  w-full h-[30vh] rounded-lg shadow-lg text-left">
+              <div className=" flex flex-col  justify-center  bg-gray-500 bg-opacity-5  w-full h-[40vh] rounded-lg shadow-lg text-left">
                 <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full">
                   <div>
                     <GlobeAmericasIcon className=" h-24 w-24  text-emerald-600" />
@@ -167,7 +166,7 @@ function MostPopular({
             {/* implement a carousel of testimonials here */}
             <Testimonialsection />
           </div>
-          <div className=" px-10 pb-20 bg-gray-800 ">
+          <div className=" px-10 pb-20 bg-vercel-900 ">
             <h1 className="  text-4xl pb-10  ">Top Producers</h1>
             <div className="  grid grid-cols-3 xl:grid-cols-6 gap-5 ">
               {popUsers.map((user) => (

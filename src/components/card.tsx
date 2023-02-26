@@ -115,14 +115,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   }
 
   return (
-    <div
-      onClick={(e) => {
-        e.preventDefault();
-
-        handleInfo(idea.id);
-      }}
-      className="w-full cursor-pointer  justify-center items-center m-auto   overflow-hidden shadow-lg bg-gray-800  "
-    >
+    <div className="w-full  justify-center items-center m-auto   overflow-hidden shadow-lg bg-gray-800  ">
       <div className="flex  justify-between">
         <div className="    h-[12.5rem]  w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
           <div className="px-6 py-4 ">
@@ -130,22 +123,22 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
             <p className="text-gray-400 text-sm">{idea.description}</p>
           </div>
           <div className="  md:invisible  xl:visible px-5">
-            <span
+            <div
               onClick={() => handleClickedTag(idea.tag_one)}
-              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md"
+              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
             >
               {idea.tag_one}
-            </span>
+            </div>
             <span
               onClick={() => handleClickedTag(idea.tag_two)}
-              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md"
+              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
             >
               {idea.tag_two}
             </span>
           </div>
         </div>
         <div className="  w-20 flex  justify-end   ">
-          <button className="h-10 w-10 m-4  bg-emerald-600 rounded-full shadow-md  text-gray-900 items-center justify-center text-center">
+          <button className="h-10 w-10 m-4  bg-emerald-600 rounded-full shadow-md  text-gray-900 items-center justify-center text-center ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100">
             <CardUserDisplay userId={idea.userId} />
           </button>
         </div>
@@ -157,7 +150,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
             onClick={() => {
               this_idea.play();
             }}
-            className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
+            className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
             <PlayIcon className=" ml-2 h-6 w-6  m-auto " />
           </button>
@@ -166,7 +159,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
             onClick={() => {
               this_idea.pause();
             }}
-            className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
+            className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
             <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
           </button>
@@ -180,7 +173,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
               onClick={() => {
                 handleLike();
               }}
-              className="mx-1 h-7 w-7 cursor-pointer"
+              className="mx-1 h-7 w-7 cursor-pointer ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
             />
           </div>
           <InformationCircleIcon
@@ -188,11 +181,11 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
               e.preventDefault();
               handleInfo(idea.id);
             }}
-            className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600"
+            className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600 ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           />
           <ArrowDownCircleIcon
             onClick={() => handleDownload()}
-            className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600"
+            className="mx-1 h-8 w-8 cursor-pointer hover:text-emerald-600 ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           />
         </div>
       </div>

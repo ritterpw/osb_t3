@@ -18,42 +18,46 @@ export default function Header() {
   }
 
   return (
-    <div className="header ">
-      <div className="  inline-flex  justify-center gap-1">
-        <div
-          onClick={() => router.push("/")}
-          className="flex-shrink-0 text-3xl font-bold text-center shadow-md uppercase ml-4 relative mr-4 "
-        >
-          <h1>OSP</h1>
+    <div className="header justify-center items-center ">
+      <div className=" w-full xl:w-4/5  justify-between flex py-2">
+        <div className="  inline-flex  justify-center gap-1">
+          <div
+            onClick={() => router.push("/")}
+            className="flex-shrink-0 text-4xl cursor-pointer font-bold text-center  uppercase ml-4 relative mr-4 "
+          >
+            <h1 className="">OSP</h1>
+          </div>
+
+          <form
+            onSubmit={(e) => onSubmitSearch(e)}
+            className="md:flex hidden  self-center items-center h-7  w-96 space-x-2 space rounded-md border
+          border-gray-700 bg-gray-600   py-2"
+          >
+            <div>
+              <MagnifyingGlassIcon className=" ml-2 h-5 w-5 text-gray-400 " />
+            </div>
+            <input
+              className="flex-1 bg-transparent outline-none text-gray-400 placeholder:text-md"
+              type="text"
+              placeholder="Search"
+              onChange={(e) => {
+                setSearchString(e.target.value);
+              }}
+            />
+          </form>
         </div>
 
-        <form
-          onSubmit={(e) => onSubmitSearch(e)}
-          className="md:flex hidden  self-center items-center h-6   w-96 space-x-2 space rounded-md border
-           border-gray-700 bg-gray-600   py-2"
-        >
-          <MagnifyingGlassIcon className=" ml-2 h-4 w-4 text-gray-400 " />
-          <input
-            className="flex-1 bg-transparent outline-none text-gray-400 placeholder:text-sm"
-            type="text"
-            placeholder="Search"
-            onChange={(e) => {
-              setSearchString(e.target.value);
+        <div className=" text-xl mx-4 flex items-center cursor-pointer  ">
+          <h1
+            className="header__link mx-4 hover:text-emerald-200 "
+            onClick={() => {
+              router.push("/");
             }}
-          />
-        </form>
-      </div>
-
-      <div className=" text-xl mx-4 flex items-center cursor-pointer  ">
-        <h1
-          className="header__link mx-4 hover:text-emerald-200 "
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          Home
-        </h1>
-        <Login />
+          >
+            Home
+          </h1>
+          <Login />
+        </div>
       </div>
     </div>
   );

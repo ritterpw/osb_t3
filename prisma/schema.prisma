@@ -88,19 +88,21 @@ model IdeaUserLikes {
 }
 
 model AcceptedContributions {
-  id          String @id
+  id          String @id @default(cuid())
   userId      String
   ideaId      String
   description String
+  file        String
 
   @@unique([userId, ideaId])
   @@index([ideaId])
 }
 
 model PendingContributions {
-  id          String @id
+  id          String @id @default(cuid())
   userId      String
   ideaId      String
+  file        String
   description String
 
   @@unique([userId, ideaId])
