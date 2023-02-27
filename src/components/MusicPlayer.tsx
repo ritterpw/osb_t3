@@ -19,11 +19,11 @@ function MusicPlayer({ file }: { file: string }) {
   // });
 
   return (
-    <div className=" rounded-sm shadow-md items-center  m-auto   ">
-      <div className=" p-10 ">
-        <div className=" w-full bg-gray-800 h-5 mb-6 rounded-full">
+    <div className="rounded-sm shadow-md items-center  m-auto">
+      <div className="p-10">
+        <div className="w-full bg-gray-800 h-5 mb-6 rounded-sm">
           <div
-            className=" h-5 rounded-full"
+            className="h-5 rounded-sm"
             style={{
               width: `${progress}%`,
               backgroundColor: "rgb(16,185,129)",

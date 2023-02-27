@@ -22,7 +22,7 @@ function IdeaScreen({ idea }: { idea: Idea }) {
 
   return (
     <div className="h-full w-screen    bg-vercel-900  pt-16 items-center ">
-      <div className=" p-3 rounded  border border-vercel-600   shadow-lg w-[65%] m-auto  grid  grid-rows-[1fr_2.5fr]">
+      <div className=" p-3 rounded  border border-vercel-600 bg-gradient-to-b from-vercel-900 via-vercel-900 to-vercel-1000   shadow-lg w-[65%] m-auto  grid  grid-rows-[1fr_2.5fr]">
         <div className="">
           <div className="   h-full   px-6 py-1">
             <div className="  grid grid-flow-rows">
@@ -63,9 +63,6 @@ function IdeaScreen({ idea }: { idea: Idea }) {
               className=" py-2 px-4 mr-4 rounded border border-vercel-700 shadow-md shadow-vercel-900 hover:bg-emerald-500 hover:text-vercel-800"
             >
               contribute to idea
-            </button>
-            <button className=" py-2 px-4 rounded border border-vercel-700 shadow-md shadow-vercel-900 hover:bg-emerald-500 hover:text-vercel-800 ">
-              add idea
             </button>
           </div>
         </div>

@@ -17,7 +17,9 @@ export default function addidea() {
       >
         <Header />
       </div>{" "}
-      <AddIdeaForm />
+      <div className="h-full">
+        <AddIdeaForm />
+      </div>
     </div>
   );
 }
@@ -95,8 +97,8 @@ function AddIdeaForm(): JSX.Element {
   }
 
   return (
-    <div className="p-5 ">
-      <div className="bg-vercel-1000 border border-vercel-600 rounded-sm shadow-2xl bg-opacity-20 text-xl text-emerald-400">
+    <div className="p-5 pt-16 m-auto items-center bg-vercel-900 h-full ">
+      <div className=" border w-[65%] m-auto   border-vercel-600 rounded-sm shadow-2xl bg-opacity-20 text-xl text-emerald-400">
         <div className=" px-6  ">
           <div className=" pt-5">
             <h1>Title</h1>
@@ -154,7 +156,7 @@ function AddIdeaForm(): JSX.Element {
           <div className=" pb-6 mx-auto text-center ">
             <button
               onClick={() => handleSubmitIdea()}
-              className="py-3 px-6 text-xl bg-vercel-1000 border border-vercel-600   hover:bg-emerald-500  hover:text-gray-900 rounded-sm shadow-md shadow-vercel-1000"
+              className="py-3 px-6 text-xl bg-vercel-900 border border-vercel-600 hover:rounded-3xl ease-in duration-200 hover:bg-emerald-500  hover:text-gray-900 rounded-sm shadow-md shadow-vercel-1000"
             >
               Add New Idea
             </button>
