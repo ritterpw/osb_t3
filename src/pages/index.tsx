@@ -87,7 +87,7 @@ function MostPopular({
   const { data: session } = useSession();
 
   return (
-    <div className="snap-y snap-mandatory overflow-x-clip overflow-scroll min-h-[96vh]  ">
+    <div className="snap-y snap-proximity  overflow-x-clip overflow-y-scroll min-h-[96vh] ">
       <div className=" snap-start  bg-piccy h-screen bg-no-repeat bg-cover bg-left bg-fixed ">
         <div className=" min-h-[96vh] w-screen justify-center items-center lg:grid lg:grid-cols-[1.5fr_1fr]  ">
           <div className=" items-center  text-center justify-center place-items-center flex"></div>
@@ -105,8 +105,8 @@ function MostPopular({
           </div>
         </div>
       </div>
-      <div className="snap-start  bg-gray-900  ">
-        <div className="min-h-screen ">
+      <div className="snap-start snap-proximity  bg-gray-900 ">
+        <div className="min-h-screen  ">
           <h1 className=" text-center py-6 text-4xl animate-fade-in ">
             Ideas Of The Week
           </h1>
