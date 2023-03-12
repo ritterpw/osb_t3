@@ -81,6 +81,7 @@ function MostPopular({
 }) {
   const router = useRouter();
   const [page, setPage] = useState(0);
+
   if (!testimonials.length) return null;
 
   const { data: session } = useSession();
@@ -104,7 +105,7 @@ function MostPopular({
           </div>
         </div>
       </div>
-      <div className="snap-start  bg-gray-900 ">
+      <div className="snap-start  bg-gray-900  ">
         <div className="min-h-screen ">
           <h1 className=" text-center py-6 text-4xl animate-fade-in ">
             Ideas Of The Week

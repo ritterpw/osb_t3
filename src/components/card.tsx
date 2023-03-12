@@ -10,9 +10,10 @@ import {
 import { Idea, User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ideasWithLikes } from "types/ideasWithLikes";
+import { AudioContext } from "@/context/audioContext";
 
 export default function Card({ idea }: { idea: ideasWithLikes }) {
   const router = useRouter();
@@ -20,8 +21,9 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   const likeIdea = trpc.useMutation(["idea.likeIdea"]);
   const unlikeIdea = trpc.useMutation(["idea.unlikeIdea"]);
   const [idealikes, setIdeaLikes] = useState(idea.likes);
+  const { pauseAudio, playAudio } = useContext(AudioContext);
 
-  const this_idea = new Audio(idea.file);
+  let this_audio: HTMLAudioElement | null = new Audio(idea.file);
 
   function handleDownload(): void {
     {
@@ -115,7 +117,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   }
 
   return (
-    <div className="w-full  justify-center items-center m-auto   overflow-hidden shadow-lg bg-gray-800  ">
+    <div className="w-full  justify-center items-center m-auto  transition delay-100 hover:-translate-y-1 hover:opacity-90 overflow-hidden shadow-lg bg-gray-800  ">
       <div className="flex  justify-between">
         <div className="    h-[12.5rem]  w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
           <div className="px-6 py-4 ">
@@ -137,10 +139,8 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
             </span>
           </div>
         </div>
-        <div className="  w-20 flex  justify-end   ">
-          <button className="h-10 w-10 m-4  bg-emerald-600 rounded-full shadow-md  text-gray-900 items-center justify-center text-center ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100">
-            <CardUserDisplay userId={idea.userId} />
-          </button>
+        <div className=" w-min h-min  justify-end inline-flex  ">
+          <CardUserDisplay userId={idea.userId} />
         </div>
       </div>
       <div className=" px-4 py-2 bg-gray-700   flex    justify-between">
@@ -148,7 +148,9 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
           <audio id="player" src={idea.file}></audio>
           <button
             onClick={() => {
-              this_idea.play();
+              if (this_audio) {
+                playAudio(this_audio);
+              }
             }}
             className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
@@ -157,7 +159,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
           {/* This is definitely not centered correctly */}
           <button
             onClick={() => {
-              this_idea.pause();
+              pauseAudio();
             }}
             className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
