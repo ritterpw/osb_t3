@@ -5,6 +5,9 @@ import { trpc } from "@/utils/trpc";
 import { Session } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
 import { User } from "@prisma/client";
+import { toSafeInteger } from "lodash";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const BUCKET_URL = "https://s3.us-east-1.amazonaws.com/newideas/";
 
@@ -39,6 +42,7 @@ function AddIdeaForm(): JSX.Element {
   const [tag_two, settag_two] = useState<any>();
   const [file, setFile] = useState<any>();
   const postIdea = trpc.useMutation(["idea.addIdea"]);
+  const router = useRouter();
 
   const { data: session } = useSession();
 
@@ -51,7 +55,13 @@ function AddIdeaForm(): JSX.Element {
 
   const { data } = trpc.useQuery(
     ["user.getUserByEmail", { email: session?.user.email as string }],
-    { enabled: IsSessionEmail() }
+    {
+      enabled: IsSessionEmail(),
+      refetchOnWindowFocus: false,
+      refetchInterval: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
   );
 
   function handleFilePick(file: any | null): void {
@@ -65,7 +75,7 @@ function AddIdeaForm(): JSX.Element {
     });
 
     const url = data.url;
-    const newData = await axios.put(url, file, {
+    await axios.put(url, file, {
       headers: {
         "Content-type": file.type,
         "Access-Control-Allow-Origin": "*",
@@ -78,13 +88,12 @@ function AddIdeaForm(): JSX.Element {
   async function handleSubmitIdea(): Promise<void> {
     //get userID
 
+    toast.loading("Uploading Idea...");
     //need to check if this user already has an idea with this title
 
-    if (!session?.user.email) return signIn();
+    if (!session?.user.email || !data?.user) return signIn();
 
     const url = await getFileNameToUpload(session.user.email);
-
-    if (data?.user == null) return;
 
     postIdea.mutate({
       user: data?.user?.id,
@@ -96,9 +105,21 @@ function AddIdeaForm(): JSX.Element {
     });
   }
 
+  if (postIdea.isError) {
+    toast.dismiss();
+    toast.error(`Error Uploading Idea`);
+  }
+
+  if (postIdea.isSuccess) {
+    toast.dismiss();
+    toast.success("Idea Uploaded!");
+    router.push("/");
+  }
+
   return (
     <div className="p-5 pt-16 m-auto items-center bg-vercel-900 h-full ">
       <div className=" border w-[65%] m-auto   border-vercel-600 rounded-sm shadow-2xl bg-opacity-20 text-xl text-emerald-400">
+        <Toaster position="top-center" />
         <div className=" px-6  ">
           <div className=" pt-5">
             <h1>Title</h1>

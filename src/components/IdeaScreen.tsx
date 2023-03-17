@@ -32,6 +32,7 @@ function IdeaScreen({ idea }: { idea: Idea }) {
                     {data && data.user?.image != null && (
                       <img
                         className=" h-20 w-20 rounded-full cursor-pointer hover:opacity-80  "
+                        referrerPolicy="no-referrer"
                         src={data.user?.image}
                       />
                     )}

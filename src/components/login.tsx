@@ -26,6 +26,7 @@ export default function Login() {
                 getUserProfile();
               }}
               className=" w-6 h-6 rounded-full cursor-pointer hover:opacity-80 sm:ml-3 "
+              referrerPolicy="no-referrer"
               src={session.user.image}
             />
           )}

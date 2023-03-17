@@ -180,7 +180,6 @@ export const ideaRouter = createRouter()
       });
     },
   })
-
   .mutation("addIdea", {
     input: z.object({
       user: z.string(),
