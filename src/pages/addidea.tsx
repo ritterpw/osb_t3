@@ -26,6 +26,7 @@ export default function addidea() {
     </div>
   );
 }
+
 type Idea = {
   title: string;
   description: string;
@@ -60,7 +61,6 @@ function AddIdeaForm(): JSX.Element {
       refetchOnWindowFocus: false,
       refetchInterval: false,
       refetchOnMount: false,
-      refetchOnReconnect: false,
     }
   );
 
@@ -105,14 +105,7 @@ function AddIdeaForm(): JSX.Element {
     });
   }
 
-  if (postIdea.isError) {
-    toast.dismiss();
-    toast.error(`Error Uploading Idea`);
-  }
-
   if (postIdea.isSuccess) {
-    toast.dismiss();
-    toast.success("Idea Uploaded!");
     router.push("/");
   }
 

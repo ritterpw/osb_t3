@@ -10,7 +10,7 @@
 } */
 @layer components {
   .header {
-    @apply sticky top-0 z-50 w-full h-12 flex text-emerald-500 justify-between items-center bg-transparent;
+    @apply sticky top-0 z-50 w-full  h-16 flex text-emerald-500 justify-between items-center bg-transparent;
   }
 
   .header__link {
