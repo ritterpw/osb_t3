@@ -27,10 +27,10 @@ function CardUserDisplay({ userId }: { userId: string }) {
         ClickHander();
       }}
     >
-      <h1 className="hidden lg:inline-flex whitespace-nowrap text-xl">
+      <h1 className="hidden pr-2 lg:inline-flex whitespace-nowrap text-xl">
         {name}
       </h1>
-      <div className="h-10 w-10 m-4  bg-emerald-600 rounded-full  shadow-md  text-gray-900 items-center justify-center text-center ">
+      <div className="h-10 w-10   bg-emerald-600 rounded-full  shadow-md  text-gray-900 items-center justify-center text-center ">
         <div>
           {data && data.user?.image != null && (
             <img

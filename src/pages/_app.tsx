@@ -13,11 +13,6 @@ import "../styles/globals.css";
 const MyApp: AppType = ({ Component, pageProps }) => {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    console.log("use effect audio:");
-    console.log(audio);
-  }, [audio]);
-
   const pauseAudio = () => {
     if (audio && !audio.paused) {
       audio.pause();
@@ -26,8 +21,6 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   };
 
   const playAudio = (this_audio: HTMLAudioElement) => {
-    console.log("playAudio");
-
     if (audio !== this_audio) {
       pauseAudio();
     }

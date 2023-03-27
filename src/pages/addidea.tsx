@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { trpc } from "@/utils/trpc";
 import { Session } from "next-auth";
@@ -13,7 +13,7 @@ const BUCKET_URL = "https://s3.us-east-1.amazonaws.com/newideas/";
 
 export default function addidea() {
   return (
-    <div className=" h-screen w-screen bg-vercel-1000 ">
+    <div className=" h-[96vh] w-screen bg-vercel-1000 ">
       <div
         className="border-b border-b-vercel-600 
         "
@@ -26,15 +26,6 @@ export default function addidea() {
     </div>
   );
 }
-
-type Idea = {
-  title: string;
-  description: string;
-  tag_one: string;
-  tag_two: string;
-  file: string;
-  likes: User[];
-};
 
 function AddIdeaForm(): JSX.Element {
   const [title, settitle] = useState<any>();
@@ -53,16 +44,6 @@ function AddIdeaForm(): JSX.Element {
     }
     return false;
   }
-
-  const { data } = trpc.useQuery(
-    ["user.getUserByEmail", { email: session?.user.email as string }],
-    {
-      enabled: IsSessionEmail(),
-      refetchOnWindowFocus: false,
-      refetchInterval: false,
-      refetchOnMount: false,
-    }
-  );
 
   function handleFilePick(file: any | null): void {
     setFile(file);
@@ -91,12 +72,15 @@ function AddIdeaForm(): JSX.Element {
     toast.loading("Uploading Idea...");
     //need to check if this user already has an idea with this title
 
-    if (!session?.user.email || !data?.user) return signIn();
+    if (!session?.user.email) {
+      console.log("not logged in");
+      return signIn();
+    }
 
     const url = await getFileNameToUpload(session.user.email);
 
     postIdea.mutate({
-      user: data?.user?.id,
+      user: session.user.id,
       title: title,
       description: description,
       tag_one: tag_one,
@@ -105,9 +89,19 @@ function AddIdeaForm(): JSX.Element {
     });
   }
 
-  if (postIdea.isSuccess) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (postIdea.isSuccess) {
+      toast.dismiss();
+      toast.success("Idea Uploaded!");
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    }
+    if (postIdea.isError) {
+      toast.dismiss();
+      toast.error("Error Uploading Idea: " + postIdea.error.message);
+    }
+  }, [postIdea.isSuccess, postIdea.isError]);
 
   return (
     <div className="p-5 pt-16 m-auto items-center bg-vercel-900 h-full ">

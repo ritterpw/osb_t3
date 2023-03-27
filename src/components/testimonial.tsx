@@ -13,7 +13,7 @@ const testimonial = ({
   image: string;
 }) => {
   return (
-    <div className=" flex   justify-center  bg-gray-900  bg-opacity-20 min-h-[30vh] lg:min-h-[15vh] rounded-lg shadow-lg text-left p-3">
+    <div className=" flex   justify-center  bg-gray-900  bg-opacity-20   md:h-96 rounded-lg shadow-lg text-left p-3">
       <div className="  grid grid-rows-[2fr_1fr] ">
         <div className=" text-gray-400  m-auto h-full  ">
           <div className=" justify-center">

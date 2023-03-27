@@ -7,7 +7,7 @@ export default function TagId() {
   const { id } = useRouter().query;
 
   const { data } = trpc.useQuery(
-    ["idea.searchTag", { this_tag: id as string }],
+    ["idea.searchTag", { this_query: id as string }],
     {
       refetchInterval: false,
       refetchOnWindowFocus: false,

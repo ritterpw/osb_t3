@@ -36,7 +36,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
 
       new JsFileDownloader({
         url: idea.file,
-        filename: name + fileEnding,
+        filename: idea.title + fileEnding,
       })
         .then(function (data) {
           console.log("downloaded");
@@ -117,35 +117,39 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   }
 
   return (
-    <div className="w-full  justify-center items-center m-auto  transition delay-100 hover:-translate-y-1 hover:opacity-90 overflow-hidden shadow-lg bg-gray-800  ">
-      <div className="flex  justify-between">
-        <div className="    h-[12.5rem]  w-full grid grid-cols-1 grid-rows-[3fr_1fr] justify-end  ">
-          <div className="px-6 py-4 ">
-            <div className="font-bold text-xl mb-2">{idea.title}</div>
-            <p className="text-gray-400 text-sm">{idea.description}</p>
-          </div>
-          <div className="  md:invisible  xl:visible px-5">
-            <div
-              onClick={() => handleClickedTag(idea.tag_one)}
-              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
-            >
-              {idea.tag_one}
+    <div className="w-full  h-full flex flex-col  justify-center items-center  transition delay-100 hover:-translate-y-1 hover:opacity-90 overflow-hidden shadow-lg bg-gray-800  ">
+      <div className=" px-4 pt-2 flex flex-col w-full justify-between h-40 ">
+        <div className=" flex flex-col">
+          <div className="flex flex-row justify-between w-full ">
+            <div className="flex flex-row justify-between items-center  w-full">
+              <div className="font-bold text-xl mt-1  mb-2">{idea.title}</div>
+              <div className=" w-min h-min inline-flex">
+                <CardUserDisplay userId={idea.userId} />
+              </div>
             </div>
-            <span
-              onClick={() => handleClickedTag(idea.tag_two)}
-              className="inline-block bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 mr-2 mb-2 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
-            >
-              {idea.tag_two}
-            </span>
           </div>
+          <p className="text-gray-400 text-sm text-ellipsis">
+            {idea.description}
+          </p>
         </div>
-        <div className=" w-min h-min  justify-end inline-flex  ">
-          <CardUserDisplay userId={idea.userId} />
+
+        <div className="pt-2 pb-3 flex flex-row  w-full     ">
+          <div
+            onClick={() => handleClickedTag(idea.tag_one)}
+            className="inline-flex bg-gray-600 cursor-pointer mr-2 hover:bg-gray-700 rounded-full px-3  py-1 text-sm font-semibold text-gray-200 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
+          >
+            {idea.tag_one}
+          </div>
+          <span
+            onClick={() => handleClickedTag(idea.tag_two)}
+            className="inline-flex bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
+          >
+            {idea.tag_two}
+          </span>
         </div>
       </div>
-      <div className=" px-4 py-2 bg-gray-700   flex    justify-between">
-        <div>
-          <audio id="player" src={idea.file}></audio>
+      <div className="w-full   max-h-14  px-4 py-2 bg-gray-700   flex    justify-between">
+        <div className="inline-flex  flex-row">
           <button
             onClick={() => {
               if (this_audio) {

@@ -53,12 +53,12 @@ export const ideaRouter = createRouter()
           OR: [
             {
               tag_one: {
-                search: input.this_query,
+                in: [input.this_query],
               },
             },
             {
               tag_two: {
-                search: input.this_query,
+                in: [input.this_query],
               },
             },
             {
@@ -82,7 +82,7 @@ export const ideaRouter = createRouter()
   })
   .query("searchTag", {
     input: z.object({
-      this_tag: z.string(),
+      this_query: z.string(),
     }),
     async resolve({ ctx, input }) {
       return await ctx.prisma.idea.findMany({
@@ -90,12 +90,12 @@ export const ideaRouter = createRouter()
           OR: [
             {
               tag_one: {
-                search: input.this_tag,
+                in: [input.this_query],
               },
             },
             {
               tag_two: {
-                search: input.this_tag,
+                in: [input.this_query],
               },
             },
           ],
