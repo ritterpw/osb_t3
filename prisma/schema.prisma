@@ -51,6 +51,7 @@ model User {
   sessions      Session[]
   ideas         Idea[]    @relation("userIdeas")
   liked_ideas   Idea[]    @relation("IdeaUserLikes")
+  contributions Contribution[] @relation("UserContributions")
 }
 
 model Idea {
@@ -63,6 +64,7 @@ model Idea {
   file        String   @unique
   createdAt   DateTime @default(now())
   slug        String?  @unique
+  contributions Contribution[] @relation("IdeaContributions")
   likes       User[]   @relation("IdeaUserLikes")
   user        User     @relation("userIdeas", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
@@ -89,27 +91,28 @@ model IdeaUserLikes {
   @@map("_IdeaUserLikes")
 }
 
-model AcceptedContributions {
+model Contribution {
   id          String @id @default(cuid())
   userId      String
   ideaId      String
+  user        User   @relation("UserContributions", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idea        Idea   @relation("IdeaContributions", fields: [ideaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   description String
   file        String
+  status      status
 
   @@unique([userId, ideaId])
+  @@index([userId])
   @@index([ideaId])
 }
 
-model PendingContributions {
-  id          String @id @default(cuid())
-  userId      String
-  ideaId      String
-  file        String
-  description String
 
-  @@unique([userId, ideaId])
-  @@index([ideaId])
+enum status {
+  PENDING
+  APPROVED
+  REJECTED
 }
+
 
 enum Role {
   USER

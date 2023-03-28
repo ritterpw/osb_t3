@@ -38,13 +38,6 @@ function AddIdeaForm(): JSX.Element {
 
   const { data: session } = useSession();
 
-  function IsSessionEmail(): boolean | undefined {
-    if (session?.user.email != undefined && session?.user.email != null) {
-      return true;
-    }
-    return false;
-  }
-
   function handleFilePick(file: any | null): void {
     setFile(file);
   }

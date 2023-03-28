@@ -64,8 +64,9 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
     };
   }
 
-  function handleInfo(id: string): void {
-    router.push("/ideas/" + id);
+  function handleInfo(id: string) {
+    if (session?.user) return router.push("/ideas/" + id);
+    return signIn();
   }
 
   /**

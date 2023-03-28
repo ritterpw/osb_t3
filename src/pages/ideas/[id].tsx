@@ -43,6 +43,8 @@ export default function Id(): JSX.Element {
     return <div> no idea found</div>;
   }
 
+  console.log(data.contributions);
+
   return (
     <div id="no-scroll1 ">
       <div className=" bg-vercel-1000 h-screen w-screen flex flex-col">

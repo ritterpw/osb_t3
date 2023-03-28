@@ -118,6 +118,7 @@ export const ideaRouter = createRouter()
         },
         include: {
           user: true,
+          contributions: true,
         },
       });
     },
@@ -162,24 +163,7 @@ export const ideaRouter = createRouter()
       });
     },
   })
-  .mutation("contributeToIdea", {
-    input: z.object({
-      userId: z.string(),
-      ideaId: z.string(),
-      description: z.string(),
-      file: z.string(),
-    }),
-    async resolve({ ctx, input }) {
-      return await ctx.prisma.pendingContributions.create({
-        data: {
-          userId: input.userId,
-          ideaId: input.ideaId,
-          description: input.description,
-          file: input.file,
-        },
-      });
-    },
-  })
+
   .mutation("addIdea", {
     input: z.object({
       user: z.string(),
