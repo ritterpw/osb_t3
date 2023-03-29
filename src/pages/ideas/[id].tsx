@@ -3,27 +3,16 @@ import { useRouter } from "next/router";
 import { trpc } from "@/utils/trpc";
 import Header from "@/components/header";
 import IdeaScreen from "@/components/IdeaScreen";
+import { User } from "@prisma/client";
+import { getSession, GetSessionParams } from "next-auth/react";
 
-export default function Id(): JSX.Element {
+export default function Id({ user }: { user: User }): JSX.Element {
   const router = useRouter();
   const { id } = router.query;
 
-  function is_id(): boolean {
-    return id != null && id != undefined && typeof id === "string";
-  }
-
-  let searchString: string;
-
-  if (typeof id === "string") {
-    searchString = id;
-  } else {
-    searchString = "";
-  }
-
   const { data, isLoading, isError } = trpc.useQuery(
-    ["idea.getIdeaById", { id: searchString }],
+    ["idea.getIdeaById", { id: id as string }],
     {
-      enabled: is_id(),
       refetchInterval: false,
       refetchOnReconnect: false,
       refetchOnWindowFocus: false,
@@ -43,19 +32,30 @@ export default function Id(): JSX.Element {
     return <div> no idea found</div>;
   }
 
-  console.log(data.contributions);
+  const contributions = data.contributions;
 
   return (
     <div id="no-scroll1 ">
       <div className=" bg-vercel-1000 h-screen w-screen flex flex-col">
-        <div
-          className="border-b border-b-vercel-700 
-        "
-        >
+        <div className="border-b border-b-vercel-700 ">
           <Header />
         </div>
-        {data && <IdeaScreen idea={data} />}
+        <IdeaScreen
+          idea={data}
+          contributions={data.userId === user.id ? contributions : undefined}
+          user={user}
+        />
       </div>
     </div>
   );
 }
+
+export const getServerSideProps = async (req: GetSessionParams | undefined) => {
+  const session = await getSession(req);
+
+  return {
+    props: {
+      user: session?.user,
+    },
+  };
+};

@@ -4,7 +4,7 @@ import { trpc } from "@/utils/trpc";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import _ from "lodash";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
@@ -23,6 +23,16 @@ function ContributeToIdea() {
     setFile(file);
   }
 
+  useEffect(() => {
+    if (addContribution.isSuccess) {
+      if (toast) toast.dismiss();
+      toast.success("Contribution Added Successfully!");
+      setTimeout(() => {
+        router.push("/ideas/" + id);
+      }, 2000);
+    }
+  }, [addContribution]);
+
   const { data, isLoading, isError } = trpc.useQuery(
     ["idea.getIdeaById", { id: id as string }],
     {
@@ -32,16 +42,7 @@ function ContributeToIdea() {
     }
   );
 
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error</span>;
-  }
-
   async function getFileNameToUpload(id: string): Promise<string> {
-    console.log(file);
     const { data } = await axios.post("/api/s3/uploadFile", {
       name: id + "-" + file.name,
       type: file.type,
@@ -61,7 +62,7 @@ function ContributeToIdea() {
   async function handleSubmit(): Promise<void> {
     const url = await getFileNameToUpload(session?.user.email as string);
 
-    toast.loading("Uploading Idea...");
+    // toast.loading("Uploading Idea...");
 
     addContribution.mutate({
       userId: session?.user.id as string,
@@ -72,19 +73,13 @@ function ContributeToIdea() {
     });
   }
 
-  useEffect(() => {
-    if (addContribution.isSuccess) {
-      toast.dismiss();
-      toast.success("Idea Uploaded!");
-      setTimeout(() => {
-        router.push(`/ideas/${id}`);
-      }, 2000);
-    }
-    if (addContribution.isError) {
-      toast.dismiss();
-      toast.error("Error Uploading Idea: " + addContribution.error.message);
-    }
-  }, [addContribution.isSuccess, addContribution.isError]);
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error</span>;
+  }
 
   return (
     <div className="h-screen w-screen bg-vercel-1000">
@@ -141,7 +136,7 @@ function ContributeToIdea() {
             <div className=" text-vercel-400 text-xl  ">Description</div>
             <input
               onChange={(e) => {
-                _.debounce(() => setDescription(e.target.value), 1000);
+                setDescription(e.target.value);
               }}
               type="text"
               placeholder="..."

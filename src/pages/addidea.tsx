@@ -36,6 +36,20 @@ function AddIdeaForm(): JSX.Element {
   const postIdea = trpc.useMutation(["idea.addIdea"]);
   const router = useRouter();
 
+  useEffect(() => {
+    if (postIdea.isSuccess) {
+      if (toast) toast.dismiss();
+      toast.success("Idea Uploaded!");
+      setTimeout(() => {
+        router.push("/ideas/" + postIdea.data.id);
+      }, 2000);
+    }
+    if (postIdea.isError) {
+      toast.dismiss();
+      toast.error("Error Uploading Idea: " + postIdea.error.message);
+    }
+  }, [postIdea.isSuccess, postIdea.isError]);
+
   const { data: session } = useSession();
 
   function handleFilePick(file: any | null): void {
@@ -65,12 +79,12 @@ function AddIdeaForm(): JSX.Element {
     toast.loading("Uploading Idea...");
     //need to check if this user already has an idea with this title
 
-    if (!session?.user.email) {
+    if (!session?.user) {
       console.log("not logged in");
       return signIn();
     }
 
-    const url = await getFileNameToUpload(session.user.email);
+    const url = await getFileNameToUpload(session.user.id);
 
     postIdea.mutate({
       user: session.user.id,
@@ -81,20 +95,6 @@ function AddIdeaForm(): JSX.Element {
       file: url,
     });
   }
-
-  useEffect(() => {
-    if (postIdea.isSuccess) {
-      toast.dismiss();
-      toast.success("Idea Uploaded!");
-      setTimeout(() => {
-        router.push("/");
-      }, 2000);
-    }
-    if (postIdea.isError) {
-      toast.dismiss();
-      toast.error("Error Uploading Idea: " + postIdea.error.message);
-    }
-  }, [postIdea.isSuccess, postIdea.isError]);
 
   return (
     <div className="p-5 pt-16 m-auto items-center bg-vercel-900 h-full ">

@@ -9,7 +9,7 @@ export interface AudioContextInterface {
 
 export const AudioContext = React.createContext<AudioContextInterface>({
   audio: null,
-  setAudio: () => {},
-  playAudio: () => {},
-  pauseAudio: () => {},
+  setAudio: () => undefined,
+  playAudio: () => undefined,
+  pauseAudio: () => undefined,
 });

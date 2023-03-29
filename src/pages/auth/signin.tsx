@@ -11,21 +11,6 @@ import { CtxOrReq } from "next-auth/client/_utils";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import Header from "@/components/header";
 
-const customStyles = {
-  content: {
-    width: "80%",
-    maxHeight: "90%",
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    transform: "translate(-50%, -50%)",
-    color: "rgba(20, 23, 29, 0.90)",
-    backgroundColor: "rgba(227, 229, 232, 1)",
-    borderRadius: "10px",
-  },
-};
-
 const SignIn = ({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {

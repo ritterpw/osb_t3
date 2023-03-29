@@ -7,7 +7,7 @@ import {
   PauseIcon,
   PlayIcon,
 } from "@heroicons/react/24/outline";
-import { Idea, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
 import { useContext, useEffect, useState } from "react";

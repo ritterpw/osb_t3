@@ -1,48 +1,42 @@
-import { trpc } from "@/utils/trpc";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
-import { Idea } from "@prisma/client";
+import { Contribution, Idea, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import React from "react";
 import MusicPlayer from "./MusicPlayer";
+import { useSession } from "next-auth/react";
 
-function IdeaScreen({ idea }: { idea: Idea }) {
+interface IdeaScreenProps {
+  idea: Idea;
+  contributions?: Contribution[];
+  user: User;
+}
+
+function IdeaScreen({ idea, contributions, user }: IdeaScreenProps) {
   const router = useRouter();
-  const { data, error, isLoading, isError } = trpc.useQuery([
-    "user.getUserById",
-    { userId: idea.userId },
-  ]);
-
-  if (isError) {
-    return <p>Error... {error.message}</p>;
-  }
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="h-full w-screen    bg-vercel-900  pt-16 items-center ">
-      <div className=" p-3 rounded  border border-vercel-600 bg-gradient-to-b from-vercel-900 via-vercel-900 to-vercel-1000   shadow-lg w-[65%] m-auto  grid  grid-rows-[1fr_2.5fr]">
+      <div className=" p-3 rounded-t  border border-vercel-600 bg-gradient-to-b from-vercel-900 via-vercel-900 to-vercel-1000   shadow-lg w-[65%] m-auto  grid  grid-rows-[1fr_2.5fr]">
         <div className="">
           <div className="   h-full   px-6 py-1">
             <div className="  grid grid-flow-rows">
               <div className=" mr-auto   my-auto grid grid-flow-col text-left space-x-2 ">
                 <div className="">
                   <button className="  h-8 w-8  shadow-md  bg-emerald-600 rounded-full text-gray-900 items-center justify-center text-center">
-                    {data && data.user?.image != null && (
+                    {user && user?.image != null && (
                       <img
                         className=" h-20 w-20 rounded-full cursor-pointer hover:opacity-80  "
                         referrerPolicy="no-referrer"
-                        src={data.user?.image}
+                        src={user?.image}
                       />
                     )}
-                    {!data && <UserCircleIcon className=" p-6" />}
+                    {!idea && <UserCircleIcon className=" p-6" />}
                   </button>
                 </div>
                 <div className=" my-auto text-md xl:text-lg">
-                  {data?.user?.producer_name != null
-                    ? data?.user?.producer_name
-                    : data?.user?.name}
+                  {user?.producer_name != null
+                    ? user?.producer_name
+                    : user?.name}
                 </div>
               </div>
               <div className=" mr-auto pt-2  text-xl lg:text-2xl  xl:text-3xl">
@@ -68,6 +62,23 @@ function IdeaScreen({ idea }: { idea: Idea }) {
           </div>
         </div>
       </div>
+
+      {contributions && contributions.length > 0 && (
+        <div className="     rounded-b border-b border-x border-vercel-600 bg-vercel-1000 m-auto shadow-lg w-[65%] ">
+          {contributions.map((c) => {
+            console.log(c);
+
+            return (
+              <div
+                key={c.id}
+                className=" last:border-b-0  p-3  border-b border-vercel-600  text-vercel-500   "
+              >
+                {c.description}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
