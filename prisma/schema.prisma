@@ -101,7 +101,7 @@ model Contribution {
   file        String
   status      status
 
-  @@unique([userId, ideaId])
+
   @@index([userId])
   @@index([ideaId])
 }
