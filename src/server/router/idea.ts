@@ -118,7 +118,11 @@ export const ideaRouter = createRouter()
         },
         include: {
           user: true,
-          contributions: true,
+          contributions: {
+            include: {
+              user: true,
+            },
+          },
         },
       });
     },
