@@ -143,7 +143,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
           </div>
           <span
             onClick={() => handleClickedTag(idea.tag_two)}
-            className="inline-flex bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
+            className="  text-ellipsis  bg-gray-600 cursor-pointer hover:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-200 shadow-md   transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
             {idea.tag_two}
           </span>

@@ -7,11 +7,11 @@ import { Contribution, Idea, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import MusicPlayer from "./MusicPlayer";
-import { useSession } from "next-auth/react";
 import { AudioContext } from "@/context/audioContext";
+import { ideasWithLikes } from "types/ideasWithLikes";
 
 interface IdeaScreenProps {
-  idea: Idea;
+  idea: ideasWithLikes;
   contributions?: Contribution[];
   contributionUser: User;
   user: User;
@@ -26,9 +26,9 @@ function IdeaScreen({
   const router = useRouter();
 
   return (
-    <div className="flex flex-col  h-full w-screen bg-vercel-900 py-16 items-center">
-      <div className="px-3 rounded-t border border-vercel-600 bg-gradient-to-b from-vercel-900 via-vercel-900 to-vercel-1000   shadow-lg w-[65%] m-auto  flex flex-col">
-        <div className="  w-full   px-6 pt-6">
+    <div className="flex flex-col  overflow-y-clip  h-full w-screen bg-vercel-900 md:py-16 items-center">
+      <div className="px-3 rounded-t border-b md:border border-vercel-600 bg-gradient-to-b from-vercel-900 via-vercel-900 to-vercel-1000 w-[100%]  shadow-lg md:w-[50%]  flex flex-col">
+        <div className="  w-full px-6 pt-3 md:pt-6">
           <div className="  w-full flex flex-row justify-between">
             <div className="   text-xl lg:text-2xl  xl:text-3xl">
               {idea.title}
@@ -51,26 +51,33 @@ function IdeaScreen({
           </div>
         </div>
         <div className="px-6">
-          <div className="py-6">{idea.description}</div>
-          <div className=" rounded border border-vercel-600     ">
-            <MusicPlayer file={idea.file} />
+          <div className=" py-3 md:py-6">{idea.description}</div>
+          <div
+            className={`rounded border border-vercel-600 ${
+              idea.userId === user.id ? "mb-6" : ""
+            } `}
+          >
+            <MusicPlayer file={idea.file} idea={idea} />
           </div>
-          <div className="items-end text-right justify-end content-end">
-            <button
-              onClick={() => {
-                router.push(`/ideas/${idea.id}/contributeToIdea`);
-              }}
-              className=" py-2 px-4  my-6 rounded border border-vercel-700 shadow-md shadow-vercel-900 transition-all duration-300 ease-in hover:rounded-xl hover:font-bold hover:bg-emerald-500 hover:text-vercel-1000"
-            >
-              contribute to idea
-            </button>
-          </div>
+
+          {idea.userId !== user.id && (
+            <div className="items-end text-right justify-end content-end ">
+              <button
+                onClick={() => {
+                  router.push(`/ideas/${idea.id}/contributeToIdea`);
+                }}
+                className=" py-2 px-4  my-6 rounded border border-vercel-700 shadow-md shadow-vercel-900 transition-all duration-300 ease-in hover:rounded-xl hover:font-bold hover:bg-emerald-500 hover:text-vercel-1000"
+              >
+                contribute to idea
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {contributions && contributions.length > 0 && (
-        <div className="rounded-b border-b border-x border-vercel-600 bg-vercel-1000 mx-auto shadow-lg  w-[65%] overflow-y-scroll">
-          <div className="bg-vercel-1000 sticky top-0 py-2 text-xl lg:text-2xl  xl:text-3xl text-left border-b border-vercel-600">
+        <div className="rounded-b border-b md:border-x border-vercel-600 bg-vercel-1000 mx-auto shadow-lg  w-full md:w-[50%] overflow-y-scroll">
+          <div className="bg-vercel-1000 sticky top-0 py-2 text-xl lg:text-2xl  text-left border-b border-vercel-600">
             <h1 className="font-bold pl-6">Pending Contributions</h1>
           </div>
           {contributions.map((c) => {
@@ -100,7 +107,7 @@ const ContributionTab = ({ c, user }: { c: Contribution; user: User }) => {
   return (
     <div
       key={c.id}
-      className=" w-full last:border-b-0  p-6  border-b border-vercel-600 text-xl  text-vercel-400   "
+      className=" w-full last:border-b-0  p-5  border-b border-vercel-600 text-xl  text-vercel-400   "
     >
       <div className="flex flex-col  w-full">
         <div className="  w-full flex flex-row justify-between">
