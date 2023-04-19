@@ -117,6 +117,7 @@ export const ideaRouter = createRouter()
           id: input.id,
         },
         include: {
+          likes: true,
           user: true,
           contributions: {
             include: {
