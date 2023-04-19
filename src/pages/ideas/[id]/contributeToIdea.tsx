@@ -122,7 +122,7 @@ function ContributeToIdea() {
             <div className="    px-6 ">
               <div>{data.description}</div>
               <div className=" rounded border border-vercel-600  my-4   ">
-                <MusicPlayer file={data.file} />
+                <MusicPlayer file={data.file} idea={data} />
               </div>
               <div className="items-end text-right justify-end content-end  "></div>
             </div>
