@@ -13,8 +13,8 @@ const testimonial = ({
   image: string;
 }) => {
   return (
-    <div className=" flex   justify-center  bg-gray-900  bg-opacity-20   md:h-96 rounded-lg shadow-lg text-left p-3">
-      <div className="  grid grid-rows-[2fr_1fr] ">
+    <div className=" flex  flex-col   bg-gray-900  bg-opacity-20   md:h-96 rounded-lg shadow-lg text-left p-3">
+      <div className="  ">
         <div className=" text-gray-400  m-auto h-full  ">
           <div className=" justify-center">
             "I have been using Open Source Productions for the past few months
