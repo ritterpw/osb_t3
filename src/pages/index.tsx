@@ -81,7 +81,7 @@ function MostPopular({
       <div className=" snap-start  bg-piccy h-full bg-no-repeat bg-cover bg-left bg-fixed ">
         <div className=" h-full w-screen justify-center items-center sm:grid sm:grid-cols-[1.5fr_1fr]  ">
           <div className=" items-center  text-center justify-center place-items-center flex"></div>
-          <div className="  rounded-l-3xl justify-center mt-52 mr-10 sm:mt-0 px-10 sm:px-0 ">
+          <div className="  rounded-l-3xl justify-center  mt-10 md:mt-52 sm:mr-10  md:px-10 px-0 ">
             <div className=" flex flex-col text-center sm:text-left animate-fade-in  ease">
               <p className=" text-5xl sm:text-7xl  ">Open Source</p>
               <p className=" text-5xl sm:text-7xl  ">Productions</p>
@@ -95,7 +95,7 @@ function MostPopular({
           </div>
         </div>
       </div>
-      <div className="snap-start  bg-gray-900 ">
+      <div className="snap-start min-h-screen bg-gray-900 ">
         <h1 className=" text-center pt-10 pb-6 text-4xl animate-fade-in ">
           Ideas Of The Week
         </h1>
@@ -108,7 +108,7 @@ function MostPopular({
             ))}
           </div>
         </div>
-        <div className="  pt-10 mx-auto text-center ">
+        <div className=" pb-6 md:pb-0  pt-10 mx-auto text-center ">
           <button
             onClick={() => ClickNewIdea(session, router)}
             className="py-3  px-10 text-2xl  bg-gray-800 hover:bg-emerald-500 hover:text-gray-900 hover:rounded-3xl shadow-md  ease-in duration-200 "
@@ -116,25 +116,25 @@ function MostPopular({
             Add New Idea
           </button>
         </div>
-        <div className=" h-full  py-32  bg-gradient-to-b from-gray-900 via-gray-900 to-vercel-1000 ">
-          <div className="  p-32 lg:grid lg:grid-cols-2    py-6 mx-auto text-center gap-10  lg:gap-44 ">
+        <div className="  hidden md:flex flex-col h-full  py-20  bg-gradient-to-b from-gray-900 via-gray-900 to-vercel-1000 ">
+          <div className="  p-20  lg:grid lg:grid-cols-2  mx-auto text-center gap-10  lg:gap-24 ">
             <div className=" flex flex-col  justify-center  bg-gray-800  mb-10 lg:p-0  w-full h-full rounded-lg shadow-lg text-left">
               <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full">
                 <div>
                   <MusicalNoteIcon className=" h-24 w-24  text-emerald-600" />
                 </div>
                 <div className="flex flex-col ">
-                  <h1 className=" pt-6 text-5xl xl:text-3xl text-gray-400  ">
+                  <h1 className=" pt-6 text-3xl md:text-4xl xl:text-5xl text-gray-400  ">
                     Collaborate
                   </h1>
-                  <h1 className=" hidden  xl:flex pt-4 text-base text-gray-500  ">
+                  <h1 className=" hidden  md:flex pt-4 md:text-2xl text-base text-gray-500  ">
                     Experience music creation in a whole new way
                   </h1>
                 </div>
               </div>
             </div>
 
-            <div className=" flex flex-col  justify-center  bg-gray-500 bg-opacity-5  w-full h-full rounded-lg shadow-lg text-left">
+            <div className=" flex flex-col  justify-center  bg-gray-800  mb-10 lg:p-0  w-full h-full rounded-lg shadow-lg text-left">
               <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full">
                 <div>
                   <GlobeAmericasIcon className=" h-24 w-24  text-emerald-600" />
