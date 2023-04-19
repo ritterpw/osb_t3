@@ -3,6 +3,7 @@ import Header from "@/components/header";
 import { trpc } from "@/utils/trpc";
 import { useSession } from "next-auth/react";
 import React from "react";
+import Layout from "../components/profLayout";
 
 export default function Me() {
   const { data: session } = useSession();
@@ -40,41 +41,43 @@ export default function Me() {
   }
 
   return (
-    <div className="p-5">
-      <div className=" min-h-[80vh]  bg-gray-800 rounded-3xl shadow-2xl bg-opacity-20 text-xl text-emerald-400">
-        <div className="  grid grid-rows-[2fr_7fr_1fr] ">
-          <div className="">
-            <h1 className="text-3xl">
-              <div className="py-2 px-4"></div>
-              <div className="py-2 px-4">
-                {data.user.producer_name != null
-                  ? data.user.producer_name
-                  : data.user.name}
-              </div>
-            </h1>
-          </div>
-          <div className="">
-            <h1 className="text-3xl">
-              <div className="py-2 px-4"></div>
-              <div className="py-2 px-4">
-                {data.user.producer_name != null
-                  ? data.user.producer_name
-                  : data.user.name}
-              </div>
-            </h1>
-          </div>
-          <div className=" min-h-full bg-gradient-to-b from-gray-800 via-gray-800 to-gray-700">
-            <h1 className="text-3xl">
-              <div className="py-2 px-4"></div>
-              <div className="py-2 px-4">
-                {data.user.producer_name != null
-                  ? data.user.producer_name
-                  : data.user.name}
-              </div>
-            </h1>
+    <Layout pageTitle="My Profile">
+      <div className="">
+        <div className=" min-h-[80vh]  bg-gray-800 rounded-3xl shadow-2xl bg-opacity-20 text-xl text-emerald-400">
+          <div className="  grid grid-rows-[2fr_7fr_1fr] ">
+            <div className="">
+              <h1 className="text-3xl">
+                <div className="py-2 px-4"></div>
+                <div className="py-2 px-4">
+                  {data.user.producer_name != null
+                    ? data.user.producer_name
+                    : data.user.name}
+                </div>
+              </h1>
+            </div>
+            <div className="">
+              <h1 className="text-3xl">
+                <div className="py-2 px-4"></div>
+                <div className="py-2 px-4">
+                  {data.user.producer_name != null
+                    ? data.user.producer_name
+                    : data.user.name}
+                </div>
+              </h1>
+            </div>
+            <div className=" min-h-full bg-gradient-to-b from-gray-800 via-gray-800 to-gray-700">
+              <h1 className="text-3xl">
+                <div className="py-2 px-4"></div>
+                <div className="py-2 px-4">
+                  {data.user.producer_name != null
+                    ? data.user.producer_name
+                    : data.user.name}
+                </div>
+              </h1>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
