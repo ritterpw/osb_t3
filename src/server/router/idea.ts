@@ -1,3 +1,4 @@
+import { Genre } from "@prisma/client";
 import { createRouter } from "./context";
 import { z } from "zod";
 
@@ -107,6 +108,28 @@ export const ideaRouter = createRouter()
       });
     },
   })
+  .query("searchGenre", {
+    input: z.object({
+      this_query: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.idea.findMany({
+        where: {
+          OR: [
+            {
+              genre: {
+                in: [input.this_query.replaceAll(" ", "_") as Genre],
+              },
+            },
+          ],
+        },
+        include: {
+          likes: true,
+        },
+        take: 10,
+      });
+    },
+  })
   .query("getIdeaById", {
     input: z.object({
       id: z.string(),
@@ -126,6 +149,103 @@ export const ideaRouter = createRouter()
           },
         },
       });
+    },
+  })
+  .query("getIdeasByUser", {
+    input: z.object({
+      userId: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return await ctx.prisma.idea.findMany({
+        where: {
+          userId: input.userId,
+        },
+        include: {
+          likes: true,
+        },
+      });
+    },
+  })
+  .query("getMostPopularTags", {
+    async resolve({ ctx }) {
+      const mostUsedTags = await ctx.prisma.idea.groupBy({
+        by: ["tag_one", "tag_two"],
+        _count: {
+          tag_one: true,
+          tag_two: true,
+        },
+        orderBy: {
+          _count: {
+            tag_one: "desc",
+            tag_two: "desc",
+          },
+        },
+      });
+
+      const tagCounts = mostUsedTags.reduce(
+        (acc: { [key: string]: number }, { tag_one, tag_two, _count }) => {
+          const tagOneCount = _count.tag_one;
+          const tagTwoCount = _count.tag_two;
+
+          if (tagOneCount) {
+            const tagOneLower = tag_one.toLowerCase();
+            acc[tagOneLower] = (acc[tagOneLower] || 0) + tagOneCount;
+          }
+
+          if (tagTwoCount) {
+            const tagTwoLower = tag_two.toLowerCase();
+            acc[tagTwoLower] = (acc[tagTwoLower] || 0) + tagTwoCount;
+          }
+
+          return acc;
+        },
+        {}
+      );
+
+      const mostUsedTagArray = Object.entries(tagCounts)
+        .map(([tag, count]) => ({ tag, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 30);
+
+      return mostUsedTagArray;
+    },
+  })
+  .query("getMostPopularGenres", {
+    async resolve({ ctx }) {
+      const mostUsedGenres = await ctx.prisma.idea.groupBy({
+        by: ["genre"],
+        _count: {
+          genre: true,
+        },
+        orderBy: {
+          _count: {
+            genre: "desc",
+          },
+        },
+      });
+
+      const genreCounts = mostUsedGenres.reduce(
+        (acc: { [key: string]: number }, { genre, _count }) => {
+          const genreCount = _count.genre;
+
+          if (genreCount) {
+            acc[genre] = (acc[genre] || 0) + genreCount;
+          }
+
+          return acc;
+        },
+        {}
+      );
+
+      const mostUsedTagArray = Object.entries(genreCounts)
+        .map(([genre, count]) => {
+          genre = genre.replaceAll("_", " ");
+          return { genre, count };
+        })
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 30);
+
+      return mostUsedTagArray;
     },
   })
   .mutation("likeIdea", {
