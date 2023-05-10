@@ -27,7 +27,7 @@ export default function Search() {
           >
             <Header />
           </div>{" "}
-          {data && <DisplaySearchs data={data} />}
+          {data && <DisplaySearchs data={data} title={"Search"} />}
         </div>
       </div>
     </>
