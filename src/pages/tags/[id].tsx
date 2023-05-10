@@ -22,7 +22,7 @@ export default function TagId() {
       >
         <Header />
       </div>{" "}
-      {data && <DisplaySearchs data={data} />}
+      {data && <DisplaySearchs data={data} title={"Tags"} />}
     </div>
   );
 }
