@@ -34,8 +34,6 @@ export default function Id({ user }: { user: User }): JSX.Element {
 
   const contributions = data.contributions;
 
-  console.log(data);
-
   return (
     <div id="no-scroll1 ">
       <div className=" bg-vercel-1000 h-screen w-screen flex flex-col">
