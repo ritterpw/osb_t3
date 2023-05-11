@@ -13,7 +13,7 @@ export default function Login() {
   if (session?.user.image) {
     return (
       <>
-        <div className="items-center inline-flex">
+        <div className="items-center inline-flex ml-2">
           <div
             onClick={() => signOut()}
             className="  cursor-pointer  hover:text-emerald-200"
@@ -40,7 +40,7 @@ export default function Login() {
     <>
       <div
         onClick={() => signIn()}
-        className="  cursor-pointer items-center inline-flex hover:text-emerald-200"
+        className="  cursor-pointer items-center inline-flex hover:text-emerald-200 ml-3"
       >
         <p className="header__link hidden lg:inline-flex">Sign In</p>
         <UserIcon className="icon " />
