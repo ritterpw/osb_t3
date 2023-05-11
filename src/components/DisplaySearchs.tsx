@@ -2,10 +2,16 @@ import React from "react";
 import { ideasWithLikes } from "types/ideasWithLikes";
 import Card from "./card";
 
-export default function DisplaySearchs({ data }: { data: ideasWithLikes[] }) {
+export default function DisplaySearchs({
+  data,
+  title,
+}: {
+  data: ideasWithLikes[];
+  title: String;
+}) {
   return (
     <div className="min-h-[96%] max-h-screen w-screen pb-3  pt-3 m-auto ">
-      <h1 className=" text-center my-5 text-4xl animate-fade-in  ">Search</h1>
+      <h1 className=" text-center my-5 text-4xl animate-fade-in  ">{title}</h1>
       <div className=" px-10 md:px-20 lg:px-60 animate-fade-in ">
         {data &&
           data.map((idea) => (
