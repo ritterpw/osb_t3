@@ -47,14 +47,30 @@ export default function Header() {
           </form>
         </div>
 
-        <div className=" text-xl mx-4 flex items-center cursor-pointer  ">
+        <div className=" text-xl mx-3 flex items-center cursor-pointer  ">
           <h1
-            className="header__link mx-4 hover:text-emerald-200 "
+            className="header__link mx-2 hover:text-emerald-200 "
             onClick={() => {
               router.push("/");
             }}
           >
             Home
+          </h1>
+          <h1
+            className="header__link mx-3 hover:text-emerald-200 "
+            onClick={() => {
+              router.push("/genres");
+            }}
+          >
+            Genres
+          </h1>
+          <h1
+            className="header__link mx-3 hover:text-emerald-200 "
+            onClick={() => {
+              router.push("/tags");
+            }}
+          >
+            Tags
           </h1>
           <Login />
         </div>
