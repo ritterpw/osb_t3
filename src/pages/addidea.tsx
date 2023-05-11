@@ -30,8 +30,8 @@ export default function addidea() {
 function AddIdeaForm(): JSX.Element {
   const [title, settitle] = useState<any>();
   const [description, setdescription] = useState<any>();
-  const [tag_one, settag_one] = useState<any>();
-  const [tag_two, settag_two] = useState<any>();
+  const [tag_one, settag_one] = useState<String>();
+  const [tag_two, settag_two] = useState<String>();
   const [file, setFile] = useState<any>();
   const postIdea = trpc.useMutation(["idea.addIdea"]);
   const router = useRouter();
@@ -90,8 +90,8 @@ function AddIdeaForm(): JSX.Element {
       user: session.user.id,
       title: title,
       description: description,
-      tag_one: tag_one,
-      tag_two: tag_two,
+      tag_one: tag_one as string,
+      tag_two: tag_two as string,
       file: url,
     });
   }
