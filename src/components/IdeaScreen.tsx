@@ -9,6 +9,7 @@ import React, { useContext } from "react";
 import MusicPlayer from "./MusicPlayer";
 import { AudioContext } from "@/context/audioContext";
 import { ideasWithLikes } from "types/ideasWithLikes";
+import { useSession } from "next-auth/react";
 
 interface IdeaScreenProps {
   idea: ideasWithLikes;
@@ -24,6 +25,8 @@ function IdeaScreen({
   user,
 }: IdeaScreenProps) {
   const router = useRouter();
+
+  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col  overflow-y-clip  h-full w-screen bg-vercel-900 md:py-16 items-center">
@@ -54,13 +57,13 @@ function IdeaScreen({
           <div className=" py-3 md:py-6">{idea.description}</div>
           <div
             className={`rounded border border-vercel-600 ${
-              idea.userId === user.id ? "mb-6" : ""
+              idea.userId === session?.user.id ? "mb-6" : ""
             } `}
           >
             <MusicPlayer file={idea.file} idea={idea} />
           </div>
 
-          {idea.userId !== user.id && (
+          {idea.userId != session?.user.id && (
             <div className="items-end text-right justify-end content-end ">
               <button
                 onClick={() => {
