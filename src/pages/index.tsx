@@ -99,7 +99,7 @@ function MostPopular({
         <h1 className=" text-center pt-10 pb-6 text-4xl animate-fade-in ">
           Ideas Of The Week
         </h1>
-        <div className=" mx-12  items-center justify-center">
+        <div className=" mx-20 xl:mx-40  items-center justify-center">
           <div className="md:gap-8  md:grid md:grid-cols-[1fr_1fr]  xl:grid-cols-[1fr_1fr_1fr] m-auto items-center justify-center">
             {popIdeas.map((idea) => (
               <div className="first:pt-0 pt-8 md:pt-0 " key={idea.id}>
@@ -116,8 +116,8 @@ function MostPopular({
             Add New Idea
           </button>
         </div>
-        <div className="  hidden md:flex flex-col h-full  py-20  bg-gradient-to-b from-gray-900 via-gray-900 to-vercel-1000 ">
-          <div className="  p-20  lg:grid lg:grid-cols-2  mx-auto text-center gap-10  lg:gap-24 ">
+        <div className="   hidden md:flex flex-col h-full  py-20  bg-gradient-to-b from-gray-900 via-gray-900 to-vercel-1000 ">
+          <div className="  px-20 xl:px-40 lg:grid lg:grid-cols-2  mx-auto text-center gap-10  lg:gap-24 ">
             <div className=" flex flex-col  justify-center  bg-gray-800  mb-10 lg:p-0  w-full h-full rounded-lg shadow-lg text-left">
               <div className="p-10 grid grid-rows-[1.5fr_2fr] h-full">
                 <div>
@@ -241,12 +241,12 @@ function UserCard({ user }: { user: topUser }) {
 function DividerStats() {
   return (
     <div className="  h-44 w-full justify-center mt-32 border-y border-vercel-600 bg-gray-800  shadow-xl ">
-      <div className=" m-auto grid h-full grid-cols-4 justify-center lg:w-[80%]   ">
+      <div className=" m-auto grid h-full grid-cols-4 justify-center lg:w-[80%]  text-sm ">
         <div className=" my-auto grid h-[85%]  grid-rows-[4fr_1fr]  items-center justify-center border-r-2 border-vercel-600 text-center">
           <div className="m-auto flex h-full items-center justify-center  text-center text-5xl  font-bold text-vercel-300">
             <h1>100%</h1>
           </div>
-          <h1 className="h-full text-vercel-500"> better than your company</h1>
+          <h1 className="h-full text-vercel-500"> better than you</h1>
         </div>
         <div className=" my-auto grid h-[85%]  grid-rows-[4fr_1fr]  items-center justify-center border-r-2 border-vercel-600 text-center">
           <div className="m-auto flex h-full items-center justify-center  text-center text-5xl  font-bold text-vercel-300">
