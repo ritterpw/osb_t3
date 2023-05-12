@@ -7,7 +7,7 @@ export default function Login() {
   const router = useRouter();
 
   function getUserProfile() {
-    router.push("/me");
+    router.push(`/users/${session?.user.id}`);
   }
 
   if (session?.user.image) {
