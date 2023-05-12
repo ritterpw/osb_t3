@@ -30,6 +30,27 @@ export const userRouter = createRouter()
       };
     },
   })
+  .query("getUserAndIdeasById", {
+    input: z
+      .object({
+        userId: z.string(),
+      })
+      .nullish(),
+    async resolve({ ctx, input }) {
+      return {
+        user: await ctx.prisma.user.findFirst({
+          where: { id: input?.userId },
+          include: {
+            ideas: {
+              include: {
+                likes: true,
+              },
+            },
+          },
+        }),
+      };
+    },
+  })
   .query("getMostPopularThisWeek", {
     async resolve({ ctx }) {
       const now = new Date();
