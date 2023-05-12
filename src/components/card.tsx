@@ -10,7 +10,7 @@ import {
 import { User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
 import CardUserDisplay from "./CardUserDisplay";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { ideasWithLikes } from "types/ideasWithLikes";
 import { AudioContext } from "@/context/audioContext";
@@ -25,28 +25,39 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
 
   let this_audio: HTMLAudioElement | null = new Audio(idea.file);
 
+  /**
+   * This function downloads a file with a specific file name based on the file type.
+   */
   function handleDownload(): void {
-    {
-      let fileEnding = "";
-      if (idea.file.endsWith(".wav")) {
-        fileEnding = ".wav";
-      } else if (idea.file.endsWith(".mp3")) {
-        fileEnding = ".mp3";
-      }
-
-      new JsFileDownloader({
-        url: idea.file,
-        filename: idea.title + fileEnding,
-      })
-        .then(function (data) {
-          console.log("downloaded");
-        })
-        .catch(function (error) {
-          console.log("error: " + error);
-        });
+    let fileEnding = "";
+    if (idea.file.endsWith(".wav")) {
+      fileEnding = ".wav";
+    } else if (idea.file.endsWith(".mp3")) {
+      fileEnding = ".mp3";
     }
+
+    new JsFileDownloader({
+      url: idea.file,
+      filename: idea.title + fileEnding,
+    })
+      .then(function (data) {
+        console.log("downloaded");
+      })
+      .catch(function (error) {
+        console.log("error: " + error);
+      });
   }
 
+  /**
+   * The function checks if a certain ID has been seen in an array and returns a boolean value and the
+   * index of the user who has seen it.
+   * @param {string} id - The `id` parameter is a string that represents the ID of a user. The function
+   * `checkSeen` checks if this user has seen an idea by iterating through the `idea.likes` array and
+   * comparing the `id` of each element with the given `id`. If a match is found,
+   * @returns An object with two properties: `seen` (a boolean indicating whether the `id` has been seen
+   * in the `idea.likes` array) and `userIndex` (a number indicating the index of the user with the
+   * matching `id` in the `idea.likes` array).
+   */
   function checkSeen(id: string): { seen: boolean; userIndex: number } {
     let hasSeen = false;
     let userIndex = -1;
@@ -70,8 +81,9 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   }
 
   /**
-   * Handles the like/unlike functionality
-   *
+   * This function handles liking and unliking an idea by adding or removing the user's ID from the list
+   * of idea likes.
+   * @returns a Promise that resolves to void.
    */
   async function handleLike(): Promise<void> {
     const newLikes: User[] = idealikes;
