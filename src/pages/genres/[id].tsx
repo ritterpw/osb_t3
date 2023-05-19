@@ -4,7 +4,7 @@ import { trpc } from "@/utils/trpc";
 import { Genre } from "@prisma/client";
 import { useRouter } from "next/router";
 
-export default function genreSearch() {
+export default function GenreSearch() {
   const { id } = useRouter().query;
 
   const { data } = trpc.useQuery(
@@ -17,10 +17,7 @@ export default function genreSearch() {
 
   return (
     <div className=" h-screen w-screen flex flex-col">
-      <div
-        className="border-b border-b-vercel-600 
-        "
-      >
+      <div className="border-b border-b-vercel-600 ">
         <Header />
       </div>
       {data && <DisplaySearchs data={data} title={"Tags"} />}
