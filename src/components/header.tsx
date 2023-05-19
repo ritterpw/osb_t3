@@ -5,7 +5,6 @@ import { FormEvent, useState } from "react";
 import Login from "./login";
 
 export default function Header() {
-  const { data: session } = useSession();
   const router = useRouter();
 
   const [searchString, setSearchString] = useState("");
