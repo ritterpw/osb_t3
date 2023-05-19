@@ -7,7 +7,7 @@ export default function DisplaySearchs({
   title,
 }: {
   data: ideasWithLikes[];
-  title: String;
+  title: string;
 }) {
   return (
     <div className="min-h-[96%] max-h-screen w-screen pb-3  pt-3 m-auto ">
