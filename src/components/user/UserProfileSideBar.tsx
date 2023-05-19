@@ -2,9 +2,7 @@ import React from "react";
 import { Cog6ToothIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 
-type Props = {};
-
-const UserProfileSideBar = (props: Props) => {
+const UserProfileSideBar = () => {
   const router = useRouter();
   return (
     <div>
@@ -16,7 +14,7 @@ const UserProfileSideBar = (props: Props) => {
           onClick={() => router.push("/me")}
         >
           <HomeIcon className="ml-12 h-9 w-9  object-center" />
-          <h1 className=" pl-4 text-lg ">My Profile</h1>
+          <h1 className=" pl-4 text-lg ">User Profile</h1>
         </li>
 
         <li
