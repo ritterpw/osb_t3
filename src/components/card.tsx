@@ -22,8 +22,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   const unlikeIdea = trpc.useMutation(["idea.unlikeIdea"]);
   const [idealikes, setIdeaLikes] = useState(idea.likes);
   const { pauseAudio, playAudio } = useContext(AudioContext);
-
-  let this_audio: HTMLAudioElement | null = new Audio(idea.file);
+  const this_audio: HTMLAudioElement | null = new Audio(idea.file);
 
   /**
    * This function downloads a file with a specific file name based on the file type.
@@ -95,7 +94,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
     const { userIndex, seen } = checkSeen(session.user.id);
 
     if (!seen) {
-      const like = likeIdea.mutate({
+      likeIdea.mutate({
         idea: idea.id,
         user: session?.user.id,
       });
@@ -113,7 +112,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
       return;
     }
 
-    const unlike = unlikeIdea.mutate({
+    unlikeIdea.mutate({
       idea: idea.id,
       user: session?.user.id,
     });
