@@ -54,7 +54,7 @@ export const userRouter = createRouter()
   .query("getMostPopularThisWeek", {
     async resolve({ ctx }) {
       const now = new Date();
-      let data = await ctx.prisma.user.findMany({
+      const data = await ctx.prisma.user.findMany({
         select: {
           id: true,
           name: true,
