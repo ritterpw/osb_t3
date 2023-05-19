@@ -1,8 +1,6 @@
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import React from "react";
 
-type Props = {};
-
 const testimonial = ({
   quote,
   name,
