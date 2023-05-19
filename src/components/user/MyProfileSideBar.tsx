@@ -1,9 +1,8 @@
 import React from "react";
 import { Cog6ToothIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
-type Props = {};
 
-const MyProfileSideBar = (props: Props) => {
+const MyProfileSideBar = () => {
   const router = useRouter();
   return (
     <div>
