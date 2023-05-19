@@ -1,11 +1,10 @@
 import {
   ArrowDownCircleIcon,
   HandThumbUpIcon,
-  InformationCircleIcon,
   PauseIcon,
   PlayIcon,
 } from "@heroicons/react/24/outline";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AudioContext } from "@/context/audioContext";
 import { trpc } from "@/utils/trpc";
 import { User } from "@prisma/client";
@@ -74,11 +73,6 @@ function MusicPlayer({ file, idea }: { file: string; idea: ideasWithLikes }) {
     };
   }
 
-  function handleInfo(id: string) {
-    if (session?.user) return router.push("/ideas/" + id);
-    return signIn();
-  }
-
   /**
    * Handles the like/unlike functionality
    *
@@ -93,7 +87,7 @@ function MusicPlayer({ file, idea }: { file: string; idea: ideasWithLikes }) {
     const { userIndex, seen } = checkSeen(session.user.id);
 
     if (!seen) {
-      const like = likeIdea.mutate({
+      likeIdea.mutate({
         idea: idea.id,
         user: session?.user.id,
       });
@@ -111,7 +105,7 @@ function MusicPlayer({ file, idea }: { file: string; idea: ideasWithLikes }) {
       return;
     }
 
-    const unlike = unlikeIdea.mutate({
+    unlikeIdea.mutate({
       idea: idea.id,
       user: session?.user.id,
     });
@@ -119,12 +113,6 @@ function MusicPlayer({ file, idea }: { file: string; idea: ideasWithLikes }) {
     if (userIndex >= 0) newLikes.splice(userIndex, 1);
 
     setIdeaLikes(newLikes);
-  }
-
-  function handleClickedTag(tag: string): void {
-    tag != null
-      ? router.push("/tags/" + tag)
-      : new Error("Error handling push to tag page - tag is null");
   }
 
   return (
