@@ -2,10 +2,7 @@ import Header from "@/components/header";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { trpc } from "@/utils/trpc";
-import { Session } from "next-auth";
 import { signIn, useSession } from "next-auth/react";
-import { User } from "@prisma/client";
-import { toSafeInteger } from "lodash";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 
@@ -30,8 +27,8 @@ export default function addidea() {
 function AddIdeaForm(): JSX.Element {
   const [title, settitle] = useState<any>();
   const [description, setdescription] = useState<any>();
-  const [tag_one, settag_one] = useState<String>();
-  const [tag_two, settag_two] = useState<String>();
+  const [tag_one, settag_one] = useState<string>();
+  const [tag_two, settag_two] = useState<string>();
   const [file, setFile] = useState<any>();
   const postIdea = trpc.useMutation(["idea.addIdea"]);
   const router = useRouter();
