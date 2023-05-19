@@ -8,7 +8,7 @@ const UserHeaderButton = () => {
 
   return (
     <div>
-      <div className="dashboard__header__link flex">
+      <div className="button__icon flex">
         <UserIcon
           onClick={() => setIsOpen(!isOpen)}
           className="  h-6 w-6  flex-col  object-center "
