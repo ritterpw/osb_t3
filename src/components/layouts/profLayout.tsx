@@ -7,7 +7,6 @@ import {
   BellAlertIcon,
   ChatBubbleBottomCenterTextIcon,
   CheckBadgeIcon,
-  Cog6ToothIcon,
   HomeIcon,
   UserCircleIcon,
   XMarkIcon,
@@ -17,13 +16,14 @@ import { AiOutlineLogout, AiOutlineProfile } from "react-icons/ai";
 import UserHeaderButton from "@/components/user/UserHeaderButton";
 import MyProfileSideBar from "@/components/user/MyProfileSideBar";
 import UserProfileSideBar from "@/components/user/UserProfileSideBar";
+import { trpc } from "@/utils/trpc";
 
 interface LayoutProps {
   pageTitle: string;
   children: ReactNode;
 }
 
-const dashboardLayout = (props: LayoutProps) => {
+const DashboardLayout = (props: LayoutProps) => {
   const [hamburgerClicked, setHamburgerClicked] = useState(false);
 
   return (
@@ -33,12 +33,12 @@ const dashboardLayout = (props: LayoutProps) => {
         hamburgerClicked={hamburgerClicked}
         setHamburgerClicked={setHamburgerClicked}
       />
-      <DashboardBody children={props.children} />
+      <DashboardBody>{props.children}</DashboardBody>
     </div>
   );
 };
 
-export default dashboardLayout;
+export default DashboardLayout;
 
 type props = {
   title: string;
@@ -52,6 +52,9 @@ const DashboardHeader = ({
   setHamburgerClicked,
 }: props) => {
   const router = useRouter();
+  const { data: session } = useSession();
+  const isMe: boolean = router.query.id === session?.user?.id;
+
   return (
     <div className=" sticky top-0 z-50 sm:h-28 w-full  bg-vercel-900  border-b border-vercel-400 sm:border-b-0 ">
       <div className="flex h-full  flex-row items-center justify-between  ">
@@ -115,11 +118,18 @@ const DashboardHeader = ({
                     <ul className="flex flex-col gap-3 pt-3">
                       <li className="flex  items-center gap-2">
                         <AiOutlineProfile className="h-8 w-8 object-center  " />
-                        <Link href="/me">
-                          <a className="text-vercel-300 text-2xl">
-                            My Profile{" "}
-                          </a>
-                        </Link>
+                        {isMe && (
+                          <Link href="/me">
+                            <a className="text-vercel-300 text-2xl">My Ideas</a>
+                          </Link>
+                        )}
+                        {!isMe && (
+                          <Link href="/me">
+                            <a className="text-vercel-300 text-2xl">
+                              User Ideas
+                            </a>
+                          </Link>
+                        )}
                       </li>
                       <li className="flex  items-center gap-2">
                         <CheckBadgeIcon className="h-8 w-8 object-center  " />
@@ -133,6 +143,7 @@ const DashboardHeader = ({
                       <li className="flex  items-center gap-2">
                         <AiOutlineLogout className="h-8 w-8 object-center  " />
                         <div
+                          className="cursor-pointer"
                           onClick={() => {
                             signOut();
                           }}
@@ -150,7 +161,7 @@ const DashboardHeader = ({
 
         <div className="hidden flex-row items-center  justify-between py-4  px-2 pr-10  sm:flex sm:gap-4 lg:gap-6">
           <div
-            className=" dashboard__header__link flex"
+            className=" button__icon flex"
             onClick={() => {
               router.push("/");
             }}
@@ -158,11 +169,11 @@ const DashboardHeader = ({
             <HomeIcon className="h-6 w-6 object-center  " />
           </div>
 
-          <div className="dashboard__header__link hidden lg:flex ">
+          <div className="button__icon hidden lg:flex ">
             <ChatBubbleBottomCenterTextIcon className=" h-6 w-6 object-center  " />
           </div>
 
-          <div className="dashboard__header__link flex">
+          <div className="button__icon flex">
             <BellAlertIcon className="h-6 w-6 object-center  " />
           </div>
 
@@ -177,16 +188,24 @@ const SideColumn = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
+  const { data } = trpc.useQuery(
+    ["user.getUserById", { userId: router.query.id as string }],
+    {
+      refetchInterval: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const isMe: boolean = router.query.id === session?.user?.id;
 
-  console.log(isMe);
   return (
     <div className="hidden   sm:flex h-full w-72 flex-col items-center pt-2  ">
       <div className="flex h-20 w-20 items-center justify-center rounded-full bg-vercel-300 ">
         {session?.user ? (
           <img
             className="  w-[18] rounded-full"
-            src={session?.user?.image as string}
+            src={data?.user?.image as string}
             alt={""}
             width={1000}
             height={1000}
@@ -198,7 +217,7 @@ const SideColumn = () => {
 
       <h1 className=" pt-4 text-2xl font-bold text-vercel-400">
         {isMe && session?.user?.name}
-        {/* { !isMe && } */}
+        {!isMe && data?.user?.name}
       </h1>
 
       <div className="w-full pt-12">
