@@ -169,37 +169,47 @@ export const ideaRouter = createRouter()
   .query("getMostPopularTags", {
     async resolve({ ctx }) {
       const mostUsedTags = await ctx.prisma.idea.groupBy({
-        by: ["tag_one", "tag_two"],
+        by: ["tag_one"],
         _count: {
           tag_one: true,
-          tag_two: true,
         },
         orderBy: {
           _count: {
             tag_one: "desc",
-            tag_two: "desc",
           },
         },
       });
 
       const tagCounts = mostUsedTags.reduce(
-        (acc: { [key: string]: number }, { tag_one, tag_two, _count }) => {
-          const tagOneCount = _count.tag_one;
-          const tagTwoCount = _count.tag_two;
-
-          if (tagOneCount) {
-            const tagOneLower = tag_one.toLowerCase();
-            acc[tagOneLower] = (acc[tagOneLower] || 0) + tagOneCount;
-          }
-
-          if (tagTwoCount) {
-            const tagTwoLower = tag_two.toLowerCase();
-            acc[tagTwoLower] = (acc[tagTwoLower] || 0) + tagTwoCount;
-          }
-
+        (acc: { [key: string]: number }, { tag_one, _count }) => {
+          const count = _count.tag_one || 0;
+          const tagOneLower = tag_one.toLowerCase();
+          acc[tagOneLower] = (acc[tagOneLower] || 0) + count;
           return acc;
         },
         {}
+      );
+
+      const mostUsedTags2 = await ctx.prisma.idea.groupBy({
+        by: ["tag_two"],
+        _count: {
+          tag_two: true,
+        },
+        orderBy: {
+          _count: {
+            tag_two: "desc",
+          },
+        },
+      });
+
+      mostUsedTags2.reduce(
+        (acc: { [key: string]: number }, { tag_two, _count }) => {
+          const count = _count.tag_two || 0;
+          const tagTwoLower = tag_two.toLowerCase();
+          acc[tagTwoLower] = (acc[tagTwoLower] || 0) + count;
+          return acc;
+        },
+        tagCounts
       );
 
       const mostUsedTagArray = Object.entries(tagCounts)
