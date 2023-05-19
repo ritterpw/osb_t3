@@ -72,10 +72,9 @@ function MostPopular({
   const router = useRouter();
   const [page, setPage] = useState(0);
 
-  if (!testimonials.length) return null;
-
   const { data: session } = useSession();
 
+  if (!testimonials.length) return null;
   return (
     <div className="snap-y snap-mandatory overflow-x-clip overflow-y-scroll h-full">
       <div className=" snap-start  bg-piccy h-full bg-no-repeat bg-cover bg-left bg-fixed ">
