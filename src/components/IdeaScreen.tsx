@@ -3,13 +3,14 @@ import {
   PlayIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Contribution, Idea, User } from "@prisma/client";
+import { Contribution, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import MusicPlayer from "./MusicPlayer";
 import { AudioContext } from "@/context/audioContext";
 import { ideasWithLikes } from "types/ideasWithLikes";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 interface IdeaScreenProps {
   idea: ideasWithLikes;
@@ -39,7 +40,7 @@ function IdeaScreen({
             <div className=" my-auto grid grid-flow-col text-left space-x-2 ">
               <button className="  h-8 w-8  shadow-md  bg-emerald-600 rounded-full text-gray-900 items-center justify-center text-center">
                 {user && user?.image != null && (
-                  <img
+                  <Image
                     className=" h-20 w-20 rounded-full cursor-pointer hover:opacity-80  "
                     referrerPolicy="no-referrer"
                     src={user?.image}
@@ -117,7 +118,7 @@ const ContributionTab = ({ c, user }: { c: Contribution; user: User }) => {
           <div className=" my-auto grid grid-flow-col text-left space-x-2 ">
             <button className="  h-8 w-8  shadow-md  bg-emerald-600 rounded-full text-gray-900 items-center justify-center text-center">
               {user && user?.image != null && (
-                <img
+                <Image
                   className=" h-20 w-20 rounded-full cursor-pointer hover:opacity-80  "
                   referrerPolicy="no-referrer"
                   src={user?.image}
