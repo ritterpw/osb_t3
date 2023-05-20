@@ -1,6 +1,6 @@
 import React from "react";
-import ProfLayout from "@/components/layouts/ProfLayout";
 import { trpc } from "@/utils/trpc";
+import ProfLayout from "@/components/layouts/ProfLayout";
 import Card from "@/components/card";
 import { getSession } from "next-auth/react";
 import { User } from "@prisma/client";
