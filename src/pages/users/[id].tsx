@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "@/components/layouts/ProfLayout";
+import ProfLayout from "@/components/layouts/ProfLayout";
 import { trpc } from "@/utils/trpc";
 import Card from "@/components/card";
 import { getSession } from "next-auth/react";
@@ -34,7 +34,7 @@ function UserPage({
   const ideas = user_data.user?.ideas;
 
   return (
-    <Layout pageTitle="Profile">
+    <ProfLayout pageTitle="Profile">
       <div className="  sm:h-[80vh] h-full flex  bg-vercel-900 sm:rounded-3xl sm:shadow-2xl sm:bg-gray-800 sm:bg-opacity-20  text-xl text-emerald-400">
         <div className="overflow-y-scroll h-full w-full flex flex-col ">
           <div className="pl-6 py-3 text-3xl border-b border-vercel-600 justify-center">
@@ -56,7 +56,7 @@ function UserPage({
           </div>
         </div>
       </div>
-    </Layout>
+    </ProfLayout>
   );
 }
 export default UserPage;
