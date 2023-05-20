@@ -23,7 +23,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-const DashboardLayout = (props: LayoutProps) => {
+const ProfLayout = (props: LayoutProps) => {
   const [hamburgerClicked, setHamburgerClicked] = useState(false);
 
   return (
@@ -38,7 +38,7 @@ const DashboardLayout = (props: LayoutProps) => {
   );
 };
 
-export default DashboardLayout;
+export default ProfLayout;
 
 type props = {
   title: string;
