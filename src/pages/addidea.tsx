@@ -5,6 +5,7 @@ import { trpc } from "@/utils/trpc";
 import { signIn, useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
+import Dropdown from "@/components/Dropdown";
 
 const BUCKET_URL = "https://s3.us-east-1.amazonaws.com/newideas/";
 
@@ -29,7 +30,10 @@ function AddIdeaForm(): JSX.Element {
   const [description, setdescription] = useState<any>();
   const [tag_one, settag_one] = useState<string>();
   const [tag_two, settag_two] = useState<string>();
+  const [genre, setGenre] = useState<string>();
+
   const [file, setFile] = useState<any>();
+
   const postIdea = trpc.useMutation(["idea.addIdea"]);
   const router = useRouter();
 
@@ -89,6 +93,7 @@ function AddIdeaForm(): JSX.Element {
       description: description,
       tag_one: tag_one as string,
       tag_two: tag_two as string,
+      genre: genre as string,
       file: url,
     });
   }
@@ -136,6 +141,15 @@ function AddIdeaForm(): JSX.Element {
             />
           </div>
 
+          <div className=" pt-5">
+            <h1 className="pb-1">Genre</h1>
+            <Dropdown
+              list={genres}
+              setItem={setGenre}
+              title={genre ?? "Select Genre"}
+            />
+          </div>
+
           <div className=" py-5">
             <h1 className="pb-1">Add Audio File</h1>
             <input
@@ -151,7 +165,7 @@ function AddIdeaForm(): JSX.Element {
             <br />
           </div>
 
-          <div className=" pb-6 mx-auto text-center ">
+          <div className=" pb-8 mx-auto text-center ">
             <button
               onClick={() => handleSubmitIdea()}
               className="py-3 px-6 text-xl bg-vercel-900 border border-vercel-600 hover:rounded-3xl ease-in duration-200 hover:bg-emerald-500  hover:text-gray-900 rounded-sm shadow-md shadow-vercel-1000"
@@ -164,3 +178,103 @@ function AddIdeaForm(): JSX.Element {
     </div>
   );
 }
+
+const genres = [
+  "Hip_hop",
+  "Trap",
+  "Rnb",
+  "Pop",
+  "Electronic",
+  "Reggae",
+  "Rock",
+  "Underground",
+  "Old_school",
+  "West_coast",
+  "Drill",
+  "Reggaeton",
+  "Soul",
+  "Afro_beat",
+  "New_soul",
+  "East_coast",
+  "Pop_hip_hop",
+  "Alternative_rnb",
+  "Club",
+  "Dance_hall",
+  "Alternative",
+  "Pop_rap",
+  "House",
+  "Gangsta",
+  "Pop_rnb",
+  "Alternative_hip_hop",
+  "World",
+  "Indie_rock",
+  "Hyperpop",
+  "Orchestral",
+  "Downtempo",
+  "Pop_electronic",
+  "Pop_rock",
+  "Indie",
+  "Neo_soul",
+  "Ambient",
+  "Break_beat",
+  "Country",
+  "Lofi",
+  "Boom_Bap",
+  "Grime",
+  "Hip_Hop_Soul",
+  "Latin",
+  "Alternative_rock",
+  "Funk",
+  "Drum_and_bass",
+  "Dance",
+  "Beats",
+  "Class_soul",
+  "K_pop",
+  "Underground_Hip_Hop",
+  "Roots",
+  "Uk_grime",
+  "Afro_pop",
+  "Techno",
+  "Afro",
+  "Two_step",
+  "Chill",
+  "Old_school_hip_hop",
+  "Pop_country",
+  "Synthwave",
+  "Crunk",
+  "Instrumental_Hip_Hop",
+  "Rage_Beats",
+  "Emo_Hip_Hop",
+  "Dubstep",
+  "Experimental_Hip_Hop",
+  "Classical",
+  "Freestyle_Rap",
+  "Jazz",
+  "Gangsta_Rap",
+  "LoFi_Hip_Hop",
+  "Folk",
+  "Dub",
+  "Contemporary_Rnb",
+  "Country_rock",
+  "California_Sound",
+  "Cloud_Rap",
+  "Jersey_Club",
+  "Electro_pop",
+  "Trance",
+  "Gospel",
+  "Industrial",
+  "Jazz_Rap",
+  "Hardcore_Hip_Hop",
+  "Jazz_fusion",
+  "Metal",
+  "Edm",
+  "Trip_hop",
+  "Smooth_rnb",
+  "Classical_rock",
+  "Pop_80s",
+  "Punk_rock",
+  "Synth_Pop",
+  "Classical_instruments",
+  "Hardcore",
+  "Latin_pop",
+];
