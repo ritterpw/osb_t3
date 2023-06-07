@@ -144,11 +144,8 @@ function ContributeToIdea() {
               "
             />
           </div>
-          <div
-            className=" w-full pt-5
-            "
-          >
-            <div className=" text-vercel-400 text-xl   ">Choose Idea</div>
+          <div className=" w-full pt-5">
+            <div className=" text-vercel-400 text-xl">Choose Idea</div>
             <div className="h-10 pt-2 ">
               <div className=" h-full ">
                 <input
