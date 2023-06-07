@@ -306,6 +306,7 @@ export const ideaRouter = createRouter()
       description: z.string(),
       tag_one: z.string(),
       tag_two: z.string(),
+      genre: z.string(),
       file: z.string(),
     }),
     async resolve({ ctx, input }) {
@@ -316,6 +317,7 @@ export const ideaRouter = createRouter()
           description: input.description,
           tag_one: input.tag_one,
           tag_two: input.tag_two,
+          genre: input.genre as Genre | undefined,
           file: input.file,
         },
       });
