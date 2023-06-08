@@ -1,24 +1,17 @@
 import { trpc } from "@/utils/trpc";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
+import { User } from "@prisma/client";
 import { useRouter } from "next/router";
 import React from "react";
 
-function CardUserDisplay({ userId }: { userId: string }) {
+function CardUserDisplay({ user }: { user: User | undefined | null }) {
   const router = useRouter();
 
   function ClickHander() {
-    router.push(`/users/${userId}`);
+    user && router.push(`/users/${user.id}`);
   }
 
-  const { data } = trpc.useQuery(["user.getUserById", { userId: userId }], {
-    refetchInterval: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-  });
-
-  const name = data?.user?.producer_name
-    ? data.user.producer_name
-    : data?.user?.name;
+  const name = user?.producer_name ? user.producer_name : user?.name;
 
   return (
     <div
@@ -32,14 +25,14 @@ function CardUserDisplay({ userId }: { userId: string }) {
       </h1>
       <div className="h-10 w-10   bg-emerald-600 rounded-full  shadow-md  text-gray-900 items-center justify-center text-center ">
         <div>
-          {data && data.user?.image != null && (
+          {user?.image != null && (
             <img
               className=" h-10 w-10 m-auto rounded-full cursor-pointer"
               referrerPolicy="no-referrer"
-              src={data.user?.image}
+              src={user?.image}
             />
           )}
-          {!data && <UserCircleIcon className=" p-6" />}
+          {!user && <UserCircleIcon className=" p-6" />}
         </div>
       </div>
     </div>
