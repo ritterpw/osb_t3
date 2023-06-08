@@ -76,6 +76,15 @@ function AddIdeaForm(): JSX.Element {
 
   async function handleSubmitIdea(): Promise<void> {
     //get userID
+    if (!title || !description || !tag_one || !tag_two || !genre || !file) {
+      toast.error("Please fill out all fields");
+      return;
+    }
+
+    if (tag_one === tag_two) {
+      toast.error("Please enter unique tags");
+      return;
+    }
 
     toast.loading("Uploading Idea...");
     //need to check if this user already has an idea with this title
@@ -99,8 +108,8 @@ function AddIdeaForm(): JSX.Element {
   }
 
   return (
-    <div className="p-5 pt-16 m-auto items-center bg-vercel-900 h-full ">
-      <div className=" border w-[65%] m-auto   border-vercel-600 rounded-sm shadow-2xl bg-opacity-20 text-xl text-emerald-400">
+    <div className="md:p-5 md:pt-16 m-auto items-center bg-vercel-900 h-full ">
+      <div className=" md:border w-[100%] md:w-[65%] m-auto   md:border-vercel-600 md:rounded-sm md:shadow-2xl md:bg-opacity-20 text-xl text-emerald-400">
         <Toaster position="top-center" />
         <div className=" px-6  ">
           <div className=" pt-5">
@@ -109,7 +118,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 settitle(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className="shadow-md w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
           <div className=" pt-5">
@@ -118,7 +127,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 setdescription(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className="shadow-md w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
           <div className=" pt-5">
@@ -127,7 +136,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 settag_one(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className="shadow-md w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
 
@@ -137,7 +146,7 @@ function AddIdeaForm(): JSX.Element {
               onChange={(e) => {
                 settag_two(e.target.value);
               }}
-              className=" w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
+              className="shadow-md w-full mt-1 h-8 px-2 bg-gray-700 rounded-sm  focus:bg-gray-600  focus:ring-emerald-300 focus:ring-2 focus:border-0 focus:outline-0"
             />
           </div>
 
@@ -146,23 +155,43 @@ function AddIdeaForm(): JSX.Element {
             <Dropdown
               list={genres}
               setItem={setGenre}
-              title={genre ?? "Select Genre"}
+              title={
+                genre != undefined ? genre.replace(/_/g, " ") : "Select Genre"
+              }
             />
           </div>
 
           <div className=" py-5">
-            <h1 className="pb-1">Add Audio File</h1>
-            <input
-              type="file"
-              accept=".mp3, .wav"
-              onChange={(e) => {
-                if (e.target.files) {
-                  handleFilePick(e.target.files[0]);
-                }
-              }}
-              className=" text-base"
-            />
-            <br />
+            <h1 className="pb-1">Select Idea</h1>
+            <div className="relative z-0 inline-block w-full  ">
+              <input
+                type="file"
+                accept=".mp3, .wav"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    handleFilePick(e.target.files[0]);
+                  }
+                }}
+                className=" absolute opacity-0 w-full h-full cursor-pointer"
+              />
+              <div className="flex items-center justify-center w-full h-12 rounded-sm cursor-pointer  border border-vercel-600 bg-vercel-9000 text-emerald-400 shadow-md text-md hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200  ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6 mr-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+                <span className="">Choose a file</span>
+              </div>
+            </div>
           </div>
 
           <div className=" pb-8 mx-auto text-center ">
