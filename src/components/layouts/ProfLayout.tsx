@@ -85,7 +85,7 @@ const DashboardHeader = ({
               )}
               {hamburgerClicked && (
                 <div
-                  className={` px-5 sm:hidden flex flex-col w-full py-3 ease-in transition-all duration-300 ${
+                  className={` px-5 sm:hidden flex flex-col w-full py-3 ease-in animate-fade-in transition-all duration-500 ${
                     hamburgerClicked && `bg-emerald-800`
                   } `}
                 >
