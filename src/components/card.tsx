@@ -14,6 +14,7 @@ import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { ideasWithLikes } from "types/ideasWithLikes";
 import { AudioContext } from "@/context/audioContext";
+import { playAudioInterface } from "@/pages/_app";
 
 export default function Card({ idea }: { idea: ideasWithLikes }) {
   const router = useRouter();
@@ -23,6 +24,15 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
   const [idealikes, setIdeaLikes] = useState(idea.likes);
   const { pauseAudio, playAudio } = useContext(AudioContext);
   const this_audio: HTMLAudioElement | null = new Audio(idea.file);
+
+  const { data } = trpc.useQuery(
+    ["user.getUserById", { userId: idea.userId }],
+    {
+      refetchInterval: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   /**
    * This function downloads a file with a specific file name based on the file type.
@@ -136,7 +146,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
             <div className="flex flex-row justify-between items-center  w-full">
               <div className="font-bold text-xl mt-1  mb-2">{idea.title}</div>
               <div className=" w-min h-min inline-flex">
-                <CardUserDisplay userId={idea.userId} />
+                <CardUserDisplay user={data?.user} />
               </div>
             </div>
           </div>
@@ -165,7 +175,13 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
           <button
             onClick={() => {
               if (this_audio) {
-                playAudio(this_audio);
+                const audio_data: playAudioInterface = {
+                  this_audio: this_audio,
+                  title: idea.title,
+                  artist: data?.user,
+                  ideaID: idea.id,
+                };
+                playAudio(audio_data);
               }
             }}
             className="h-9 w-9 mr-2  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
