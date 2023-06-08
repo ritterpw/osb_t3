@@ -82,12 +82,12 @@ function MostPopular({
           <div className=" items-center  text-center justify-center place-items-center flex"></div>
           <div className="  rounded-l-3xl justify-center  mt-10 md:mt-52 sm:mr-10  md:px-10 px-0 ">
             <div className=" flex flex-col text-center sm:text-left animate-fade-in  ease">
-              <p className=" text-5xl sm:text-7xl  ">Open Source</p>
+              <p className=" text-5xl sm:text-7xl ">Open Source</p>
               <p className=" text-5xl sm:text-7xl  ">Productions</p>
-              <p className=" mt-6  text-base sm:text-xl  text-emerald-300">
+              <p className=" mt-6  text-base sm:text-2xl  ">
                 Collaborate with producers around the world
               </p>
-              <p className=" text-sm sm:text-base text-gray-300">
+              <p className=" text-sm sm:text-xl text-gray-300">
                 Start by downloading your favorite idea
               </p>
             </div>
