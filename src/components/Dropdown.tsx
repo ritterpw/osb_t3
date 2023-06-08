@@ -14,11 +14,11 @@ const Dropdown = ({ list, setItem, title }: Props) => {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative z-10 inline-block text-left">
       <div>
         <button
           type="button"
-          className="inline-flex justify-center w-full rounded-md border border-vercel-600 bg-vercel-1000 text-emerald-500 shadow-sm px-4 py-1 text-md font-medium  hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 "
+          className="inline-flex justify-center w-full rounded-sm border border-vercel-600 bg-vercel-9000 text-emerald-400 shadow-md px-4 py-1 text-md font-medium  hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 "
           id="dropdown-menu-button"
           aria-expanded={isOpen ? "true" : "false"}
           aria-haspopup="true"
