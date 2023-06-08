@@ -7,6 +7,8 @@ import { Contribution, User } from "@prisma/client";
 import { useContext } from "react";
 import { AudioContext } from "@/context/audioContext";
 import Image from "next/image";
+import { playAudioInterface } from "@/pages/_app";
+import { Toaster } from "react-hot-toast";
 
 const ContributionTab = ({ c, user }: { c: Contribution; user: User }) => {
   const { pauseAudio, playAudio } = useContext(AudioContext);
@@ -15,7 +17,11 @@ const ContributionTab = ({ c, user }: { c: Contribution; user: User }) => {
 
   function handlePlay() {
     if (this_audio) {
-      playAudio(this_audio);
+      const audio_data: playAudioInterface = {
+        this_audio: this_audio,
+        artist: user,
+      };
+      playAudio(audio_data);
     }
   }
 
@@ -34,7 +40,7 @@ const ContributionTab = ({ c, user }: { c: Contribution; user: User }) => {
             <button className="  h-8 w-8  shadow-md  bg-emerald-600 rounded-full text-gray-900 items-center justify-center text-center">
               {user && user?.image != null && (
                 <Image
-                  className=" h-20 w-20 rounded-full cursor-pointer hover:opacity-80  "
+                  className="h-20 w-20 rounded-full cursor-pointer hover:opacity-80"
                   referrerPolicy="no-referrer"
                   height={1000}
                   width={1000}
