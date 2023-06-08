@@ -12,21 +12,35 @@ import { ideasWithLikes } from "types/ideasWithLikes";
 import JsFileDownloader from "js-file-downloader";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { playAudioInterface } from "@/pages/_app";
 
-function MusicPlayer({ file, idea }: { file: string; idea: ideasWithLikes }) {
+function MusicPlayer({
+  file,
+  idea,
+  user,
+}: {
+  file: string;
+  idea: ideasWithLikes;
+  user: User;
+}) {
   const { pauseAudio, playAudio } = useContext(AudioContext);
   const [progress, setProgress] = useState(0);
   const likeIdea = trpc.useMutation(["idea.likeIdea"]);
   const unlikeIdea = trpc.useMutation(["idea.unlikeIdea"]);
   const [idealikes, setIdeaLikes] = useState(idea.likes);
   const { data: session } = useSession();
-  const router = useRouter();
 
   const this_audio: HTMLAudioElement | null = new Audio(file);
 
   function handlePlay() {
     if (this_audio) {
-      playAudio(this_audio);
+      const audio_data: playAudioInterface = {
+        this_audio: this_audio,
+        title: idea.title,
+        artist: user,
+        ideaID: idea.id,
+      };
+      playAudio(audio_data);
     }
   }
 
