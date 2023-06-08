@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { trpc } from "@/utils/trpc";
 import Header from "@/components/header";
-import IdeaScreen from "@/components/IdeaScreen";
+import IdeaScreen from "@/components/ideas/IdeaScreen";
 import { User } from "@prisma/client";
 import { getSession, GetSessionParams } from "next-auth/react";
 
