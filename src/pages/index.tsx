@@ -1,8 +1,6 @@
 import { trpc } from "../utils/trpc";
 import { useSession, signIn } from "next-auth/react";
 import {
-  ArrowLeftCircleIcon,
-  ArrowRightCircleIcon,
   GlobeAmericasIcon,
   MusicalNoteIcon,
   UserCircleIcon,
