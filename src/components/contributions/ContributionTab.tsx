@@ -4,19 +4,32 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Contribution, User } from "@prisma/client";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AudioContext } from "@/context/audioContext";
 import Image from "next/image";
 import { playAudioInterface } from "@/pages/_app";
 import { Toaster } from "react-hot-toast";
+import { trpc } from "@/utils/trpc";
 
-const ContributionTab = ({ c, user }: { c: Contribution; user: User }) => {
+const ContributionTab = ({ c }: { c: Contribution | undefined }) => {
   const { pauseAudio, playAudio } = useContext(AudioContext);
+  const [user, setUser] = useState<User | null>(null);
+
+  if (c == undefined) return null;
 
   const this_audio: HTMLAudioElement | null = new Audio(c.file);
 
+  const { data: userData } = trpc.useQuery([
+    "user.getUserById",
+    { userId: c.userId },
+  ]);
+
+  if (userData) {
+    setUser(userData.user);
+  }
+
   function handlePlay() {
-    if (this_audio) {
+    if (this_audio && user) {
       const audio_data: playAudioInterface = {
         this_audio: this_audio,
         artist: user,
