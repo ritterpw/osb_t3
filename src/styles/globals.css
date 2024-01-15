@@ -24,6 +24,10 @@
   .button__icon {
     @apply cursor-pointer hover:text-emerald-600 ease-in duration-200 transform md:hover:-translate-y-1 hover:scale-105 active:scale-100;
   }
+
+  .button__shadow {
+    @apply shadow-[rgba(51,51,51,1)_5px_5px_0px_0px];
+  }
 }
 body {
   --tw-bg-opacity: 1;
