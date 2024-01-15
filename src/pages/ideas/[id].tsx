@@ -43,8 +43,7 @@ export default function Id({ user }: { user: User }): JSX.Element {
         <IdeaScreen
           idea={data}
           contributions={data.userId === user.id ? contributions : undefined}
-          contributionUser={data.user}
-          user={data.user}
+          ideaUser={data.user}
         />
       </div>
     </div>
