@@ -61,6 +61,7 @@ model Idea {
   description   String
   tag_one       String
   tag_two       String
+  original_file String?
   file          String         @unique
   createdAt     DateTime       @default(now())
   slug          String?        @unique
