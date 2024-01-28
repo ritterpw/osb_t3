@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AudioContext } from "@/context/audioContext"; // Update the path accordingly
-import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";
+import { PauseIcon, PlayIcon, StopIcon } from "@heroicons/react/24/outline";
 import { playAudioInterface } from "@/pages/_app";
 import DurationSlider from "./DurationSlider";
 import router from "next/router";
@@ -51,7 +51,7 @@ const AudioFooter = () => {
             }}
             className="h-9 w-9  bg-gray-800 text-emerald-500  shadow-md rounded-md items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
-            <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
+            <StopIcon className=" ml-[1.5] h-6 w-6  m-auto " />
           </button>
         </div>
         <DurationSlider audio={audio} />

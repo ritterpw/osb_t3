@@ -6,6 +6,7 @@ import {
   InformationCircleIcon,
   PauseIcon,
   PlayIcon,
+  StopIcon,
 } from "@heroicons/react/24/outline";
 import { User } from "@prisma/client";
 import JsFileDownloader from "js-file-downloader";
@@ -195,19 +196,19 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
             }}
             className="h-9 w-9  bg-gray-800 text-emerald-500  shadow-md rounded-full items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
-            <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
+            <StopIcon className=" ml-[1.5] h-6 w-6  m-auto " />
           </button>
         </div>
         <div className="flex ml-6 gap-[0.5] place-self-center place-items-center  justify-center">
           <div className="flex place-self-center place-items-center justify-center">
-            <h1 className=" text-2xl -mr-1 mt-2 justify-center place-self-center place-items-center">
+            <h1 className=" text-2xl -mr-1 mt-2 justify-center place-self-center place-items-center hover:text-emerald-600 ease-in duration-200 transform">
               {idealikes.length}
             </h1>
             <HandThumbUpIcon
               onClick={() => {
                 handleLike();
               }}
-              className="mx-1 h-7 w-7 cursor-pointer ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
+              className="mx-1 h-7 w-7 cursor-pointer hover:text-emerald-600 ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
             />
           </div>
           <InformationCircleIcon

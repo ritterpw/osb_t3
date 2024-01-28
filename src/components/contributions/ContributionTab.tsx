@@ -1,6 +1,7 @@
 import {
   PauseIcon,
   PlayIcon,
+  StopIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Contribution, User } from "@prisma/client";
@@ -85,7 +86,7 @@ const ContributionTab = ({ c }: { c: Contribution | undefined }) => {
             }}
             className="h-9 w-9 mr-2  border border-vercel-600 bg-vercel-1000 text-emerald-500  shadow-md rounded items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200"
           >
-            <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
+            <StopIcon className=" ml-[1.5] h-6 w-6  m-auto " />
           </button>
         </div>
       </div>
