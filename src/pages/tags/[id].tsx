@@ -15,7 +15,7 @@ export default function TagId() {
   );
 
   return (
-    <div className=" h-screen w-screen flex flex-col">
+    <div className=" h-full w-screen overflow-x-hidden flex flex-col ">
       <div
         className="border-b border-b-vercel-600 
         "

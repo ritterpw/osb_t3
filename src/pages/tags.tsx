@@ -15,7 +15,7 @@ export default function tags({ user }: Props) {
   });
 
   return (
-    <div className=" h-screen w-screen flex flex-col ">
+    <div className=" h-full w-screen overflow-x-hidden flex flex-col ">
       <Header />
       <div className="min-h-[96%] max-h-screen w-screen pb-3  pt-3 m-auto ">
         <h1 className=" text-center my-5 text-4xl animate-fade-in">Tags</h1>

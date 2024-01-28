@@ -15,9 +15,9 @@ export default function genres({ user }: Props) {
   });
 
   return (
-    <div className=" h-screen w-screen flex flex-col ">
+    <div className=" h-full w-screen overflow-x-hidden flex flex-col ">
       <Header />
-      <div className="min-h-[96%] max-h-screen w-screen pb-3  pt-3 m-auto ">
+      <div className="min-h-full max-h-screen w-screen  pb-3  pt-3 m-auto ">
         <h1 className=" text-center my-5 text-4xl animate-fade-in">Genres</h1>
         <div className="px-20 grid   sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {genres?.map((genres) => {
