@@ -3,11 +3,17 @@ generator client {
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
+// datasource db {
+//   provider          = "mysql"
+//   url               = env("DATABASE_URL")
+//   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+//   relationMode      = "prisma"
+// }
+
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  relationMode      = "prisma"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {
@@ -71,9 +77,9 @@ model Idea {
   user          User           @relation("userIdeas", fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId])
-  @@fulltext([tag_one, tag_two])
-  @@fulltext([title, description])
-  @@fulltext([title, description, tag_one, tag_two])
+  // @@fulltext([tag_one, tag_two])
+  // @@fulltext([title, description])
+  // @@fulltext([title, description, tag_one, tag_two])
 }
 
 model VerificationToken {
