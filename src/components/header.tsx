@@ -1,7 +1,7 @@
+"use client";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Login from "./login";
 
 export default function Header() {
@@ -17,7 +17,7 @@ export default function Header() {
   }
 
   return (
-    <div className="header justify-center items-center ">
+    <div className={`header `}>
       <div className=" w-full xl:w-4/5  justify-between flex py-2">
         <div className="  inline-flex  justify-center gap-1">
           <div
