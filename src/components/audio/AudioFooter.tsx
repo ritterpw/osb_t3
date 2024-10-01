@@ -15,7 +15,7 @@ const AudioFooter = () => {
 
   return (
     <div
-      className="absolute bottom-0  right-0 bg-vercel-900 text-left py-2 px-4 rounded-lg rounded-br-none transition-all animate-fade-in duration-300  ease-in-out  flex flex-col "
+      className="fixed bottom-0 right-0  bg-vercel-900 text-left py-2 px-4 rounded-lg rounded-br-none transition-all animate-fade-in duration-300 ease-in-out flex flex-col"
       onClick={() => router.push(`/ideas/${audio_details?.ideaID}`)}
     >
       <div className="flex flex-row justify-between">
