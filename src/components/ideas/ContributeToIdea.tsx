@@ -37,19 +37,11 @@ const ContributeToIdea = ({ setOpenContributionModal }: Props) => {
       if (toast) toast.dismiss();
       toast.success("Contribution Added Successfully!");
       setTimeout(() => {
+        router.reload();
         setOpenContributionModal(false);
       }, 2000);
     }
   }, [addContribution.isSuccess, addContribution.isLoading]);
-
-  const { data, isLoading, isError } = trpc.useQuery(
-    ["idea.getIdeaById", { id: id as string }],
-    {
-      refetchInterval: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    }
-  );
 
   async function getFileNameToUpload(id: string): Promise<string> {
     const { data } = await axios.post("/api/s3/uploadFile", {
@@ -88,7 +80,7 @@ const ContributeToIdea = ({ setOpenContributionModal }: Props) => {
   }
 
   return (
-    <div className=" px-10  grid grid-rows-3 bg-gradient-to-b from-vercel-950 via-vercel-950 to-vercel-1000 w-[100%] md:w-[50%] border border-gray-600 animate-fade-in ease-in duration-200">
+    <div className=" px-10  grid grid-rows-3 bg-gradient-to-b from-vercel-950 via-vercel-950 to-vercel-1000 w-[100%] md:w-[75%] xl:w-[50%] border border-gray-600 ">
       <Toaster position="top-center" />
       <div className=" w-full  pt-5">
         <div className=" text-vercel-400 text-xl">Description</div>

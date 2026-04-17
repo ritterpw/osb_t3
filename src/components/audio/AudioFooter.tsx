@@ -14,14 +14,17 @@ const AudioFooter = () => {
   }
 
   return (
-    <div className="absolute bottom-0  right-0 bg-vercel-900 text-left py-2 px-4 rounded-lg rounded-br-none transition-all animate-fade-in duration-300  ease-in-out  flex flex-col ">
+    <div
+      className="fixed bottom-0 hover:cursor-pointer border-t border-l border-emerald-500  hover:border-emerald-400 hover:bg-vercel-900 right-0  bg-vercel-1000 text-left py-2 px-4 rounded-lg rounded-br-none transition-all animate-fade-in duration-300 ease-in-out flex flex-col"
+      onClick={() => router.push(`/ideas/${audio_details?.ideaID}`)}
+    >
       <div className="flex flex-row justify-between">
         <h1
           className="text-vercel-300 pr-10 text-lg"
-          onClick={() =>
-            audio_details?.ideaID ??
-            router.push(`/ideas/${audio_details?.ideaID}`)
-          }
+          // onClick={() =>
+          //   audio_details?.ideaID ??
+          //   router.push(`/ideas/${audio_details?.ideaID}`)
+          // }
         >
           {audio_details?.title ?? "contribution from: "}
         </h1>
@@ -32,7 +35,9 @@ const AudioFooter = () => {
       <div className="pt-5 inline-flex  flex-row">
         <div className="pr-8 pt-1">
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation(); // Prevents triggering the parent div's onClick
+
               const audio_data: playAudioInterface = {
                 this_audio: audio,
                 title: audio_details?.title,
@@ -46,13 +51,25 @@ const AudioFooter = () => {
           </button>
           {/* This is definitely not centered correctly */}
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation(); // Prevents triggering the parent div's onClick
+
               pauseAudio();
             }}
             className="h-9 w-9  bg-gray-800 text-emerald-500  shadow-md rounded-md items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
           >
             <StopIcon className=" ml-[1.5] h-6 w-6  m-auto " />
           </button>
+          {/* <button
+            onClick={(e) => {
+              e.stopPropagation(); // Prevents triggering the parent div's onClick
+
+              pauseAudio();
+            }}
+            className="h-9 w-9  bg-gray-800 text-emerald-500  shadow-md rounded-md items-center justify-center text-center hover:bg-emerald-500 hover:text-gray-800 transition-all ease-in duration-200 transform hover:-translate-y-1 hover:scale-105 active:scale-100"
+          >
+            <PauseIcon className=" ml-[1.5] h-6 w-6  m-auto " />
+          </button> */}
         </div>
         <DurationSlider audio={audio} />
       </div>
