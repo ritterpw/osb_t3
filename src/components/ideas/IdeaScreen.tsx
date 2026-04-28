@@ -43,8 +43,7 @@ function IdeaScreen({ idea, contributions, ideaUser }: IdeaScreenProps) {
     if (openContributionModal) {
       toast.dismiss(); // Dismiss any existing toasts
 
-      let t;
-      t = toast.error("Cannot Review Contributions While Contributing");
+      toast.error("Cannot Review Contributions While Contributing");
       return;
     }
 
