@@ -97,7 +97,6 @@ function AddIdeaForm(): JSX.Element {
     const url = await getFileNameToUpload(session.user.id);
 
     postIdea.mutate({
-      user: session.user.id,
       title: title,
       description: description,
       tag_one: tag_one as string,

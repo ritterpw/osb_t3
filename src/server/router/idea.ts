@@ -1,6 +1,9 @@
 import { Genre } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 import { createRouter } from "./context";
 import { z } from "zod";
+
+const DAILY_IDEA_LIMIT = 3;
 
 export const ideaRouter = createRouter()
   .query("getAll", {
@@ -301,7 +304,6 @@ export const ideaRouter = createRouter()
 
   .mutation("addIdea", {
     input: z.object({
-      user: z.string(),
       title: z.string(),
       description: z.string(),
       tag_one: z.string(),
@@ -310,9 +312,34 @@ export const ideaRouter = createRouter()
       file: z.string(),
     }),
     async resolve({ ctx, input }) {
+      const userId = (ctx.session?.user as { id?: string } | undefined)?.id;
+      if (!userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You must be signed in to post an idea.",
+        });
+      }
+
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+
+      const todayCount = await ctx.prisma.idea.count({
+        where: {
+          userId,
+          createdAt: { gte: startOfDay },
+        },
+      });
+
+      if (todayCount >= DAILY_IDEA_LIMIT) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: `Daily limit reached (${DAILY_IDEA_LIMIT} ideas per day).`,
+        });
+      }
+
       return await ctx.prisma.idea.create({
         data: {
-          userId: input.user,
+          userId,
           title: input.title,
           description: input.description,
           tag_one: input.tag_one,
