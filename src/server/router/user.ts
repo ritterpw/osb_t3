@@ -53,7 +53,9 @@ export const userRouter = createRouter()
   })
   .query("getMostPopularThisWeek", {
     async resolve({ ctx }) {
-      const now = new Date();
+      // "This week" = ideas created in the last 7 days.
+      // Previously this filtered by `gte: now` which always returned zero ideas.
+      const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
       const data = await ctx.prisma.user.findMany({
         select: {
           id: true,
@@ -68,7 +70,7 @@ export const userRouter = createRouter()
             },
             where: {
               createdAt: {
-                gte: now,
+                gte: sevenDaysAgo,
               },
             },
             orderBy: {

@@ -6,6 +6,7 @@ import { signIn, useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import Dropdown from "@/components/Dropdown";
+import { GENRES } from "@/utils/genres";
 
 const BUCKET_URL = "https://s3.us-east-1.amazonaws.com/newideas/";
 
@@ -26,13 +27,13 @@ export default function addidea() {
 }
 
 function AddIdeaForm(): JSX.Element {
-  const [title, settitle] = useState<any>();
-  const [description, setdescription] = useState<any>();
-  const [tag_one, settag_one] = useState<string>();
-  const [tag_two, settag_two] = useState<string>();
+  const [title, settitle] = useState<string>("");
+  const [description, setdescription] = useState<string>("");
+  const [tag_one, settag_one] = useState<string>("");
+  const [tag_two, settag_two] = useState<string>("");
   const [genre, setGenre] = useState<string>();
 
-  const [file, setFile] = useState<any>();
+  const [file, setFile] = useState<File | null>(null);
 
   const postIdea = trpc.useMutation(["idea.addIdea"]);
   const router = useRouter();
@@ -53,11 +54,12 @@ function AddIdeaForm(): JSX.Element {
 
   const { data: session } = useSession();
 
-  function handleFilePick(file: any | null): void {
-    setFile(file);
+  function handleFilePick(picked: File | null): void {
+    setFile(picked);
   }
 
   async function getFileNameToUpload(id: string): Promise<string> {
+    if (!file) throw new Error("No file selected");
     const { data } = await axios.post("/api/s3/uploadFile", {
       name: id + "-" + file.name,
       type: file.type,
@@ -152,7 +154,7 @@ function AddIdeaForm(): JSX.Element {
           <div className=" pt-5">
             <h1 className="pb-1">Genre</h1>
             <Dropdown
-              list={genres}
+              list={GENRES as unknown as string[]}
               setItem={setGenre}
               title={
                 genre != undefined ? genre.replace(/_/g, " ") : "Select Genre"
@@ -167,9 +169,7 @@ function AddIdeaForm(): JSX.Element {
                 type="file"
                 accept=".mp3, .wav"
                 onChange={(e) => {
-                  if (e.target.files) {
-                    handleFilePick(e.target.files[0]);
-                  }
+                  handleFilePick(e.target.files?.[0] ?? null);
                 }}
                 className=" absolute opacity-0 w-full h-full cursor-pointer"
               />
@@ -206,103 +206,3 @@ function AddIdeaForm(): JSX.Element {
     </div>
   );
 }
-
-const genres = [
-  "Hip_hop",
-  "Trap",
-  "Rnb",
-  "Pop",
-  "Electronic",
-  "Reggae",
-  "Rock",
-  "Underground",
-  "Old_school",
-  "West_coast",
-  "Drill",
-  "Reggaeton",
-  "Soul",
-  "Afro_beat",
-  "New_soul",
-  "East_coast",
-  "Pop_hip_hop",
-  "Alternative_rnb",
-  "Club",
-  "Dance_hall",
-  "Alternative",
-  "Pop_rap",
-  "House",
-  "Gangsta",
-  "Pop_rnb",
-  "Alternative_hip_hop",
-  "World",
-  "Indie_rock",
-  "Hyperpop",
-  "Orchestral",
-  "Downtempo",
-  "Pop_electronic",
-  "Pop_rock",
-  "Indie",
-  "Neo_soul",
-  "Ambient",
-  "Break_beat",
-  "Country",
-  "Lofi",
-  "Boom_Bap",
-  "Grime",
-  "Hip_Hop_Soul",
-  "Latin",
-  "Alternative_rock",
-  "Funk",
-  "Drum_and_bass",
-  "Dance",
-  "Beats",
-  "Class_soul",
-  "K_pop",
-  "Underground_Hip_Hop",
-  "Roots",
-  "Uk_grime",
-  "Afro_pop",
-  "Techno",
-  "Afro",
-  "Two_step",
-  "Chill",
-  "Old_school_hip_hop",
-  "Pop_country",
-  "Synthwave",
-  "Crunk",
-  "Instrumental_Hip_Hop",
-  "Rage_Beats",
-  "Emo_Hip_Hop",
-  "Dubstep",
-  "Experimental_Hip_Hop",
-  "Classical",
-  "Freestyle_Rap",
-  "Jazz",
-  "Gangsta_Rap",
-  "LoFi_Hip_Hop",
-  "Folk",
-  "Dub",
-  "Contemporary_Rnb",
-  "Country_rock",
-  "California_Sound",
-  "Cloud_Rap",
-  "Jersey_Club",
-  "Electro_pop",
-  "Trance",
-  "Gospel",
-  "Industrial",
-  "Jazz_Rap",
-  "Hardcore_Hip_Hop",
-  "Jazz_fusion",
-  "Metal",
-  "Edm",
-  "Trip_hop",
-  "Smooth_rnb",
-  "Classical_rock",
-  "Pop_80s",
-  "Punk_rock",
-  "Synth_Pop",
-  "Classical_instruments",
-  "Hardcore",
-  "Latin_pop",
-];
