@@ -71,11 +71,9 @@ const ContributeToIdea = ({ setOpenContributionModal }: Props) => {
     const url = await getFileNameToUpload(session?.user.email as string);
 
     addContribution.mutate({
-      userId: session?.user.id as string,
       ideaId: id as string,
       description: description,
       file: url,
-      status: "PENDING",
     });
   }
 

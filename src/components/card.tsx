@@ -105,10 +105,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
     const { userIndex, seen } = checkSeen(session.user.id);
 
     if (!seen) {
-      likeIdea.mutate({
-        idea: idea.id,
-        user: session?.user.id,
-      });
+      likeIdea.mutate({ idea: idea.id });
 
       newLikes.push({
         id: session?.user.id,
@@ -123,10 +120,7 @@ export default function Card({ idea }: { idea: ideasWithLikes }) {
       return;
     }
 
-    unlikeIdea.mutate({
-      idea: idea.id,
-      user: session?.user.id,
-    });
+    unlikeIdea.mutate({ idea: idea.id });
 
     if (userIndex >= 0) newLikes.splice(userIndex, 1);
 

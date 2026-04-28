@@ -101,10 +101,7 @@ function MusicPlayer({
     const { userIndex, seen } = checkSeen(session.user.id);
 
     if (!seen) {
-      likeIdea.mutate({
-        idea: idea.id,
-        user: session?.user.id,
-      });
+      likeIdea.mutate({ idea: idea.id });
 
       newLikes.push({
         id: session?.user.id,
@@ -119,10 +116,7 @@ function MusicPlayer({
       return;
     }
 
-    unlikeIdea.mutate({
-      idea: idea.id,
-      user: session?.user.id,
-    });
+    unlikeIdea.mutate({ idea: idea.id });
 
     if (userIndex >= 0) newLikes.splice(userIndex, 1);
 

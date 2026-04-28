@@ -1,6 +1,7 @@
 import { Genre } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { createRouter } from "./context";
+import { requireUserId } from "./auth-helpers";
 import { z } from "zod";
 
 const DAILY_IDEA_LIMIT = 3;
@@ -263,41 +264,25 @@ export const ideaRouter = createRouter()
   })
   .mutation("likeIdea", {
     input: z.object({
-      user: z.string(),
       idea: z.string(),
     }),
     async resolve({ ctx, input }) {
+      const userId = requireUserId(ctx);
       return await ctx.prisma.idea.update({
-        where: {
-          id: input.idea,
-        },
-        data: {
-          likes: {
-            connect: {
-              id: input.user,
-            },
-          },
-        },
+        where: { id: input.idea },
+        data: { likes: { connect: { id: userId } } },
       });
     },
   })
   .mutation("unlikeIdea", {
     input: z.object({
-      user: z.string(),
       idea: z.string(),
     }),
     async resolve({ ctx, input }) {
+      const userId = requireUserId(ctx);
       return await ctx.prisma.idea.update({
-        where: {
-          id: input.idea,
-        },
-        data: {
-          likes: {
-            disconnect: {
-              id: input.user,
-            },
-          },
-        },
+        where: { id: input.idea },
+        data: { likes: { disconnect: { id: userId } } },
       });
     },
   })
@@ -312,13 +297,7 @@ export const ideaRouter = createRouter()
       file: z.string(),
     }),
     async resolve({ ctx, input }) {
-      const userId = (ctx.session?.user as { id?: string } | undefined)?.id;
-      if (!userId) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You must be signed in to post an idea.",
-        });
-      }
+      const userId = requireUserId(ctx);
 
       const startOfDay = new Date();
       startOfDay.setHours(0, 0, 0, 0);
