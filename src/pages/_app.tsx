@@ -4,7 +4,8 @@ import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { withTRPC } from "@trpc/next";
 import { SessionProvider } from "next-auth/react";
-import type { AppType } from "next/dist/shared/lib/utils";
+import type { AppType } from "next/app";
+import type { Session } from "next-auth";
 import { useContext, useEffect, useState } from "react";
 import superjson from "superjson";
 import type { AppRouter } from "../server/router";
@@ -15,7 +16,7 @@ export interface playAudioInterface extends AudioDetails {
   this_audio: HTMLAudioElement;
 }
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps }) => {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [audio_details, setAudioDetails] = useState<AudioDetails | null>(null);
 

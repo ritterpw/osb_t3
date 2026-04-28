@@ -25,14 +25,14 @@ const ContributionTab = ({ c }: { c: Contribution | undefined }) => {
     "contribution.rejectContribution",
   ]);
 
-  if (c == undefined) return null;
+  // Hooks must be called unconditionally — React rules-of-hooks. Bail out
+  // by rendering null at the bottom instead of returning early.
+  const { data: userData } = trpc.useQuery(
+    ["user.getUserById", { userId: c?.userId ?? "" }],
+    { enabled: !!c },
+  );
 
-  const this_audio: HTMLAudioElement | null = new Audio(c.file);
-
-  const { data: userData } = trpc.useQuery([
-    "user.getUserById",
-    { userId: c.userId },
-  ]);
+  const this_audio: HTMLAudioElement | null = c ? new Audio(c.file) : null;
 
   useEffect(() => {
     if (userData) {
@@ -52,6 +52,8 @@ const ContributionTab = ({ c }: { c: Contribution | undefined }) => {
       }, 2000);
     }
   }, [approveContribution.isSuccess, approveContribution.isLoading]);
+
+  if (c == undefined) return null;
 
   function handlePlay() {
     if (this_audio && user) {
@@ -118,6 +120,7 @@ const ContributionTab = ({ c }: { c: Contribution | undefined }) => {
                   height={1000}
                   width={1000}
                   src={user?.image}
+                  alt={`${user?.producer_name ?? user?.name ?? "user"} avatar`}
                 />
               )}
               {!user?.image && <UserCircleIcon className=" p-6" />}

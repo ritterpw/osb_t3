@@ -69,6 +69,7 @@ function IdeaScreen({ idea, contributions, ideaUser }: IdeaScreenProps) {
                     height={1000}
                     width={1000}
                     src={ideaUser?.image}
+                    alt={`${ideaUser?.producer_name ?? ideaUser?.name ?? "user"} avatar`}
                   />
                 )}
                 {!idea && <UserCircleIcon className=" p-6" />}
