@@ -1,216 +1,147 @@
-# Create T3 App
+# OSB — Open Studio Beats
 
-This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
+[![CI](https://github.com/ritterpw/osb_t3/actions/workflows/ci.yml/badge.svg)](https://github.com/ritterpw/osb_t3/actions/workflows/ci.yml)
 
-## Why are there `.js` files in here?
+A collaborative platform for music producers: post a beat (an "idea"), other
+producers contribute remixes/stems, and the original artist approves or rejects
+each contribution.
 
-As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional), we take typesafety as a first class citizen. Unfortunately, not all frameworks and plugins support TypeScript which means some of the configuration files have to be `.js` files.
+This README is also a tour of the engineering decisions, trade-offs, and the
+recent Supabase → Neon migration.
 
-We try to emphasize that these files are javascript for a reason, by explicitly declaring its type (`cjs` or `mjs`) depending on what's supported by the library it is used by. Also, all the `js` files in this project are still typechecked using a `@ts-check` comment at the top.
+---
 
-## What's next? How do I make an app with this?
+## Stack
 
-We try to keep this project as simple as possible, so you can start with the most basic configuration and then move on to more advanced configuration.
+| Layer       | Choice                                                         | Why                                                                                                |
+| ----------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Frontend    | Next.js 12 (Pages router), React 18, Tailwind                  | T3-stack default. Pages router is fine; App Router is a later migration.                           |
+| API         | tRPC v9                                                        | End-to-end type safety without codegen. v10 migration is on the roadmap.                           |
+| ORM         | Prisma 4.16                                                    | Strong types, NextAuth adapter, easy schema evolution.                                              |
+| DB          | Postgres on **[Neon](https://neon.tech)** (serverless)          | Branchable Postgres, generous free tier, `pgbouncer`-pooled URL for serverless query patterns.      |
+| Auth        | NextAuth.js v4 with Google OAuth + Prisma adapter              | JWT strategy; `userId` is propagated through the JWT callback so the tRPC layer can read it server-side. |
+| File upload | S3 presigned PUT                                               | Audio files (`.mp3`/`.wav`) go straight from browser → S3, never through the API.                  |
+| Testing     | Vitest + `@testcontainers/postgresql` for integration; Playwright for E2E | See the [Testing](#testing) section.                                                              |
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Architecture
 
-- [Next-Auth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [TailwindCSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io) (using @next version? [see v10 docs here](https://alpha.trpc.io))
+```
+ Browser
+   │  (NextAuth session cookie)
+   ▼
+ Next.js page  ──tRPC──▶  /api/trpc/[trpc]
+                              │
+                              ├─ context: getServerSession(authOptions) → ctx.session
+                              ├─ Prisma → Neon (pooled URL)
+                              └─ S3 presign endpoint
+```
 
-Also checkout these awesome tutorials on `create-t3-app`.
+Two URLs to Neon:
 
-- [Build a Blog With the T3 Stack - tRPC, TypeScript, Next.js, Prisma & Zod](https://www.youtube.com/watch?v=syEWlxVFUrY)
-- [Build a Live Chat Application with the T3 Stack - TypeScript, Tailwind, tRPC](https://www.youtube.com/watch?v=dXRRY37MPuk)
-- [Build a full stack app with create-t3-app](https://www.nexxel.dev/blog/ct3a-guestbook)
-- [A first look at create-t3-app](https://dev.to/ajcwebdev/a-first-look-at-create-t3-app-1i8f)
+- `DATABASE_URL` — the `pgbouncer`-pooled host, used by the running app. Required
+  for serverless because every cold start opens a new connection; pooling
+  prevents Postgres connection exhaustion.
+- `DIRECT_URL` — direct host, used by Prisma for migrations and introspection
+  (operations that don't tolerate the pooler).
 
-## How do I deploy this?
+## Security model
 
-### Vercel
+The auth model is enforced in [`src/server/router/auth-helpers.ts`](src/server/router/auth-helpers.ts).
+Two helpers:
 
-We recommend deploying to [Vercel](https://vercel.com/?utm_source=t3-oss&utm_campaign=oss). It makes it super easy to deploy NextJs apps.
+- `requireUserId(ctx)` — pulls the user id from the NextAuth session. Throws
+  `UNAUTHORIZED` if missing. **No mutation accepts a `userId` from input** —
+  trusting client-supplied user ids would let any caller act as anyone.
+- `requireAdminId(ctx)` — additionally loads the user's role from the database
+  (not from the JWT, which can be stale) and verifies it's `ADMIN`. Used for
+  contribution moderation.
 
-- Push your code to a GitHub repository.
-- Go to [Vercel](https://vercel.com/?utm_source=t3-oss&utm_campaign=oss) and sign up with GitHub.
-- Create a Project and import the repository you pushed your code to.
-- Add your environment variables.
-- Click **Deploy**
-- Now whenever you push a change to your repository, Vercel will automatically redeploy your website!
+`addIdea` enforces a **3-ideas-per-day** rate limit per user using a DB count
+against the `Idea.createdAt` index. No external rate-limiter (e.g. Upstash);
+the DB already knows the answer and the cost is negligible.
 
-### Docker
+## Testing
 
-You can also dockerize this stack and deploy a container.
+Two layers, both in CI:
 
-Please note that Next.js requires a different process for buildtime (available in the frontend, prefixed by `NEXT_PUBLIC`) and runtime environment, server-side only, variables. In this demo we are using two variables, `NEXT_PUBLIC_FOO` and `BAR`. Pay attention to their positions in the `Dockerfile`, command-line arguments, and `docker-compose.yml`.
+### Integration (Vitest + testcontainers)
 
-1. In your [next.config.mjs](./next.config.mjs), add the `standalone` output-option to your config:
+[`tests/idea.test.ts`](tests/idea.test.ts) and
+[`tests/contribution.test.ts`](tests/contribution.test.ts) spin up a real
+Postgres 16 container, push the Prisma schema, and call tRPC procedures via
+`appRouter.createCaller(ctx)` — bypassing HTTP, so the test is the contract
+between input → DB state.
 
-   ```diff
-     export default defineNextConfig({
-       reactStrictMode: true,
-       swcMinify: true,
-   +   output: "standalone",
-     });
-   ```
+What they cover:
 
-2. Remove the `env`-import from [next.config.mjs](./next.config.mjs):
+- **Auth**: unauthenticated calls return `UNAUTHORIZED`; you can't post on
+  someone else's behalf because input no longer takes `userId`.
+- **Rate limit**: 3 ideas in a day succeed; the 4th throws `FORBIDDEN`; ideas
+  from yesterday don't count; user A hitting the limit doesn't affect user B.
+- **Likes**: connect/disconnect on the `_IdeaUserLikes` join behaves correctly.
+- **Moderation**: only `ADMIN` users can approve/reject; non-admins get
+  `FORBIDDEN`. Status starts at `PENDING` and clients cannot self-approve.
 
-   ```diff
-   - import { env } from "./src/env/server.mjs";
-   ```
+```bash
+# Docker must be running locally
+npm test
+```
 
-3. Create a `.dockerignore` file with the following contents:
-   <details>
-   <summary>.dockerignore</summary>
+### E2E (Playwright)
 
-   ```
-   .env
-   Dockerfile
-   .dockerignore
-   node_modules
-   npm-debug.log
-   README.md
-   .next
-   .git
-   ```
+[`tests/e2e/`](tests/e2e/) — minimal smoke test today. Authenticated
+flows are covered at the integration layer where the security logic lives;
+extending Playwright to drive an authenticated session is documented in
+[`tests/e2e/README.md`](tests/e2e/README.md).
 
-  </details>
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
 
-4. Create a `Dockerfile` with the following contents:
-   <details>
-   <summary>Dockerfile</summary>
+## Local development
 
-   ```Dockerfile
-   ########################
-   #         DEPS         #
-   ########################
+```bash
+git clone https://github.com/ritterpw/osb_t3.git
+cd osb_t3
+npm install
+cp .env.example .env   # fill in Neon URLs, Google OAuth, S3 creds, SECRET
+npx prisma db push     # initial schema
+npm run dev
+```
 
-   # Install dependencies only when needed
-   # TODO: re-evaluate if emulation is still necessary on arm64 after moving to node 18
-   FROM --platform=linux/amd64 node:16-alpine AS deps
-   # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-   RUN apk add --no-cache libc6-compat
-   WORKDIR /app
+## Migration story: Supabase → Neon
 
-   # Install dependencies based on the preferred package manager
-   COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-   RUN \
-     if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-     elif [ -f package-lock.json ]; then npm ci; \
-     elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
-     else echo "Lockfile not found." && exit 1; \
-     fi
+The DB lived on Supabase; recently migrated to Neon for branching, simpler
+billing, and a cleaner Postgres-only mental model. The shape of the migration:
 
-   ########################
-   #        BUILDER       #
-   ########################
+1. **Dump** with `pg_dump` (custom format) from Supabase.
+2. **Schema** applied to Neon via `prisma db push` — the existing `migrations/`
+   folder still carried MySQL-flavored migrations from a much earlier
+   PlanetScale era and was incompatible with Postgres.
+3. **Data** loaded with `psql -f data-only.sql`, with COPY blocks reordered to
+   satisfy foreign keys (Neon doesn't grant `session_replication_role`).
+4. **Migrations baselined** afterward with `prisma migrate diff
+   --from-empty --to-schema-datamodel … > 0_init/migration.sql` and marked
+   `--applied`, so future schema changes flow through the normal `migrate dev`
+   workflow on a clean Postgres history.
 
-   # Rebuild the source code only when needed
-   # TODO: re-evaluate if emulation is still necessary on arm64 after moving to node 18
-   FROM --platform=linux/amd64 node:16-alpine AS builder
+## Roadmap
 
-   ARG NEXT_PUBLIC_FOO
-   ARG BAR
+- [ ] Migrate tRPC v9 → v10 (router builder, query/mutation procedures)
+- [ ] Migrate Next.js 12 → 13 (Pages router stays; App Router is a later effort)
+- [ ] Authenticated Playwright flows with a test-only credentials provider
+- [ ] Replace remaining inline `any` casts in components/
 
-   WORKDIR /app
-   COPY --from=deps /app/node_modules ./node_modules
-   COPY . .
+## Scripts
 
-   # Next.js collects completely anonymous telemetry data about general usage.
-   # Learn more here: https://nextjs.org/telemetry
-   # Uncomment the following line in case you want to disable telemetry during the build.
-   # ENV NEXT_TELEMETRY_DISABLED 1
-
-   RUN \
-     if [ -f yarn.lock ]; then yarn build; \
-     elif [ -f package-lock.json ]; then npm run build; \
-     elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm run build; \
-     else echo "Lockfile not found." && exit 1; \
-     fi
-
-   ########################
-   #        RUNNER        #
-   ########################
-
-   # Production image, copy all the files and run next
-   # TODO: re-evaluate if emulation is still necessary after moving to node 18
-   FROM --platform=linux/amd64 node:16-alpine AS runner
-   # WORKDIR /usr/app
-   WORKDIR /app
-
-   ENV NODE_ENV production
-   # Uncomment the following line in case you want to disable telemetry during runtime.
-   # ENV NEXT_TELEMETRY_DISABLED 1
-
-   RUN addgroup --system --gid 1001 nodejs
-   RUN adduser --system --uid 1001 nextjs
-
-   COPY --from=builder /app/next.config.mjs ./
-   COPY --from=builder /app/public ./public
-   COPY --from=builder /app/package.json ./package.json
-
-   # Automatically leverage output traces to reduce image size
-   # https://nextjs.org/docs/advanced-features/output-file-tracing
-   COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-   COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-   USER nextjs
-
-   EXPOSE 3000
-
-   ENV PORT 3000
-
-   CMD ["node", "server.js"]
-   ```
-
-  </details>
-
-5. To build and run this image locally, run:
-
-   ```bash
-   docker build -t ct3a -e NEXT_PUBLIC_FOO=foo .
-   docker run -p 3000:3000 -e BAR="bar" ct3a
-   ```
-
-6. You can also use a PaaS such as [Railway's](https://railway.app) automated [Dockerfile deployments](https://docs.railway.app/deploy/dockerfiles) to deploy your app.
-
-### docker-compose
-
-You can also use docker-compose to build and run the container.
-
-1. Follow steps 1-4 above
-
-2. Create a `docker-compose.yml` file with the following:
-
-   <details>
-   <summary>docker-compose.yml</summary>
-
-   ```yaml
-   version: "3.7"
-   services:
-     app:
-       platform: "linux/amd64"
-       build:
-         context: .
-         dockerfile: Dockerfile
-         args:
-           NEXT_PUBLIC_FOO: "foo"
-       working_dir: /app
-       ports:
-         - "3000:3000"
-       image: t3-app
-       environment:
-         - BAR=bar
-   ```
-
-   </details>
-
-3. Run this using `docker-compose up`.
-
-## Useful resources
-
-Here are some resources that we commonly refer to:
-
-- [Protecting routes with Next-Auth.js](https://next-auth.js.org/configuration/nextjs#unstable_getserversession)
+| Command                 | What it does                                                     |
+| ----------------------- | ---------------------------------------------------------------- |
+| `npm run dev`           | Next dev server                                                  |
+| `npm run build`         | Production build                                                 |
+| `npm run check-types`   | `tsc --noemit`                                                   |
+| `npm run lint`          | Type-check + ESLint                                              |
+| `npm test`              | Vitest integration suite (needs Docker)                          |
+| `npm run test:watch`    | Vitest in watch mode                                             |
+| `npm run test:coverage` | Coverage report                                                  |
+| `npm run test:e2e`      | Playwright E2E                                                   |
