@@ -10,6 +10,7 @@ export default defineConfig({
     pool: "forks",
     poolOptions: { forks: { singleFork: true } }, // share one DB container per run
     setupFiles: ["./tests/setup.ts"],
+    exclude: ["**/node_modules/**", "**/tests/e2e/**"],
   },
   resolve: {
     alias: { "@": path.resolve(__dirname, "src") },

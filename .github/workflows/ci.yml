@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Lint + tRPC integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Type-check
+        run: npm run check-types
+
+      # testcontainers automatically uses the Docker daemon that ubuntu-latest
+      # provides — no setup needed beyond ensuring a Postgres image is pullable.
+      - name: Integration tests (Vitest + testcontainers)
+        run: npm test
+        env:
+          # Tell testcontainers it can skip the reaper container check on CI.
+          TESTCONTAINERS_RYUK_DISABLED: "true"
+
+  e2e:
+    name: Playwright smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+        env:
+          # The dev server needs *some* DATABASE_URL to boot, but the homepage
+          # smoke doesn't actually query — a junk URL is fine for this job.
+          # Real authenticated E2E would need a seeded DB; see tests/e2e/README.md.
+          DATABASE_URL: "postgresql://x:x@localhost:5432/x?sslmode=disable"
+          DIRECT_URL: "postgresql://x:x@localhost:5432/x?sslmode=disable"
+          SECRET: "test-secret"
+          GOOGLE_ID: "test"
+          GOOGLE_SECRET: "test"
